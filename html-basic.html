@@ -5,6 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <style>
+    table, th, td {
+      border: solid thin;
+    }
+  </style>
 </head>
 <body>
   <h1>lorem</h1>
@@ -126,16 +132,42 @@
   </form>
   <hr>
   <table>
+    <colgroup>
+      <col>
+      <col class="product-name" style="background-color: red;">
+      <col>
+      <col>
+    </colgroup>
     <thead>
       <tr>
-        <td>编号</td>
-        <td>品名</td>
-        <td>进价</td>
-        <td>出价</td>
+        <th scope="col">编号</th>
+        <th scope="col">品名</th>
+        <th scope="col">进价</th>
+        <th scope="col">出价</th>
       </tr>
     </thead>
     <tbody>
       <tr>
+        <td>aaa</td>
+        <td>aaa</td>
+        <td rowspan="2">5</td>
+        <td>aaa</td>
+      </tr>
+      <tr>
+        <td>aaa</td>
+        <td>aaa</td>
+        <td>aaa</td>
+      </tr>
+      <tr>
+        <td>aaa</td>
+        <td>aaa</td>
+        <td>aaa</td>
+        <td>aaa</td>
+      </tr>
+      <tr>
+        <td>aaa</td>
+        <td>aaa</td>
+        <td>aaa</td>
         <td>aaa</td>
       </tr>
     </tbody>
