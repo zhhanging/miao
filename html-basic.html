@@ -84,16 +84,20 @@
       </dd>
       <dt>年龄</dt>
       <dd>
-        <input type="text" name="age" id="age" list="age-range">
-        <datalist id="age-range">
-          <option value="1到6岁">少年</option>
-          <option value="1到6岁">少年</option>
-          <option value="a"></option>
-          <option value="1到6岁"></option>
-          <option value="1到6岁"></option>
-          <option value="1到6岁"></option>
-          <option value="1到6岁"></option>
-        </datalist>
+        <select name="age" id="age">
+          <optgroup label="少年">
+            <option value="1-6">1到6岁</option>
+            <option value="6-12">6到12岁</option>
+          </optgroup>
+          <optgroup label="青年">
+            <option value="1-6">13到15岁</option>
+            <option value="6-12">16到18岁</option>
+          </optgroup>
+          <optgroup label="壮年">
+            <option value="1-6">19到22岁</option>
+            <option value="6-12">22到30岁</option>
+          </optgroup>
+        </select>
       </dd>
       <dt>生日</dt>
       <dd><input type="date" name="birthday" id=""></dd>
