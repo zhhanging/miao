@@ -19,11 +19,13 @@
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi necessitatibus officia voluptas repellendus rerum suscipit quaerat nesciunt reprehenderit sapiente quam? Magnam accusantium ratione voluptatem blanditiis sed animi atque enim corrupti?</p>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, tenetur maiores alias quasi eveniet recusandae? Ex dicta nostrum quasi! Sed ducimus dolorem beatae! Facere itaque sint laborum et iure quisquam.</p>
 
-  <a href="www.jd.com">在新窗口打开京东</a>
-  <a href="mailto:222@qq.com">点我发邮件</a>
-  <a href="#page-bottom">跳到页面底部</a>
-  <a href="FOO.js" download="">点我下载文件</a>
-  <br>
+  <div>
+    <a href="https://www.jd.com">在新窗口打开京东</a>
+    <a href="mailto:222@qq.com">点我发邮件</a>
+    <a href="#page-bottom">跳到页面底部</a>
+    <a href="FOO.js" download="">点我下载文件</a>
+  </div>
+
   <img src="https://drscdn.500px.org/photo/229389427/m%3D1170/v2?user_id=7012987&webp=true&sig=196fa0c161aa562478d08571764872f7d69a346c3c0b2e12aa00e2c6414eb28b" alt="" width="200" height="200">
   <hr>
   <hr>
@@ -80,17 +82,19 @@
   </form>
   
   <hr>
-  个人信息调查表
+
   <form action="">
+    <p>个人信息调查表</p>
     <dl>
       <dt>性别</dt>
       <dd>
-        <input type="radio" name="gender" id="" value="male">男
-        <input type="radio" name="gender" id="" value="female">女
+        <label><input type="radio" name="gender" id="" value="male">男</label>
+        <label><input type="radio" name="gender" id="" value="female">女</dd>
       </dd>
       <dt>年龄</dt>
       <dd>
         <select name="age" id="age">
+          <option value="0" hidden selected>请选择</option>
           <optgroup label="少年">
             <option value="1-6">1到6岁</option>
             <option value="6-12">6到12岁</option>
@@ -117,7 +121,7 @@
       <dt>肤色</dt>
       <dd><input type="color" name="skin-color" id=""></dd>
       <dt>自我介绍</dt>
-      <dd><textarea name="self-introduction" id="self-introduction" cols="30" rows="10"></textarea></dd>
+      <dd><textarea name="self-introduction" cols="30" rows="10"></textarea></dd>
     </dl>
     <fieldset disabled>
       <legend>这里面的全都禁用了</legend>
@@ -148,24 +152,24 @@
     </thead>
     <tbody>
       <tr>
-        <td>aaa</td>
+        <th scope="row">aaa</th>
         <td>aaa</td>
         <td rowspan="2">5</td>
         <td>aaa</td>
       </tr>
       <tr>
+        <th scope="row">aaa</th>
+        <td>aaa</td>
+        <td>aaa</td>
+      </tr>
+      <tr>
+        <th scope="row">aaa</th>
         <td>aaa</td>
         <td>aaa</td>
         <td>aaa</td>
       </tr>
       <tr>
-        <td>aaa</td>
-        <td>aaa</td>
-        <td>aaa</td>
-        <td>aaa</td>
-      </tr>
-      <tr>
-        <td>aaa</td>
+        <th scope="row">aaa</th>
         <td>aaa</td>
         <td>aaa</td>
         <td>aaa</td>
@@ -192,8 +196,9 @@
   <p>aaa &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bbbbb</p>
   <pre>aaa        bbbb</pre>
   <p>
-    &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    >>>>>>>>>>>>>>>>>>><<<<<<<<<
     &lt;span>&lt;/span>
   </p>
+  <div id="page-bottom"></div>
 </body>
 </html>
