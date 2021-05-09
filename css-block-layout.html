@@ -26,6 +26,8 @@
       margin-left: auto;
       margin-right: auto;
     }
+
+    /* block 布局 */
     #d1 {
       width: 600px;
       margin-left: auto;
@@ -57,6 +59,33 @@
       margin-top: -40px;
     }
 
+    /* inline-block 布局 */
+    #d2 {
+      width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 20px;
+      font-size: 0;
+    }
+    #d2 div:hover {
+      background-color: red;
+    }
+    #d2 div {
+      display: inline-block;
+      font-size: 16px;
+      background-color: #ffc0cb;
+      box-sizing: border-box;
+      text-align: center;
+      line-height: 34px;
+      width: 180px;
+      height: 40px;
+      border: 3px solid black;
+    }
+    #d2 div:nth-child(3n + 1), #d2 div:nth-child(3n + 2) {
+      margin-right: 30px;
+      margin-bottom: 15px;
+    }
+
     p.p3 {
       width: 600px;
       margin-left: auto;
@@ -81,6 +110,20 @@
   <header><p class="p1">hello world 请调整浏览器窗口大小查看效果</p></header>
   <p class="p2">页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px</p>
   <div id="d1">
+    <div>宽180高40(包含边框)</div>
+    <div>产品</div>
+    <div>产品</div>
+    <div>水平间隙30px</div>
+    <div>产品</div>
+    <div>产品</div>
+    <div>垂直间隙15px</div>
+    <div>产品</div>
+    <div>产品</div>
+    <div>边框宽度3px</div>
+    <div>产品</div>
+    <div>产品</div>
+  </div>
+  <div id="d2">
     <div>宽180高40(包含边框)</div>
     <div>产品</div>
     <div>产品</div>
