@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oald</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    .wordList {
+      box-sizing: border-box;
+      width: 200px;
+      background-color: #eaeef3;
+      height: 100vh;
+      border-right: 1px solid;
+    }
+    .wordList h1 {
+      font-size: 24px;
+      line-height: 72px;
+      margin: 0;
+      text-align: right;
+    }
+    .wordList input {
+      height: 25px;
+      width: 150px;
+    }
+    .wordList button {
+      margin: 0;
+      height: 25px;
+      width: 35px;
+    }
+    .wordList ul {
+      margin: 0;
+      height: calc(100vh - 110px);
+      overflow: auto;
+    }
+
+    .dictContent {
+      box-sizing: border-box;
+      margin-left: 200px;
+      margin-top: -100vh;
+      width: calc(100% - 600px);
+      min-width: 330px;
+      height: 100vh;
+      border-left: 1px solid;
+    }
+    .dictContent .word {
+      margin: 0;
+      box-sizing: border-box;
+      height: 72px;
+      border-bottom: 1px solid #000;
+      line-height: 3;
+    }
+    .dictContent .word h2 {
+      margin: 0 1em;
+      font-size: 24px;
+    }
+    .dictContent .meaning {
+      border-top: 1px solid #000;
+      box-sizing: border-box;
+      padding: 1em;
+      height: calc(100vh - 72px);
+      overflow: auto;
+    }
+
+    .vocabulary {
+      box-sizing: border-box;
+      background-color: #eaeef3;
+      margin-left: calc(100% - 400px);
+      margin-top: -100vh;
+      width: 200px;
+      height: 100vh;
+      border-left: 1px solid;
+    }
+    .vocabulary h2 {
+      margin: 0 1em;
+      font-size: 24px;
+      line-height: 3;
+    }
+
+    .history {
+      box-sizing: border-box;
+      background-color: #eaeef3;
+      margin-left: calc(100% - 200px);
+      margin-top: -100vh;
+      width: 200px;
+      height: 100vh;
+      border-left: 1px solid;
+    }
+    .history h2 {
+      margin: 0 1em;
+      font-size: 24px;
+      line-height: 3;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="wordList">
+      <h1>OALD Se7en</h1>
+      <div>
+        <input type="search" name="word" id="word" value="这是怎么回事？">
+        <button ></button>
+      </div>
+      <ul>
+        <li>word1</li>
+        <li>word2</li>
+        <li>word3</li>
+        <li>word4</li>
+        <li>word5</li>
+        <li>word6</li>
+        <li>word7</li>
+        <li>word8</li>
+        <li>word9</li>
+        <li>word10</li>
+        <li>word11</li>
+        <li>word12</li>
+        <li>word13</li>
+        <li>word14</li>
+        <li>word15</li>
+        <li>word16</li>
+        <li>word17</li>
+        <li>word18</li>
+        <li>word19</li>
+        <li>word20</li>
+        <li>word21</li>
+        <li>word22</li>
+        <li>word23</li>
+        <li>word24</li>
+        <li>word25</li>
+        <li>word26</li>
+        <li>word27</li>
+        <li>word28</li>
+        <li>word29</li>
+        <li>word30</li>
+        <li>word31</li>
+        <li>word32</li>
+        <li>word33</li>
+        <li>word34</li>
+        <li>word35</li>
+        <li>word36</li>
+        <li>word37</li>
+        <li>word38</li>
+        <li>word39</li>
+        <li>word40</li>
+        <li>word41</li>
+        <li>word42</li>
+        <li>word43</li>
+        <li>word44</li>
+        <li>word45</li>
+        <li>word46</li>
+        <li>word47</li>
+        <li>word48</li>
+        <li>word49</li>
+        <li>word50</li>
+        <li>word51</li>
+        <li>word52</li>
+        <li>word53</li>
+        <li>word54</li>
+        <li>word55</li>
+        <li>word56</li>
+        <li>word57</li>
+        <li>word58</li>
+        <li>word59</li>
+        <li>word60</li>
+        <li>word61</li>
+        <li>word62</li>
+        <li>word63</li>
+        <li>word64</li>
+        <li>word65</li>
+        <li>word66</li>
+        <li>word67</li>
+        <li>word68</li>
+        <li>word69</li>
+        <li>word70</li>
+        <li>word71</li>
+        <li>word72</li>
+        <li>word73</li>
+        <li>word74</li>
+        <li>word75</li>
+        <li>word76</li>
+        <li>word77</li>
+        <li>word78</li>
+        <li>word79</li>
+        <li>word80</li>
+        <li>word81</li>
+        <li>word82</li>
+        <li>word83</li>
+        <li>word84</li>
+        <li>word85</li>
+        <li>word86</li>
+        <li>word87</li>
+        <li>word88</li>
+        <li>word89</li>
+        <li>word90</li>
+        <li>word91</li>
+        <li>word92</li>
+        <li>word93</li>
+        <li>word94</li>
+        <li>word95</li>
+        <li>word96</li>
+        <li>word97</li>
+        <li>word98</li>
+        <li>word99</li>
+        <li>word100</li>
+      </ul>
+    </div>
+    <div class="dictContent">
+      <div class="word">
+        <h2>fantasy</h2>
+      </div>
+      <div class="meaning">
+        <p>Lorem, ipsum.</p>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore reprehenderit porro sequi commodi atque vitae quae at nemo consequatur culpa repellendus sit praesentium, temporibus architecto quas hic ipsum repellat quia!
+          </li>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores at est ipsam porro minus ab odio placeat explicabo incidunt dignissimos distinctio magni adipisci ut ex perferendis illum, praesentium eum quidem?
+          </li>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto tenetur eligendi nobis iste harum, dolorum deleniti rem enim consequuntur voluptatum explicabo iure! Provident esse eaque ex aut quo dolor inventore!
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div class="vocabulary">
+      <h2>Vocabulary</h2>
+      
+    </div>
+    <div class="history">
+      <h2>History</h2>
+    </div>
+  </div>
+</body>
+</html>
