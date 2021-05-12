@@ -6,11 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我要当切图仔</title>
   <style>
+    html {
+      zoom: 5;
+    }
     .gomez{
       background-image: url(FEZ-Gomez.png);
       background-repeat: no-repeat;
-      width: 18px;
-      height: 28px;
+      width: 14px;
+      height: 21px;
       background-size: cover;
       display: inline-block;
       /* border: 1px solid #000; */
@@ -19,50 +22,59 @@
       background-position: 0 0;
     }
     .spin-02 {
-      background-position: -19px 0;
+      background-position: -14px 0;
     }
     .spin-03 {
-      background-position: -39px 0;
+      background-position: -28px 0;
     }
     .spin-04 {
-      background-position: -58px 0;
+      background-position: -42px 0;
     }
     .spin-05 {
-      background-position: -79px 0;
+      background-position: -56px 0;
     }
     .spin-06 {
-      background-position: -96px 0;
+      background-position: -70px 0;
     }
     .spin-07 {
-      background-position: -113px 0;
+      background-position: -84px 0;
     }
     .spin-08 {
-      background-position: -131px 0;
+      background-position: -98px 0;
     }
     .spin-09 {
-      background-position: -149px 0;
+      background-position: -112px 0;
     }
     .spin-10 {
-      background-position: -168px 0;
+      background-position: -126px 0;
     }
     .spin-11 {
-      background-position: -187px 0;
+      background-position: -140px 0;
     }
     .spin-12 {
-      background-position: -204px 0;
+      background-position: -154px 0;
     }
     .spin-13 {
-      background-position: -223px 0;
+      background-position: -168px 0;
     }
     .spin-14 {
-      background-position: -242px 0;
+      background-position: -182px 0;
     }
     .spin-15 {
-      background-position: -261px 0;
+      background-position: -196px 0;
+    }
+
+    .move {
+      animation: moveX 1s steps(15) forwards infinite;
+    }
+    @keyframes moveX {
+      from {background-position-x: 0;}
+      to {background-position-x: -210px;}
     }
   </style>
 </head>
 <body>
+  <div class="gomez move"></div>
   <div class="gomez spin-01"></div>
   <div class="gomez spin-02"></div>
   <div class="gomez spin-03"></div>
@@ -78,6 +90,5 @@
   <div class="gomez spin-13"></div>
   <div class="gomez spin-14"></div>
   <div class="gomez spin-15"></div>
-
 </body>
 </html>
