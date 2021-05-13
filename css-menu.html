@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    header {
+      font-size: 0;
+    }
+    header ul {
+      padding: 0;
+      width: 200px;
+    }
+    header li {
+      display: block;
+      position: relative;
+    }
+
+    .first {
+      background-color: #ccc;
+      box-sizing: border-box;
+      width: 100%;
+      vertical-align: bottom;
+      margin-top: 0;
+      padding: 2px 2px 0;
+      position: relative;
+    }
+    .first > li ul {
+      background-color: #eaeef3;
+    }
+    .first > li li {
+      padding: 0.2em 1em;
+      text-align: left;
+    }
+    .first > li {
+      display: inline-block;
+      width: 80px;
+      height: 30px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    li:hover {
+      background-color: lightblue;
+    }
+    .first > li:hover > ul {
+      display: block;
+      top: 30px;
+    }
+    .second {
+      display: none;
+      position: absolute;
+    }
+    .third {
+      position: absolute;
+      display: none;
+    }
+    .second > li:hover > ul {
+      display: block;
+      left: 200px;
+      top: 0px;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <ul class="first">
+      <li>开始
+        <ul class="second">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+        </ul>
+      </li>
+      <li>我是
+        <ul class="second">
+          <li>item01</li>
+          <li>item02</li>
+          <li>item03 item03 item03 item03</li>
+        </ul>
+      </li>
+      <li>shabi
+        <ul class="second">
+          <li>您</li>
+          <li>2</li>
+          <li>是
+            <ul class="third">
+              <li>shabi01</li>
+              <li>shabi02</li>
+              <li>shabi03</li>
+              <li>shabi04</li>
+              <li>shabi05</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <main>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste ducimus quis quas assumenda eum similique? Consequatur veniam quibusdam sed tenetur voluptatibus aliquid minima molestiae, necessitatibus facere at quae reiciendis fugiat.</p>
+  </main>
+</body>
+</html>
