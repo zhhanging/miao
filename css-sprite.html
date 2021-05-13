@@ -66,16 +66,19 @@
       border: none;
       animation: 
         moveX 1s steps(15) infinite, 
-        leftToRight 11s linear infinite,
-        topToBottom 13s linear infinite;
+        leftToRight 13s linear infinite,
+        topToBottom 17s linear infinite,
+        rotate 5s linear infinite;
+      animation-play-state: running, running, running, paused;
     }
     .move:hover {
       /* animation: moveX 0.2s steps(15) infinite; */
       animation: 
         moveX 0.2s steps(15) infinite, 
-        leftToRight 11s linear infinite,
-        topToBottom 13s linear infinite;
-      animation-play-state: running, paused, paused;
+        leftToRight 13s linear infinite,
+        topToBottom 17s linear infinite,
+        rotate 5s linear infinite;
+      animation-play-state: running, paused, paused, running;
     }
     @keyframes moveX {
       from {background-position-x: 0;}
@@ -90,6 +93,10 @@
       from {top: 0;}
       50% {top: calc(100% - 212px);}
       to {top: 0;}
+    }
+    @keyframes rotate {
+      from {transform: rotate(0);}
+      to {transform: rotate(360deg);}
     }
   </style>
 </head>
