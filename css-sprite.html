@@ -71,7 +71,11 @@
     }
     .move:hover {
       /* animation: moveX 0.2s steps(15) infinite; */
-      animation-play-state: paused;
+      animation: 
+        moveX 0.2s steps(15) infinite, 
+        leftToRight 11s linear infinite,
+        topToBottom 13s linear infinite;
+      animation-play-state: running, paused, paused;
     }
     @keyframes moveX {
       from {background-position-x: 0;}
