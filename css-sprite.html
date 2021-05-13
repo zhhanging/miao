@@ -12,7 +12,7 @@
       width: 140px;
       height: 210px;
       background-size: cover;
-      display: inline-block;
+      display: block;
       border: 1px solid #000;
     }
     .spin-01 {
@@ -62,14 +62,29 @@
     }
 
     .move {
-      animation: moveX 1s steps(15) infinite;
+      position: fixed;
+      border: none;
+      animation: moveX 1s steps(15) infinite, 
+      leftToRight 11s linear infinite,
+      topToBottom 13s linear infinite;
     }
     .move:hover {
-      animation: moveX 0.2s steps(15) infinite;
+      /* animation: moveX 0.2s steps(15) infinite; */
+      animation-play-state: paused;
     }
     @keyframes moveX {
       from {background-position-x: 0;}
       to {background-position-x: -2100px;}
+    }
+    @keyframes leftToRight {
+      from {left: 0;}
+      50% {left: calc(100% - 142px);}
+      to {left: 0;}
+    }
+    @keyframes topToBottom {
+      from {top: 0;}
+      50% {top: calc(100% - 212px);}
+      to {top: 0;}
     }
   </style>
 </head>
