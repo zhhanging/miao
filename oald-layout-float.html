@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oald</title>
+  <style>
+    body {
+      margin: 0;
+      min-width: 930px;
+    }
+    .wordList {
+      box-sizing: border-box;
+      width: 200px;
+      background-color: #eaeef3;
+      height: 100vh;
+      border-right: 1px solid;
+      float: left;
+    }
+    .wordList h1 {
+      font-size: 24px;
+      line-height: 72px;
+      margin: 0 0.5em;
+      text-align: right;
+    }
+
+    .wordList div {
+      box-sizing: border-box;
+      height: 27px;
+      margin: 4px;
+      text-align: center;
+    }
+    .wordList input {
+      height: 25px;
+      width: 150px;
+      border-radius: 15px 0 0 15px;
+    }
+    .wordList button {
+      margin: 0;
+      height: 25px;
+      width: 35px;
+      border-radius: 0 15px 15px 0;
+      vertical-align: top;
+    }
+    .wordList ul {
+      margin: 0;
+      margin-top: 3px;
+      height: calc(100vh - 110px);
+      overflow: auto;
+      list-style: none;
+      padding-left: 0;
+      font-family: serif;
+    }
+    .wordList ul a {
+      box-sizing: border-box;
+      display: block;
+      padding-left: 1em;
+      font-size: 20px;
+      border: 1px solid rgb(0, 0, 0, 0);
+      color: #426dc9;
+    }
+    .wordList ul a:link {
+      text-decoration: none;
+      color: black;
+    }
+    .wordList ul li a:hover {
+      background-color: #bbcee8;
+      border-color: #8faad9;
+      color: black;
+    }
+    .wordList ul a:visited {
+      color: #426dc9;
+    }
+
+    .dictContent {
+      display: flow-root;
+      box-sizing: border-box;
+      min-width: 330px;
+      height: 100vh;
+      border-left: 1px solid;
+    }
+    .dictContent .word {
+      margin: 0;
+      box-sizing: border-box;
+      height: 72px;
+      border-bottom: 1px solid #000;
+      line-height: 3;
+    }
+    .dictContent .word h2 {
+      margin: 0 1em;
+      font-size: 24px;
+    }
+    .dictContent .meaning {
+      border-top: 1px solid #000;
+      box-sizing: border-box;
+      padding: 1em;
+      height: calc(100vh - 72px);
+      overflow: auto;
+    }
+
+    .vocabulary {
+      box-sizing: border-box;
+      background-color: #eaeef3;
+      width: 200px;
+      height: 100vh;
+      border-left: 1px solid;
+      float: right;
+    }
+    .vocabulary h2 {
+      margin: 0 0.5em;
+      text-align: right;
+      font-size: 24px;
+      line-height: 3;
+    }
+
+    .history {
+      box-sizing: border-box;
+      background-color: #eaeef3;
+      width: 200px;
+      height: 100vh;
+      border-left: 1px solid;
+      float: right;
+    }
+    .history h2 {
+      margin: 0 0.5em;
+      text-align: right;
+      font-size: 24px;
+      line-height: 3;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="main">
+
+    <div class="wordList">
+      <h1>OALD Se7en</h1>
+      <div>
+        <input type="search" name="word" id="word" value="这是怎么回事？">
+        <button ></button>
+      </div>
+      <ul>
+        <li><a href="">word1</a></li>
+        <li><a href="">word2</a></li>
+        <li><a href="">word3</a></li>
+        <li><a href="">word4</a></li>
+        <li><a href="">word5</a></li>
+        <li><a href="">word6</a></li>
+        <li><a href="">word7</a></li>
+        <li><a href="">word8</a></li>
+        <li><a href="">word9</a></li>
+        <li><a href="">word10</a></li>
+        <li><a href="">word11</a></li>
+        <li><a href="">word12</a></li>
+        <li><a href="">word13</a></li>
+        <li><a href="">word14</a></li>
+        <li><a href="">word15</a></li>
+        <li><a href="">word16</a></li>
+        <li><a href="">word17</a></li>
+        <li><a href="">word18</a></li>
+        <li><a href="">word19</a></li>
+        <li><a href="">word20</a></li>
+        <li><a href="">word21</a></li>
+        <li><a href="">word22</a></li>
+        <li><a href="">word23</a></li>
+        <li><a href="">word24</a></li>
+        <li><a href="">word25</a></li>
+        <li><a href="">word26</a></li>
+        <li><a href="">word27</a></li>
+        <li><a href="">word28</a></li>
+        <li><a href="">word29</a></li>
+        <li><a href="">word30</a></li>
+        <li><a href="">word31</a></li>
+        <li><a href="">word32</a></li>
+        <li><a href="">word33</a></li>
+        <li><a href="">word34</a></li>
+        <li><a href="">word35</a></li>
+        <li><a href="">word36</a></li>
+        <li><a href="">word37</a></li>
+        <li><a href="">word38</a></li>
+        <li><a href="">word39</a></li>
+        <li><a href="">word40</a></li>
+        <li><a href="">word41</a></li>
+        <li><a href="">word42</a></li>
+        <li><a href="">word43</a></li>
+        <li><a href="">word44</a></li>
+        <li><a href="">word45</a></li>
+        <li><a href="">word46</a></li>
+        <li><a href="">word47</a></li>
+        <li><a href="">word48</a></li>
+        <li><a href="">word49</a></li>
+        <li><a href="">word50</a></li>
+        <li><a href="">word51</a></li>
+        <li><a href="">word52</a></li>
+        <li><a href="">word53</a></li>
+        <li><a href="">word54</a></li>
+        <li><a href="">word55</a></li>
+        <li><a href="">word56</a></li>
+        <li><a href="">word57</a></li>
+        <li><a href="">word58</a></li>
+        <li><a href="">word59</a></li>
+        <li><a href="">word60</a></li>
+        <li><a href="">word61</a></li>
+        <li><a href="">word62</a></li>
+        <li><a href="">word63</a></li>
+        <li><a href="">word64</a></li>
+        <li><a href="">word65</a></li>
+        <li><a href="">word66</a></li>
+        <li><a href="">word67</a></li>
+        <li><a href="">word68</a></li>
+        <li><a href="">word69</a></li>
+        <li><a href="">word70</a></li>
+        <li><a href="">word71</a></li>
+        <li><a href="">word72</a></li>
+        <li><a href="">word73</a></li>
+        <li><a href="">word74</a></li>
+        <li><a href="">word75</a></li>
+        <li><a href="">word76</a></li>
+        <li><a href="">word77</a></li>
+        <li><a href="">word78</a></li>
+        <li><a href="">word79</a></li>
+        <li><a href="">word80</a></li>
+        <li><a href="">word81</a></li>
+        <li><a href="">word82</a></li>
+        <li><a href="">word83</a></li>
+        <li><a href="">word84</a></li>
+        <li><a href="">word85</a></li>
+        <li><a href="">word86</a></li>
+        <li><a href="">word87</a></li>
+        <li><a href="">word88</a></li>
+        <li><a href="">word89</a></li>
+        <li><a href="">word90</a></li>
+        <li><a href="">word91</a></li>
+        <li><a href="">word92</a></li>
+        <li><a href="">word93</a></li>
+        <li><a href="">word94</a></li>
+        <li><a href="">word95</a></li>
+        <li><a href="">word96</a></li>
+        <li><a href="">word97</a></li>
+        <li><a href="">word98</a></li>
+        <li><a href="">word99</a></li>
+        <li><a href="">word100</a></li>
+      </ul>
+    </div>
+    <div class="history">
+      <h2>History</h2>
+    </div>
+    <div class="vocabulary">
+      <h2>Vocabulary</h2>
+      
+    </div>
+    <div class="dictContent">
+      <div class="word">
+        <h2>fantasy</h2>
+      </div>
+      <div class="meaning">
+        <p>Lorem, ipsum.</p>
+        <ol>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore reprehenderit porro sequi commodi atque vitae quae at nemo consequatur culpa repellendus sit praesentium, temporibus architecto quas hic ipsum repellat quia!
+          </li>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores at est ipsam porro minus ab odio placeat explicabo incidunt dignissimos distinctio magni adipisci ut ex perferendis illum, praesentium eum quidem?
+          </li>
+          <li>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto tenetur eligendi nobis iste harum, dolorum deleniti rem enim consequuntur voluptatum explicabo iure! Provident esse eaque ex aut quo dolor inventore!
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
