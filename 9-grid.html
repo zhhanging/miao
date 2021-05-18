@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9</title>
+  <style>
+    /* table */
+    table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: 170px;
+      height: 170px;
+      margin: 10px auto;
+    }
+    table tr, table col {
+      border: 5px solid blue;
+      text-align: center;
+    }
+    table td:hover {
+      border: 5px solid red;
+    }
+
+
+    /* div box 公共样式*/
+    div.box {
+      width: 170px;
+      height: 170px;
+      margin: 10px auto;
+    }
+    div.box div {
+      float: left;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+    }
+    div.box div:nth-child(3n + 2),
+    div.box div:nth-child(3n) {
+      margin-left: -5px;
+    }
+    div.box div:nth-child(n + 4) {
+      margin-top: -5px;
+    }
+
+    /* bgc */
+    div.bgc {
+      background-color: blue;
+    }
+    div.bgc div {
+      border: 5px solid transparent;
+      background-color: white;
+      background-clip: padding-box;
+    }
+    div.bgc div:hover {
+      border-color: red;
+    }
+
+    /* z-index */
+    div.z div {
+      position: relative;
+      border: 5px solid blue;
+    }
+    div.z div:hover {
+      border-color: red;
+      z-index: 1;
+    }
+
+  </style>
+</head>
+<body>
+  <table>
+    <colgroup>
+      <col>
+      <col>
+      <col>
+    </colgroup>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+    </tr>
+  </table>
+  <div class="box bgc">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+    <div>7</div>
+    <div>8</div>
+    <div>9</div>
+  </div>
+
+  <div class="box z">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+    <div>7</div>
+    <div>8</div>
+    <div>9</div>
+  </div>
+
+</body>
+</html>
