@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QQ Mail</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      height: 100%;
     }
     header {
       box-sizing: border-box;
@@ -19,10 +20,14 @@
       margin: 0;
     }
 
+    div.mainBody {
+      height: calc(100% - 66px);
+    }
+
     div.sidebar {
       box-sizing: border-box;
       width: 187px;
-      height: calc(100vh - 66px);
+      height: 100%;
       background-color: #e7ebef;
       border-right: 1px solid;
       float: left;
@@ -34,7 +39,7 @@
 
     div.mainContent {
       padding: 0 1em;
-      height: calc(100vh - 66px);
+      height: 100%;
       overflow-y: auto;
     }
 
