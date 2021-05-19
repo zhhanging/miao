@@ -17,12 +17,17 @@
       margin-bottom: 1rem;
     }
     table.table thead {
-      border-bottom: 2px solid #999b9d;
+      border-bottom: 1px solid #999b9d;
+    }
+    table.table thead tr:last-child {
+      border-bottom: none;
+    }
+    table.table tr {
+      border-bottom: 1px solid #dee2e6;
     }
     table.table th, table.table td {
       text-align-last: left;
       padding: 8px;
-      border-bottom: 1px solid #dee2e6;
     }
 
     /* table-dark */
@@ -31,9 +36,9 @@
       background-color: black;
     }
     table.table-dark thead {
-      border-bottom: 2px solid white;
+      border-bottom: 1px solid white;
     }
-    table.table-dark th, table.table-dark td {
+    table.table-dark tbody tr {
       border-bottom: 1px solid #373b3e;
     }
 
@@ -66,10 +71,9 @@
     /* table-borderless */
     table.table-borderless,
     table.table-borderless thead,
-    table.table-borderless th,
-    table.table-borderless td
+    table.table-borderless tr
     {
-      border: 0;
+      border: none;
     }
 
   </style>
