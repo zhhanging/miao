@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio</title>
+  <style>
+    div.image {
+      width: 600px;
+      height: 400px;
+      font-size: 0;
+    }
+    div.image div {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 25%;
+      height: 100%;
+      border-left: 1px solid white;
+      position: relative;
+      overflow: hidden;
+    }
+    div.image div span {
+      width: 150px;
+      height: 400px;
+      position: absolute;
+      right: 100%;
+      transition: 1s;
+    }
+    div.image div:nth-child(2) span {
+      background-position: -150px 0;
+    }
+    div.image div:nth-child(3) span {
+      background-position: -300px 0;
+    }
+    div.image div:nth-child(4) span {
+      background-position: -450px 0;
+    }
+
+    div.image div span:nth-child(1) {
+      background-image: url(radio-slider-images/1.jpg);
+    }
+    div.image div span:nth-child(2) {
+      background-image: url(radio-slider-images/2.jpg);
+    }
+    div.image div span:nth-child(3) {
+      background-image: url(radio-slider-images/3.jpg);
+    }
+    div.image div span:nth-child(4) {
+      background-image: url(radio-slider-images/4.jpg);
+    }
+
+    input:nth-child(1):checked ~ div.image span:nth-child(1),
+    input:nth-child(2):checked ~ div.image span:nth-child(2),
+    input:nth-child(3):checked ~ div.image span:nth-child(3),
+    input:nth-child(4):checked ~ div.image span:nth-child(4){
+      right: 0;
+      z-index: 10;
+    }
+
+  </style>
+</head>
+<body>
+  <div>
+    <input type="radio" name="slider" id="" checked>
+    <input type="radio" name="slider" id="">
+    <input type="radio" name="slider" id="">
+    <input type="radio" name="slider" id="">
+    <div class="image">
+      <div><span></span><span></span><span></span><span></span></div>
+      <div><span></span><span></span><span></span><span></span></div>
+      <div><span></span><span></span><span></span><span></span></div>
+      <div><span></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</body>
+</html>
