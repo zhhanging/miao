@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QQ Mail</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+    }
+
+    div.container {
+      display: flex;
+      flex-flow: wrap;
+      height: 100%;
+      align-items: stretch;
+      align-content: flex-start;
+    }
+
+    header {
+      box-sizing: border-box;
+      width: 100%;
+      height: 66px;
+      background-color: #5cc9f5;
+      border-bottom: 1px solid #000;
+    }
+    header * {
+      margin: 0;
+    }
+    aside {
+      box-sizing: border-box;
+      width: 187px;
+      background-color: #e7ebef;
+      border-right: 1px solid;
+    }
+    aside ul {
+      margin: 0;
+      padding-top: 1em;
+    }
+
+    div.mainContent {
+      width: calc(100% - 187px);
+      padding: 0;
+      overflow-y: auto;
+      height: calc(100% - 66px);
+    }
+    p {
+      padding: 0 1em;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p>QQ Mail</p>
+    </header>
+    <aside>
+      <ul>
+        <li><a href="">写信</a></li>
+        <li><a href="">收信</a></li>
+        <li><a href="">通讯录</a></li>
+      </ul>
+    </aside>
+    <div class="mainContent">
+      <p>下午好，Shabi</p>
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor expedita, atque corporis et ratione reprehenderit, quia sed in id, quis neque adipisci voluptatem. Quam enim ducimus quo fugit ea illo?</p>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus, at eos exercitationem voluptatibus omnis nulla culpa! Amet impedit qui minus aperiam assumenda, corrupti maxime delectus perferendis eius! Dolores, fuga ea.</p>
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nesciunt, debitis atque excepturi, rem similique perferendis asperiores ex soluta animi maiores vero quasi sunt non optio est aspernatur. Aliquam, quibusdam odit.</p>
+    </div>
+  </div>
+
+</body>
+</html>
