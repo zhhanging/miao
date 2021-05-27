@@ -1,10 +1,18 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-width: 1226px;
+  min-width: 1250px;
 }
 body {
   position: relative;
+}
+
+/* iconfonts adjust */
+.icon, .icon * {
+  vertical-align: top;
+}
+.icon::before {
+  font-size: 22px;
 }
 
 /* header */
@@ -77,6 +85,7 @@ header ul li.qr-code:hover div {
 header .header-cart {
   position: relative;
   width: 120px;
+  height: 40px;
   background-color: #424242;
 }
 header .cart {
@@ -84,9 +93,7 @@ header .cart {
   text-align: center;
   cursor: pointer;
 }
-header .cart::before {
-  content: "?";
-}
+
 header .header-cart:hover {
   color: #ff6700;
   background-color: #fff;
@@ -180,14 +187,12 @@ header .cart-content div {
   color: white;
 }
 
-.site-header {
-  font-size: 0;
-}
 .site-header ul.menu {
   font-size: 1rem;
 }
 .site-header ul.menu li {
   margin: 0;
+  float: left;
 }
 .site-header ul.menu li > a {
   padding: 26px 10px 38px;
@@ -214,7 +219,7 @@ header .cart-content div {
   line-height: normal;
   overflow: hidden;
   visibility: hidden;
-  transition: height .3s, visibility 0s 0.3s;
+  transition: height .3s, visibility 0s .3s;
 }
 .site-header ul.menu li .header-drawer .header-drawer-wrapper {
   width: 1226px;
@@ -223,6 +228,7 @@ header .cart-content div {
   text-align: center;
 }
 .site-header ul.menu li .header-drawer .header-item {
+  position: relative;
   box-sizing: border-box;
   width: 203px;
   height: 230px;
@@ -231,12 +237,13 @@ header .cart-content div {
 .site-header ul.menu li .header-drawer .header-item img {
   width: 160px;
 }
-.site-header ul.menu li .header-drawer .header-item::before {
+.site-header ul.menu li .header-drawer .header-item:not(:first-child)::before {
   content: '';
   position: absolute;
+  left: 0;
   width: 1px;
   height: 100px;
-  background-color: #000;
+  background-color: #e0e0e0;
 }
 .site-header ul.menu li .header-drawer .header-item a {
   font-size: 0.5em;
@@ -245,3 +252,6 @@ header .cart-content div {
   font-size: 0.5em;
   color: #ff6700;
 }
+
+/* home-hero */
+
