@@ -86,6 +86,7 @@ header ul li.qr-code div {
   visibility: hidden;
   overflow: hidden;
   transition: .3s;
+  z-index: 12;
 }
 header ul li.qr-code div span {
   position: absolute;
