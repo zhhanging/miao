@@ -402,3 +402,81 @@ div.main-hero {
   background-color: #fff;
 }
 
+div.main-hero-sub {
+  margin: 14px 0;
+  display: flex;
+  justify-content: space-between;
+}
+div.channel {
+  width: 234px;
+  height: 170px;
+  box-shadow: 0 0 1px black;
+  background-color: #5f5750;
+  color: #d8d6d4;
+  overflow: hidden;
+}
+.channel-list {
+  height: 170px;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.channel-list .icon{
+  font-size: 36px;
+}
+.channel-list li {
+  width: 76px;
+  height: 82px;
+  position: relative;
+}
+.channel-list li::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 65px;
+  position: absolute;
+  left: 0;
+  top: 10px;
+  background-color: #665e57;
+}
+.channel-list li::after {
+  content: '';
+  display: block;
+  width: 65px;
+  height: 1px;
+  position: absolute;
+  left: 6px;
+  top: 0;
+  background-color: #665e57;
+}
+.channel-list li a{
+  box-sizing: border-box;
+  padding: 16px 0 0;
+  text-align: center;
+  font-size: 12px;
+}
+.channel-list li a:hover {
+  color: #fff;
+}
+/* promo */
+.main-hero-sub .promo {
+  width: 978px;
+}
+.promo ul.promo-list {
+  width: 978px;
+  height: 170px;
+  display: flex;
+  justify-content: space-between;
+}
+.promo-list li {
+  height: 170px;
+  transition: box-shadow .3s;
+}
+.promo-list img {
+  height: 170px;
+}
+.promo-list li:hover {
+  box-shadow: 0 10px 25px -10px gray;
+}
+
