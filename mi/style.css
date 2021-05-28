@@ -283,8 +283,9 @@ div.site-category {
   width: 234px;
   height: 460px;
   padding: 20px 0;
-  background-color: #474546;
+  background-color: rgb(105,101,101,.6);
   color: #fff;
+  z-index: 8;
 }
 .site-category-list > li {
   padding: 0 0 0 30px;
@@ -317,6 +318,7 @@ div.sub-category-wrapper {
   height: 458px;
   color: #000;
   box-shadow: 0 0 1px black;
+  background-color: #fff;
 }
 .site-category-list > li:hover .sub-category-wrapper {
   display: block;
@@ -347,4 +349,51 @@ div.sub-category-wrapper {
 .sub-category-list li a {
   height: 40px;
   padding: 18px 15px;
+}
+
+/* main hero */
+div.main-hero {
+  width: 1226px;
+  height: 460px;
+  box-shadow: 0 0 1px black;
+}
+.main-hero a {
+  position: absolute;
+  top: 0;
+  width: 1226px;
+  opacity: 0;
+  /* display: none; */
+  transition: .6s;
+}
+.main-hero a img {
+  width: 1226px;
+}
+.main-hero input {
+  display: none;
+}
+.main-hero input:nth-of-type(1):checked ~ a:nth-of-type(1),
+.main-hero input:nth-of-type(2):checked ~ a:nth-of-type(2),
+.main-hero input:nth-of-type(3):checked ~ a:nth-of-type(3),
+.main-hero input:nth-of-type(4):checked ~ a:nth-of-type(4) {
+  /* display: block; */
+  opacity: 1;
+}
+.main-hero-labels {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 10px;
+}
+.main-hero-labels label {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 5px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid gray;
+  border-radius: 999px;
+}
+.main-hero-labels label:hover {
+  border: 2px solid;
+  background-color: #fff;
 }
