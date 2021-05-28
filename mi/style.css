@@ -140,13 +140,21 @@ header .cart-content div {
 }
 
 /* site-header */
+.site-logo {
+  float: left;
+  margin-top: 22px;
+}
+.site-logo a:active .mi-logo {
+  background-size: 50px;
+}
 .mi-logo {
   display: inline-block;
   height: 56px;
   width: 56px;
-  margin-top: 22px;
   background-image: url(images/logo-mi2.png);
+  background-repeat: no-repeat;
   background-size: 56px;
+  background-position: center;
 }
 
 .site-header {
@@ -421,6 +429,7 @@ div.main-hero {
   margin: 10px;
 }
 .main-hero-labels label {
+  cursor: pointer;
   display: inline-block;
   box-sizing: border-box;
   margin: 0 5px;
