@@ -523,3 +523,45 @@ div.channel {
   box-shadow: 0 10px 25px -10px gray;
 }
 
+/* flash sale */
+
+.main-page .flash-sale {
+  /* height: 340px; */
+}
+.flash-sale-items {
+  height: 340px;
+}
+.flash-sale-list {
+  display: flex;
+  gap: 14px;
+  /* overflow: hidden; */
+}
+.flash-sale-card {
+  box-sizing: border-box;
+  width: 235px;
+  height: 340px;
+  padding: 39px 0 0;
+  flex-shrink: 0;
+
+  border-top: 1px solid;
+  box-shadow: 0 0 1px #000;
+}
+.flash-sale-card img {
+  margin: 0 37px;
+  height: 160px;
+}
+.flash-sale-card h3 {
+  text-align: center;
+  font-size: 14px;
+}
+.flash-sale-card p {
+  text-align: center;
+  font-size: 12px;
+}
+.flash-sale-card .price {
+  font-size: 14px;
+  color: #ff6700;
+}
+.flash-sale-card del {
+  color: gray;
+}
