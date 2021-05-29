@@ -9,10 +9,13 @@ body {
 
 /* iconfonts adjust */
 .icon, .icon * {
-  vertical-align: top;
+  vertical-align: middle;
+  font-size: inherit;
+  line-height: inherit;
 }
 .icon::before {
   font-size: inherit;
+  line-height: inherit;
 }
 
 /* ul public style */
@@ -48,6 +51,10 @@ header ul, header a.cart {
   margin: 0;
   padding: 0;
   font-size: 0.5em;
+}
+header .icon-cart {
+  font-size: 24px;
+  vertical-align: -5px;
 }
 header ul.login, header div.header-cart {
   float: right;
@@ -185,6 +192,8 @@ header .cart-content div {
 .site-header form button {
   margin-left: -8px;
   box-sizing: border-box;
+  font-size: 24px;
+  color: #616161;
   width: 50px;
   height: 50px;
   border: 1px solid #e0e0e0;
@@ -524,44 +533,122 @@ div.channel {
 }
 
 /* flash sale */
-
 .main-page .flash-sale {
+  position: relative;
   /* height: 340px; */
 }
+.flash-sale-wrapper {
+  display: flex;
+  gap: 14px;
+}
+
+/* countdown */
+.countdown {
+  box-sizing: border-box;
+  width: 235px;
+  height: 340px;
+  padding: 39px 0 0;
+  text-align: center;
+  flex-shrink: 0;
+  background-color: #f1eded;
+  border-top: 1px solid #e53935;
+}
+.countdown div:first-of-type {
+  color: #ef3a3b;
+  font-size: 21px;
+  margin-top: 30px;
+}
+.countdown img {
+  width: 34px;
+  margin-top: 30px;
+}
+.countdown div:nth-of-type(2) {
+  margin: 25px 0 20px;
+  color: gray;
+  font-size: 14px;
+}
+.countdown .countdown-timer {
+  font-size: 36px;
+  color: #605751;
+}
+.countdown .countdown-timer span {
+  display: inline-block;
+  text-align: center;
+  width: 50px;
+  background-color: #605751;
+  color: #fff;
+}
+
 .flash-sale-items {
   height: 340px;
 }
 .flash-sale-list {
   display: flex;
   gap: 14px;
-  /* overflow: hidden; */
+  width: 978px;
+  overflow: hidden;
 }
-.flash-sale-card {
+
+/* item card public style */
+.item-card {
   box-sizing: border-box;
   width: 235px;
   height: 340px;
   padding: 39px 0 0;
   flex-shrink: 0;
-
+  background-color: #fff;
   border-top: 1px solid;
+
   box-shadow: 0 0 1px #000;
 }
-.flash-sale-card img {
+.item-card img {
   margin: 0 37px;
   height: 160px;
 }
-.flash-sale-card h3 {
+.item-card h3 {
   text-align: center;
   font-size: 14px;
 }
-.flash-sale-card p {
+.item-card p {
   text-align: center;
   font-size: 12px;
 }
-.flash-sale-card .price {
+.item-card .price {
   font-size: 14px;
   color: #ff6700;
 }
-.flash-sale-card del {
+.item-card .price del {
   color: gray;
+}
+
+/* flash sale card colorful border */
+.flash-sale-card:nth-child(5n + 1) {
+  border-color: #ffac13;
+}
+.flash-sale-card:nth-child(5n + 2) {
+  border-color: #83c44e;
+}
+.flash-sale-card:nth-child(5n + 3) {
+  border-color: #2196f3;
+}
+.flash-sale-card:nth-child(5n + 4) {
+  border-color: #e53935;
+}
+.flash-sale-card:nth-child(5n) {
+  border-color: #00c0a5;
+}
+
+.flash-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.flash-buttons div {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 30px;
+  border: 1px solid;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
 }
