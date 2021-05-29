@@ -32,6 +32,7 @@ ul > li {
 /* a */
 a {
   display: block;
+  width: 100%;
   color: inherit;
   text-decoration: none;
 }
@@ -308,6 +309,7 @@ div.site-category {
   z-index: 8;
 }
 .site-category-list > li {
+  display: block;
   padding: 0 0 0 30px;
   height: 42px;
   line-height: 42px;
@@ -675,7 +677,6 @@ div.channel {
 .item-card-small .more {
   margin: 0 120px 0 30px;
   text-align-last: left;
-  
 }
 .item-card-small .more h3 {
   margin: -10px 0 10px;
@@ -683,6 +684,18 @@ div.channel {
 .item-card-small .more small {
   display: block;
   color: #757575;
+}
+/* video card */
+.item-card.item-card-video {
+  width: 296px;
+  height: 285px;
+}
+.item-card.item-card-video a {
+  padding: 0;
+}
+.item-card.item-card-video img {
+  width: 296px;
+  height: 180px;
 }
 
 /* flash sale card colorful border */
@@ -817,10 +830,6 @@ div.channel {
 .section-main-header.hoverable {
   margin-left: 30px;
   cursor: pointer;
-  position: relative;
-  margin-bottom: -30px;
-  float: right;
-  right: auto;
 }
 
 /* phone section */
@@ -853,3 +862,21 @@ div.channel {
 
 /* home electronics */
 
+
+/* video */
+
+.item-card-video .play-button {
+  width: 32px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  position: absolute;
+  left: 10px;
+  top: 150px;
+}
+.item-card-video .play-button .icon {
+  color: #fff;
+}
+
+
+/* footer */
