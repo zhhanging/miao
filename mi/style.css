@@ -508,6 +508,7 @@ div.channel {
   padding: 16px 0 0;
   text-align: center;
   font-size: 12px;
+  transition: color .3s;
 }
 .channel-list li a:hover {
   color: #fff;
