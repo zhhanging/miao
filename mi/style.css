@@ -26,7 +26,7 @@ ul {
   padding: 0;
 }
 ul > li {
-  /* display: inline-block; */
+  display: inline-block;
   list-style: none;
 }
 /* a */
@@ -727,9 +727,15 @@ div.channel {
   flex-flow: row;
   gap: 14px;
 }
-.home-section-wrapper .section-promo {
+.home-section-wrapper .section-promo-list {
   display: flex;
   flex-flow: column;
+  gap: 14px;
+  height: 614px;
+}
+.section-promo-list li {
+  height: 0;
+  flex: 1;
 }
 .section-promo img {
   width: 234px;
@@ -789,3 +795,6 @@ div.channel {
 .section-main-header a:hover .icon {
   background-color: #ff6700;
 }
+
+/* home electronics */
+
