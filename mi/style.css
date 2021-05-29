@@ -687,6 +687,7 @@ div.channel {
 }
 /* video card */
 .item-card.item-card-video {
+  position: relative;
   width: 296px;
   height: 285px;
 }
@@ -696,6 +697,25 @@ div.channel {
 .item-card.item-card-video img {
   width: 296px;
   height: 180px;
+}
+.item-card-video .play-button {
+  width: 32px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  position: absolute;
+  left: 10px;
+  top: 150px;
+  transition: border-color .3s, background-color .3s;
+}
+.item-card-video .play-button:hover {
+  border-color: #ff6700;
+  background-color: #ff6700;
+}
+.item-card-video .play-button .icon {
+  font-size: 30px;
+  line-height: 20px;
+  color: #fff;
 }
 
 /* flash sale card colorful border */
@@ -861,22 +881,5 @@ div.channel {
 }
 
 /* home electronics */
-
-
-/* video */
-
-.item-card-video .play-button {
-  width: 32px;
-  height: 20px;
-  border: 2px solid #fff;
-  border-radius: 12px;
-  position: absolute;
-  left: 10px;
-  top: 150px;
-}
-.item-card-video .play-button .icon {
-  color: #fff;
-}
-
 
 /* footer */
