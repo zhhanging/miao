@@ -590,12 +590,13 @@ div.channel {
 
 .flash-sale-items {
   height: 340px;
+  overflow: hidden;
 }
-.flash-sale-list {
+.flash-item-list {
   display: flex;
   gap: 14px;
   width: 978px;
-  overflow: hidden;
+  transition: transform 1s;
 }
 
 /* item card public style */
@@ -645,12 +646,16 @@ div.channel {
   border-color: #00c0a5;
 }
 
+/* buttons and selector */
 .flash-buttons {
   position: absolute;
   top: 25px;
   right: 0;
 }
-.flash-buttons div {
+.flash-buttons-page {
+  display: none;
+}
+.flash-buttons-page label{
   display: inline-block;
   box-sizing: border-box;
   width: 30px;
@@ -659,4 +664,33 @@ div.channel {
   line-height: 24px;
   text-align: center;
   color: #b1b1b1;
+}
+.flash-buttons-page label.no-page {
+  color: #e0e0e0;
+}
+.flash-buttons-page label:not([class*="no-page"]):hover {
+  cursor: pointer;
+  color: #ff6700;
+}
+
+.flash-sale-page-selector {
+  display: none;
+}
+.flash-sale-page-selector:nth-of-type(1):checked ~ div .flash-item-list  {
+  transform: translateX(0px);
+}
+.flash-sale-page-selector:nth-of-type(2):checked ~ div .flash-item-list  {
+  transform: translateX(-994px);
+}
+.flash-sale-page-selector:nth-of-type(3):checked ~ div .flash-item-list  {
+  transform: translateX(-1490px);
+}
+.flash-sale-page-selector:nth-of-type(1):checked ~ div .flash-buttons-page:nth-child(1) {
+  display: block;
+}
+.flash-sale-page-selector:nth-of-type(2):checked ~ div .flash-buttons-page:nth-child(2) {
+  display: block;
+}
+.flash-sale-page-selector:nth-of-type(3):checked ~ div .flash-buttons-page:nth-child(3) {
+  display: block;
 }
