@@ -605,9 +605,12 @@ div.channel {
 .item-card {
   box-sizing: border-box;
   width: 234px;
-  height: 340px;
+  height: 300px;
   flex-shrink: 0;
   background-color: #fff;
+}
+.flash-sale-items .item-card {
+  height: 340px;
 }
 .item-card a {
   box-sizing: border-box;
@@ -636,11 +639,42 @@ div.channel {
 .item-card .price del {
   color: gray;
 }
-.home-section .item-card {
-  height: 300px;
-}
 .home-section .item-card a {
   padding-top: 20px;
+}
+
+/* small card */
+.item-card-small {
+  height: 143px;
+  position: relative;
+}
+.small-card-list .item-card-small a {
+  padding-top: 50px;
+}
+.item-card-small .small-card-img {
+  height: 80px;
+  width: 80px;
+  line-height: 80px;
+  position: absolute;
+  right: 20px;
+  top: 32px;
+}
+.item-card-small .small-card-img .icon {
+  font-size: 48px;
+  line-height: inherit;
+  color: #ff6700;
+}
+.item-card-small .more {
+  margin: 0 120px 0 30px;
+  text-align-last: left;
+  
+}
+.item-card-small .more h3 {
+  margin: -10px 0 10px;
+}
+.item-card-small .more small {
+  display: block;
+  color: #757575;
 }
 
 /* flash sale card colorful border */
@@ -743,6 +777,11 @@ div.channel {
 .section-main {
   position: relative;
 }
+.small-card-list {
+  display: flex;
+  flex-flow: column;
+  gap: 14px;
+}
 .home-section-wrapper .section-main-list {
   flex: 1;
   display: flex;
@@ -753,8 +792,8 @@ div.channel {
 .section-main-list li {
   transition: all .2s linear;
 }
-.section-promo-list li:hover,
-.section-main-list li:hover {
+.section-promo-list li.item-card:hover,
+.section-main-list li.item-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px -10px gray;
 }
