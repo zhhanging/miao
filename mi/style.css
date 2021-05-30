@@ -1260,3 +1260,39 @@ div.channel {
   }
 }
 
+/* auto show to top button */
+
+.to-top-wrapper {
+  width: 0;
+  height: calc(100% - 1800px);
+  position: absolute;
+  top: 1800px;
+  right: 200px;
+}
+.to-top-wrapper a {
+  position: sticky;
+  top: calc(100% - 161px);
+
+  display: block;
+  box-sizing: border-box;
+  padding-top: 10px;
+  width: 82px;
+  height: 92px;
+  background-color: #fff;
+  border: 1px solid #f5f5f5;
+  color: #757575;
+  text-align: center;
+}
+.to-top-wrapper a:hover {
+  color: #ff6700;
+}
+.to-top-wrapper a span {
+  display: block;
+  font-size: 48px;
+}
+@media only screen and (max-width: 1293px) {
+  .to-top-wrapper {
+    left: calc(100vw - 200px);
+  }
+}
+
