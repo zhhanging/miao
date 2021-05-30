@@ -5,6 +5,7 @@ html, body {
 }
 body {
   position: relative;
+  font-family: Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif
 }
 h2 {
   font-size: 22px;
@@ -52,7 +53,7 @@ header ul, header a.cart {
   line-height: 40px;
   margin: 0;
   padding: 0;
-  font-size: 0.5em;
+  font-size: 12px;
 }
 header .icon-cart {
   font-size: 24px;
@@ -1030,3 +1031,55 @@ div.channel {
   right: 0;
 }
 
+.site-info {
+  background-color: #fafafa;
+  padding: 20px 0;
+}
+.site-info .logo {
+  position: absolute;
+}
+.site-info a:hover {
+  color: #ff6700;
+}
+.site-info p {
+  margin: 0;
+  padding-left: 80px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #b0b0b0;
+}
+.info-text .sites {
+  color: #757575;
+}
+.info-links {
+  margin-top: 5px;
+  padding-left: 80px;
+}
+.info-links img {
+  height: 28px;
+}
+.info-links .switch-img img {
+  position: absolute;
+  /* visibility: hidden; */
+}
+.info-links .switch-img img:nth-child(2) {
+  animation: show .2s step-end infinite;
+}
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.site-info .slogan {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 24px;
+  color: #bbb;
+  font-family: '楷体', '楷体-简', '华文楷体', serif;
+}
