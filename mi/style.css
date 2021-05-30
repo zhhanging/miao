@@ -1199,6 +1199,7 @@ div.channel {
   .home-tool-bar .pop-out-content {
     right: 36px;
   }
+  .pop-out-content::before,
   .pop-out-content::after {
     top: 10px;
   }
