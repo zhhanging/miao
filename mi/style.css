@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 html, body {
   margin: 0;
   padding: 0;
@@ -1197,6 +1200,9 @@ div.channel {
     font-size: 16px;
     padding-top: 13px;
   }
+  .home-tool-bar ul li:first-of-type span:nth-of-type(2) {
+    display: none;
+  }
   .home-tool-bar ul li:not(:first-of-type) span:nth-of-type(2) {
     width: 100px;
     height: 30px;
@@ -1208,7 +1214,6 @@ div.channel {
     position: absolute;
     right: 35px;
     top: 6px;
-    
     display: none;
   }
   .home-tool-bar ul li:not(:first-child) span:nth-of-type(2)::before {
