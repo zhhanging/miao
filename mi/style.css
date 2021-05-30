@@ -76,13 +76,10 @@ header ul li {
 header ul li:hover {
   color: #fff;
 }
-header ul li::after {
+header ul li:not(:last-child):after {
   content: "|";
   color: #424242;
   margin-left: 0.7em;
-}
-header ul li:last-child::after {
-  content: '';
 }
 
 header ul li.qr-code div {
@@ -100,12 +97,25 @@ header ul li.qr-code div {
   visibility: hidden;
   overflow: hidden;
   transition: .3s;
-  z-index: 12;
+  z-index: 5;
+}
+header ul li.qr-code:hover::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 10px solid;
+  border-color: transparent transparent #fff;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
 }
 header ul li.qr-code div span {
+  display: block;
+  width: 100%;
   position: absolute;
   font-size: 0.9rem;
-  margin: 100px 0 0 22px;
+  margin-top: 100px;
+  text-align: center;
   color: #333;
 }
 header ul li.qr-code:hover div {
