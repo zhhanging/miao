@@ -25,7 +25,7 @@
       height: 400px;
       position: absolute;
       right: 100%;
-      animation: slidein 1s ease;
+      animation: slideout 1s;
     }
     div.image div:nth-child(2) span {
       background-position: -150px 0;
@@ -56,9 +56,10 @@
     input:nth-child(4):checked ~ div.image span:nth-child(4){
       right: 0;
       z-index: 10;
-      animation: slideout 1s ease;
+      transition: 1s;
+      animation: none;
     }
-    @keyframes slidein {
+    @keyframes slideout {
       from {
         right: 0;
       }
@@ -66,7 +67,7 @@
         right: -100%;
       }
     }
-    @keyframes slideout {
+    @keyframes slidein {
       from {
         right: 100%;
       }
