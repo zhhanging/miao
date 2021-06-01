@@ -6,6 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Radio</title>
   <style>
+    div.main {
+      margin: auto;
+      width: 600px;
+      height: 400px;
+      position: relative;
+    }
+    div.main input {
+      display: none;
+    }
+    div.main div.labels {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      position: absolute;
+      bottom: 20px;
+      z-index: 5;
+    }
+    div.main div.labels label {
+      box-sizing: border-box;
+      width: 50px;
+      height: 50px;
+      border-radius: 999px;
+      background-color: #6ccccc;
+    }
     div.image {
       width: 600px;
       height: 400px;
@@ -19,6 +44,14 @@
       border-left: 1px solid white;
       position: relative;
       overflow: hidden;
+    }
+    @keyframes slideout {
+      from {
+        right: 0;
+      }
+      to {
+        right: -100%;
+      }
     }
     div.image div span {
       width: 150px;
@@ -49,41 +82,33 @@
     div.image div span:nth-child(4) {
       background-image: url(radio-slider-images/4.jpg);
     }
-
     input:nth-child(1):checked ~ div.image span:nth-child(1),
     input:nth-child(2):checked ~ div.image span:nth-child(2),
     input:nth-child(3):checked ~ div.image span:nth-child(3),
     input:nth-child(4):checked ~ div.image span:nth-child(4){
       right: 0;
-      z-index: 10;
+      z-index: 1;
       transition: 1s;
       animation: none;
     }
-    @keyframes slideout {
-      from {
-        right: 0;
-      }
-      to {
-        right: -100%;
-      }
+    input:nth-child(1):checked ~ div.labels label:nth-child(1),
+    input:nth-child(2):checked ~ div.labels label:nth-child(2),
+    input:nth-child(3):checked ~ div.labels label:nth-child(3),
+    input:nth-child(4):checked ~ div.labels label:nth-child(4) {
+      background-color: #182c51;
+      border: 5px solid #8ed9d6;
     }
-    @keyframes slidein {
-      from {
-        right: 100%;
-      }
-      to {
-        right: 0;
-      }
-    }
-
   </style>
 </head>
 <body>
-  <div>
-    <input type="radio" name="slider" id="" checked>
-    <input type="radio" name="slider" id="">
-    <input type="radio" name="slider" id="">
-    <input type="radio" name="slider" id="">
+  <div class="main">
+    <input type="radio" name="slider" id="s1" checked>
+    <input type="radio" name="slider" id="s2">
+    <input type="radio" name="slider" id="s3">
+    <input type="radio" name="slider" id="s4">
+    <div class="labels">
+      <label for="s1"></label><label for="s2"></label><label for="s3"></label><label for="s4"></label>
+    </div>
     <div class="image">
       <div><span></span><span></span><span></span><span></span></div>
       <div><span></span><span></span><span></span><span></span></div>
