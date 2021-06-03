@@ -384,6 +384,7 @@ div.sub-category-wrapper {
   vertical-align: middle;
 }
 .sub-category-list li a {
+  display: block;
   height: 40px;
   padding: 18px 15px;
 }
