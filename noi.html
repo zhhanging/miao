@@ -391,3 +391,349 @@
   }
   console.log(left);
 </script>
+
+<script id="ch0105/01">
+  let n = +prompt("n = ? (1<= n <= 100)");
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum += +prompt("age = ?");
+  }
+  let average = sum / n;
+  console.log(average.toFixed(2));
+</script>
+
+<script id="ch0105/02">
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    sum += +prompt("money = ?");
+  }
+  let average = sum / 12;
+  console.log("$" + average.toFixed(2));
+</script>
+
+<script id="ch0105/03">
+  let n = +prompt("n = ?");
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum += +prompt("number = ?");
+  }
+  let average = sum / n;
+  console.log(average.toFixed(4));
+</script>
+
+<script id="ch0105/04">
+  let n = +prompt("n = ?");
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum += +prompt("number = ?");
+  }
+  let average = sum / n;
+  console.log(sum);
+  console.log(average.toFixed(5));
+</script>
+
+<script id="ch0105/05">
+  let n = +prompt("n = ? (1<= n < 100)");
+  let max = 0;
+  for (let i = 0; i < n; i++) {
+    score = +prompt("score = ?");
+    if (score > max) {
+      max = score;
+    }
+  }
+  console.log(max);
+</script>
+
+<script id="ch0105/06">
+  let n = +prompt("n = ? (1<= n < 1000)");
+  let max = 0;
+  let min = 1000;
+  for (let i = 0; i < n; i++) {
+    score = +prompt("score = ?");
+    if (score > max) {
+      max = score;
+    }
+    if (score < min) {
+      min = score;
+    }
+  }
+  console.log(max - min);
+</script>
+
+<script id="ch0105/07">
+  let n = +prompt("n = ? (1<= n <= 17)");
+  let gold = 0,
+    silver = 0,
+    bronze = 0;
+  for (let i = 0; i < n; i++) {
+    gold += +prompt("gold = ?");
+    silver += +prompt("silver = ?");
+    bronze += +prompt("bronze = ?");
+  }
+  let total = gold + silver + bronze;
+  console.log(gold);
+  console.log(silver);
+  console.log(bronze);
+  console.log(total);
+</script>
+
+<script id="ch0105/08">
+  let n = +prompt("n = ?");
+  let angle = 0;
+  for (let i = 0; i < n - 1; i++) {
+    angle += +prompt("angle = ?");
+  }
+  let result = (n - 2) * 180 - angle;
+  console.log(result);
+</script>
+
+<script id="ch0105/09">
+  let m = +prompt("m = ?");
+  let n = +prompt("n = ?");
+  let odd_sum = 0;
+  for (let i = m; i <= n; i++) {
+    if (i % 2 !== 0) {
+      odd_sum += i;
+    }
+  }
+  console.log(odd_sum);
+</script>
+
+<script id="ch0105/10">
+  let m = +prompt("m = ?");
+  let n = +prompt("n = ?");
+  let sum = 0;
+  for (let i = m; i <= n; i++) {
+    if (i % 17 == 0) {
+      sum += i;
+    }
+  }
+  console.log(sum);
+</script>
+
+<script id="ch0105/11">
+  let k = +prompt("k = ?");
+  let ones = 0,
+    fives = 0,
+    tens = 0;
+  for (let i = 0; i < k; i++) {
+    let number = +prompt("number = ?");
+    if (number == 1) {
+      ones += 1;
+    }
+    if (number == 5) {
+      fives += 1;
+    }
+    if (number == 10) {
+      tens += 1;
+    }
+  }
+  console.log(ones);
+  console.log(fives);
+  console.log(tens);
+</script>
+
+<script id="ch0105/12">
+  let n = +prompt("n = ?");
+  let m = +prompt("m = ?");
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    number = +prompt("number = ?");
+    if (number == m) {
+      count += 1;
+    }
+  }
+  console.log(count);
+</script>
+
+<script id="ch0105/13">
+  let a = +prompt("a = ?");
+  let n = +prompt("n = ?");
+  let result = 1;
+  for (let i = 0; i < n; i++) {
+    result *= a;
+  }
+  console.log(result);
+</script>
+
+<script id="ch0105/14">
+  let x = +prompt("x = ?");
+  let n = +prompt("n = ?");
+  let xn = x;
+  for (let i = 0; i < n; i++) {
+    xn = xn * 1.001;
+  }
+  console.log(xn.toFixed(4));
+</script>
+
+<script id="ch0105/15">
+  let r = +prompt("r = ?");
+  let m = +prompt("m = ?");
+  let y = +prompt("y = ?");
+  let total = m;
+  for (let i = 0; i < y; i++) {
+    total *= 1.05;
+  }
+  console.log(Math.floor(total));
+</script>
+
+<script id="ch0105/16">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/17">
+  let n = +prompt("n = ?");
+  let k = +prompt("k = ?");
+  let total_money = 0
+  let price = 200;
+  let result = 'Impossible';
+  for (let i = 0; i < 20; i++) {
+    price *= 1 + k / 100;
+    total_money += n;
+    if (total_money >= price) {
+      result = i + 1;
+    }
+  }
+  console.log(result);
+</script>
+
+<script id="ch0105/18">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/19">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/20">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/21">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/22">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/23">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/24">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/25">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/26">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/27">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/28">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/29">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/30">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/31">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/32">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/33">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/34">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/35">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/36">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/37">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/38">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/39">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/40">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/41">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/42">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/43">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/44">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
+
+<script id="ch0105/45">
+  var a = +prompt("a = ?");
+  var b = +prompt("b = ?");
+</script>
