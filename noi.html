@@ -66,9 +66,9 @@
 <script id="ch0103/09">
   var r = +prompt("r = ?");
   var pi = 3.14159;
-  console.log((2 * r).toFixed(5));
-  console.log((2 * pi * r).toFixed(5));
-  console.log((pi * r * r).toFixed(5));
+  console.log((2 * r).toFixed(4));
+  console.log((2 * pi * r).toFixed(4));
+  console.log((pi * r * r).toFixed(4));
 </script>
 
 <script id="ch0103/10">
@@ -83,7 +83,8 @@
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
 
-  console.log(((a * 100000) % (b * 100000)) / 100000);
+  var result = Number((a % b).toFixed(8));
+  console.log(result);
 </script>
 
 <script id="ch0103/12">
@@ -91,7 +92,7 @@
   var pi = 3.14;
   var r = +prompt("r = ?");
 
-  console.log(((3 / 4) * pi * r * r * r).toFixed(2));
+  console.log(((4 / 3) * pi * r * r * r).toFixed(2));
 </script>
 
 <script id="ch0103/13">
