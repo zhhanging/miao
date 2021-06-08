@@ -70,68 +70,99 @@
 </script>
 
 <script id="ch0103/10">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
+  // R = 1/(1/r1 + 1/r2)
+  var r1 = +prompt("r1 = ?")
+  var r2 = +prompt("r2 = ?")
   
-  
+  console.log((1/(1 / r1 + 1/r2)).toFixed(2))
 </script>
 
 <script id="ch0103/11">
   var a = +prompt("a = ?")
   var b = +prompt("b = ?")
-  
+
+  console.log(a % b)
 </script>
 
 <script id="ch0103/12">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
+  // V=4/3*πr^3
+  var pi = 3.14
+  var r = +prompt("r = ?")
   
+  console.log((3 / 4 * pi * r * r * r).toFixed(2))
 </script>
 
 <script id="ch0103/13">
   var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
-  
+  var d1 = a % 10
+  var d2 = (a % 100 - a % 10) / 10
+  var d3 = (a - a % 100) / 100
+
+  console.log(String(d1) + d2 + d3)
 </script>
 
 <script id="ch0103/14">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
-  
+  var h = +prompt("h = ?")
+  var r = +prompt("r = ?")
+  var pi = 3.14159
+
+  var v = pi * r * r * h / 1000
+  var count = Math.ceil(20 / v)
+  console.log*(count)
 </script>
 
 <script id="ch0103/15">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
+  var n = +prompt("n = ?")
+  var x = +prompt("x = ?")
+  var y = +prompt("y = ?")
   
+  var left = Math.floor(n - x * y)
+  console.log(left)
 </script>
 
 <script id="ch0103/16">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
+  var xa = +prompt("xa = ?")
+  var ya = +prompt("ya = ?")
+  var xb = +prompt("xb = ?")
+  var yb = +prompt("yb = ?")
   
+  var dist = Math.sqrt((xa - xb) ** 2 + (ya - yb) ** 2)
+  console.log(dist.toFixed(3))
 </script>
 
 <script id="ch0103/17">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
+  var x1 = +prompt("x1 = ?")
+  var y1 = +prompt("y1 = ?")
+  var x2 = +prompt("x2 = ?")
+  var y2 = +prompt("y2 = ?")
+  var x3 = +prompt("x3 = ?")
+  var y3 = +prompt("y3 = ?")
   
+  var a = Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+  var b = Math.sqrt((x1 - x3) ** 2 + (y1 - y3) ** 2)
+  var c = Math.sqrt((x2 - x3) ** 2 + (y2 - y3) ** 2)
+  var s = (a + b + c) / 2
+  var a = Math.sqrt(s * (s - a) * (s - b) * (s - c))
+  console.log(a.toFixed(2));
 </script>
 
 <script id="ch0103/18">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
-  
+  var a1 = +prompt("a1 = ?")
+  var a2 = +prompt("a2 = ?")
+  var n = +prompt("n = ?")
+
+  var an = a1 + (n - 1) * (a2 - a1)
+  console.log(an)
 </script>
 
 <script id="ch0103/19">
   var a = +prompt("a = ?")
   var b = +prompt("b = ?")
-  
+  console.log(a * b);
 </script>
 
 <script id="ch0103/20">
-  var a = +prompt("a = ?")
-  var b = +prompt("b = ?")
-  
+  var n = +prompt("n = ?")
+
+  console.log(2 ** n)
 </script>
