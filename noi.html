@@ -172,104 +172,222 @@
 
 <script id="ch0104/01">
   var n = +prompt("n = ?");
+
+  console.log(n > 0 ? "positive" : n === 0 ? "zero" : "negative");
 </script>
 
 <script id="ch0104/02">
   var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+
+  if (a > 0) {
+    console.log(a.toFixed(2));
+  } else {
+    console.log((-a).toFixed(2));
+  }
 </script>
 
 <script id="ch0104/03">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+  console.log(n % 2 == 0 ? "even" : "odd");
 </script>
 
 <script id="ch0104/04">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var char = prompt("char = ?");
+  console.log(char.charCodeAt() % 2 == 0 ? "NO" : "YES");
 </script>
 
 <script id="ch0104/05">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var x = +prompt("x = ?");
+  var y = +prompt("y = ?");
+  console.log(x > y ? ">" : x === y ? "=" : "<");
 </script>
 
 <script id="ch0104/06">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+  console.log(n % 100 == n ? 1 : 0);
 </script>
 
 <script id="ch0104/07">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+  console.log(a >= 10 || b >= 20 ? 1 : 0);
 </script>
 
 <script id="ch0104/08">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+  console.log(n % 3 == 0 && n % 5 == 0 ? "YES" : "NO");
 </script>
 
 <script id="ch0104/09">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+  if (n % 3 == 0) {
+    console.log(3);
+  }
+  if (n % 5 == 0) {
+    console.log(5);
+  }
+  if (n % 7 == 0) {
+    console.log(7);
+  }
+  if (n % 3 != 0 && n % 5 != 0 && n % 7 != 0) {
+    console.log("n");
+  }
 </script>
 
 <script id="ch0104/10">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+
+  console.log((a < 60 && b >= 60) || (a > 60 && b >= 60) ? 1 : 0);
 </script>
 
 <script id="ch0104/11">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var day = +prompt("day = ?");
+
+  console.log(day == 1 || day == 3 || day == 5 ? "NO" : "YES");
 </script>
 
 <script id="ch0104/12">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var dist = +prompt("distance = ?");
+
+  var bike_time = dist / 3.0 + 27 + 23;
+  var walk_time = dist / 1.2;
+  console.log(bike_time < walk_time ? "Bike" : "Walk");
 </script>
 
 <script id="ch0104/13">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+
+  var y;
+  if (x >= 0 && x < 5) {
+    y = -x + 2.5;
+  }
+  if (x >= 5 && x < 10) {
+    y = 2 - 1.5 * (x - 3) * (x - 3);
+  }
+  if (x >= 10 && x < 20) {
+    y = x / 2 - 1.5;
+  }
+  console.log(y.toFixed(3));
 </script>
 
 <script id="ch0104/14">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var weight = +prompt("weight = ?");
+  var flag = prompt("flag = ?");
+
+  var charge;
+  if (weight <= 1000) {
+    charge = 8;
+  } else {
+    charge = 8 + Math.ceil((weight - 1000) / 500) * 4;
+  }
+  if (flag === "y") {
+    charge += 5;
+  }
+  console.log(charge);
 </script>
 
 <script id="ch0104/15">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+  var c = +prompt("c = ?");
+  var max;
+  if (a > b) {
+    max = a;
+  } else if (b > c) {
+    max = b;
+  } else {
+    max = c;
+  }
+  console.log(max);
 </script>
 
 <script id="ch0104/16">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+  var c = +prompt("c = ?");
+
+  if (a + b > c && a + c > b && b + c > a) {
+    console.log("yes");
+  } else {
+    console.log("no");
+  }
 </script>
 
 <script id="ch0104/17">
   var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+
+  console.log(a % 400 == 0 || (a % 4 == 0 && a % 100 != 0) ? "Y" : "N");
 </script>
 
 <script id="ch0104/18">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var x = +prompt("y = ?");
+  var y = +prompt("y = ?");
+
+  if (x >= -1 && x <= 1 && y <= 1 && y >= -1) {
+    console.log("yes");
+  } else {
+    console.log("no");
+  }
 </script>
 
 <script id="ch0104/19">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+  var c = prompt("operator = ?");
+  var result;
+
+  if (c == "+") {
+    result = a + b;
+  } else if (c == "-") {
+    result = a - b;
+  } else if (c == "*") {
+    result = a * b;
+  } else if (c == "/") {
+    if (b == 0) {
+      result = "Divided by zero!";
+    } else {
+      result = a / b;
+    }
+  } else {
+    result = "Invalid operator!";
+  }
+  console.log(result);
 </script>
 
 <script id="ch0104/20">
   var a = +prompt("a = ?");
   var b = +prompt("b = ?");
+  var c = +prompt("c = ?");
+
+  var delta = b * b - 4 * a * c;
+  var sq_delta = Math.sqrt(delta);
+  var x1, x2, result;
+  if (delta == 0) {
+    x1 = (-b + sq_delta) / (2 * a);
+    result = `x1=x2=${x1.toFixed(5)}`;
+  } else if (delta > 0) {
+    x1 = (-b + sq_delta) / (2 * a);
+    x2 = (-b - sq_delta) / (2 * a);
+    result = `x1=${x1.toFixed(5)};x2= ${x2.toFixed(5)}`;
+  } else if (delta < 0) {
+    var r = -b / (2 * a);
+    var i = Math.sqrt(4 * a * c - b * b) / (2 * a);
+    x1 = r.toFixed(5) + "+" + i.toFixed(5) + "i";
+    x2 = r.toFixed(5) + "-" + i.toFixed(5) + "i";
+    result = `x1=${x1};x2=${x2}`;
+  }
+  console.log(result);
 </script>
 
 <script id="ch0104/21">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  var n = +prompt("n = ?");
+  var x = +prompt("x = ?");
+  var y = +prompt("y = ?");
+
+  var left = Math.floor(n - (1 / x) * y);
+  if (left < 0) {
+    left = 0;
+  }
+  console.log(left);
 </script>
