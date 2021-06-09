@@ -800,7 +800,7 @@
   let m = +prompt("m = ?");
   let k = +prompt("k = ?");
   let threes = 0;
-  let result = "NO"
+  let result = "NO";
   if (m % 19 == 0) {
     while (m >= 1) {
       let d = m % 10;
@@ -810,60 +810,153 @@
       m = (m - d) / 10;
     }
     if (threes == k) {
-      result = "YES"
+      result = "YES";
     }
   }
   console.log(result);
 </script>
 
 <script id="ch0105/31">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?"); // 灯数
+  let m = +prompt("m = ?"); // 人数
+  for (let j = 1; j <= n; j++) {
+    let flag = 1;
+    for (let i = 1; i <= m; i++) {
+      if (j % i == 0) {
+        flag *= -1;
+      }
+    }
+    if (flag < 0) {
+      console.log(j);
+    }
+  }
 </script>
 
 <script id="ch0105/32">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let p = 1;
+  let q = 2;
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    sum += q / p;
+    let temp = q;
+    q = p + q;
+    p = temp;
+  }
+  console.log(sum.toFixed(4));
 </script>
 
 <script id="ch0105/33">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let sum = 0;
+  for (i = 1; i <= n; i++) {
+    if (i % 2 == 0) {
+      sum -= 1 / i;
+    } else {
+      sum += 1 / i;
+    }
+  }
+  console.log(sum.toFixed(4));
 </script>
 
 <script id="ch0105/34">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let sum = 0;
+  for (let i = 1; i <= n; i++) {
+    let fact = 1;
+    for (let j = 1; j <= i; j++) {
+      fact *= j;
+    }
+    sum += fact;
+  }
+  console.log(sum);
 </script>
 
 <script id="ch0105/35">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let sum = 1;
+  for (let i = 1; i <= n; i++) {
+    let fact = 1;
+    for (let j = 1; j <= i; j++) {
+      fact *= j;
+    }
+    sum += 1 / fact;
+  }
+  console.log(sum.toFixed(10));
 </script>
 
 <script id="ch0105/36">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let x = +prompt("x = ?");
+  let n = +prompt("n = ?");
+  let result = 0;
+  for (i = 0; i <= n; i++) {
+    result += Math.pow(x, i);
+  }
+  console.log(result.toFixed(2));
 </script>
 
 <script id="ch0105/37">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let m = +prompt("m = ?"); // 体力最大值    初始体力值为0
+  let n = +prompt("n = ?"); // 战斗力
+  let k = +prompt("k = ?"); // 能量元素个数
+
+  let hp = 0; // 体力值
+  // 当 能量元素吃完 或者 战斗力超过 m 时，停止
+  while (k >= 0 && n <= m) {
+    // 吃能量元素，补充体力到 m
+    while (hp < m) {
+      k--;
+      hp += n;
+    }
+    hp = m;
+    // 战斗
+    while (hp > 0) {
+      hp -= n;
+      n++;
+    }
+    //
+    hp = 0;
+  }
+  console.log(n);
 </script>
 
 <script id="ch0105/38">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  for (let i = 1; i <= n + 1; i++) {
+    let c = +prompt("c = ?");
+    result = c * (n - i + 1);
+    if (i == n + 1 && n !== 0) {
+      break;
+    }
+    console.log(result);
+  }
 </script>
 
 <script id="ch0105/39">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?"); // n < 100
+  let sum = 0;
+  for (i = 1; i <= n; i++) {
+    if (i % 7 !== 0 && i % 10 !== 7 && (i - (i % 10)) / 10 !== 7) {
+      sum += i ** 2;
+    }
+  }
+  console.log(sum);
 </script>
 
 <script id="ch0105/40">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let count = 0;
+  for (let i = 1; i <= n; i++) {
+    let num = i;
+    while (num >= 1) {
+      let digit = num % 10;
+      if (digit == 1) {
+        count += 1;
+      }
+      num = (num - num % 10) / 10;
+    }
+  }
+  console.log(count);
 </script>
 
 <script id="ch0105/41">
