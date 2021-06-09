@@ -661,13 +661,41 @@
 </script>
 
 <script id="ch0105/21">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+
+  while (n !== 1) {
+    if (n % 2 == 0) {
+      console.log(`${n}/2=${n / 2}`);
+      n = n / 2;
+    } else {
+      console.log(`${n}*3+1=${n * 3 + 1}`);
+      n = n * 3 + 1;
+    }
+  }
+  console.log("End");
 </script>
 
 <script id="ch0105/22">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let total_money = 0;
+  let total_saved = 0;
+  for (let i = 0; i < 12; i++) {
+    total_money += 300;
+    let budget = +prompt("budget = ?");
+    total_money = total_money - budget;
+    if (total_money >= 100) {
+      let saved = Math.floor(total_money / 100) * 100;
+      total_money -= saved;
+      total_saved += saved;
+    }
+    if (total_money < 0) {
+      console.log("-" + (i + 1));
+      break;
+    }
+  }
+  if (total_money > 0) {
+    total_money += total_saved * 1.2;
+    console.log(total_money);
+  }
 </script>
 
 <script id="ch0105/23">
