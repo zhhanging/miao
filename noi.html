@@ -578,39 +578,86 @@
 </script>
 
 <script id="ch0105/16">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
-</script>
-
-<script id="ch0105/17">
   let n = +prompt("n = ?");
   let k = +prompt("k = ?");
-  let total_money = 0
+  let total_money = 50;
   let price = 200;
-  let result = 'Impossible';
-  for (let i = 0; i < 20; i++) {
+  let result = "Impossible";
+  for (let year = 1; year <= 20; i++) {
+    if (total_money >= price) {
+      result = year;
+      break;
+    }
     price *= 1 + k / 100;
     total_money += n;
-    if (total_money >= price) {
-      result = i + 1;
-    }
   }
   console.log(result);
 </script>
 
+<script id="ch0105/17">
+  let k = +prompt("k = ?");
+  let a1 = 0;
+  let a2 = 1;
+  let fib = 0;
+  if (k == 1) {
+    fib = 1;
+  } else {
+    for (let i = 0; i < k - 1; i++) {
+      fib = a1 + a2;
+      a1 = a2;
+      a2 = fib;
+    }
+  }
+  console.log(fib);
+</script>
+
 <script id="ch0105/18">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let num = +prompt("num = ?");
+  let effective = +prompt("effective = ?");
+  let x = effective / num;
+  for (let i = 0; i < n - 1; i++) {
+    let num = +prompt("num = ?");
+    let effective = +prompt("effective = ?");
+    let y = effective / num;
+    if (y - x > 0.05) {
+      console.log("better");
+    } else if (y - x < -0.05) {
+      console.log("worse");
+    } else {
+      console.log("same");
+    }
+  }
 </script>
 
 <script id="ch0105/19">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let speed = 50;
+  let total_time = 0;
+  for (let i = 0; i < n; i++) {
+    let distx = +prompt("distx = ?");
+    let disty = +prompt("disty = ?");
+    let count = +prompt("count = ?");
+
+    let dist = Math.sqrt(distx * distx + disty * disty);
+    let time = Math.ceil((dist * 2) / speed + count * 1.5);
+    total_time += time;
+  }
+  console.log(total_time);
 </script>
 
 <script id="ch0105/20">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let h = +prompt("h = ?");
+  let dist = 0;
+  let bounce_height = h;
+  dist = bounce_height;
+  bounce_height = bounce_height / 2;
+  for (let i = 0; i < 9; i++) {
+    dist += bounce_height * 2;
+    bounce_height = bounce_height / 2;
+  }
+  console.log(dist);
+  console.log(bounce_height);
 </script>
 
 <script id="ch0105/21">
