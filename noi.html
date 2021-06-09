@@ -699,43 +699,120 @@
 </script>
 
 <script id="ch0105/23">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let m = +prompt("m = ?");
+  let n = +prompt("n = ?");
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    let num = +prompt("num = ?");
+    if (m >= num) {
+      m -= num;
+    } else {
+      count++;
+    }
+  }
+  console.log(count);
 </script>
 
 <script id="ch0105/24">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    let p1 = +prompt("p1");
+    let p2 = +prompt("p2");
+    if (p1 >= 90 && p1 <= 140 && p2 >= 60 && p2 <= 90) {
+      count++;
+      console.log(p1, p2);
+    } else {
+      count = 0;
+    }
+  }
+  console.log(count);
 </script>
 
 <script id="ch0105/25">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let a, b, c;
+  // 0 <= a, b, c < 10,   a, c != 0
+  // 7进制: abc  a * 7^2 + b * 7 + c
+  // 9进制: cba  c * 9^2 + b * 9 + a
+  // a * 7^2 + b * 7 + c =  c * 9^2 + b * 9 + a
+  for (a = 1; a <= 6; a++) {
+    for (b = 0; b <= 6; b++) {
+      for (c = 1; c <= 6; c++) {
+        if (a * 49 + b * 7 + c == c * 81 + b * 9 + a) {
+          console.log(a, b, c);
+        }
+      }
+    }
+  }
 </script>
 
 <script id="ch0105/26">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  // 个位数上的数字减去千位数上的数字，再减去百位数上的数字， 再减去十位数上的数字的结果大于零。
+  let n = +prompt("n = ?");
+  let d1, d2, d3, d4;
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    let num = +prompt("num = ?");
+    d1 = num % 10;
+    d2 = ((num % 100) - d1) / 10;
+    d3 = ((num % 1000) - (num % 100)) / 100;
+    d4 = (num - (num % 1000)) / 1000;
+    if (d1 - d2 - d3 - d4 > 0) {
+      count++;
+    }
+  }
+  console.log(count);
 </script>
 
 <script id="ch0105/27">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let k = +prompt("k = ?");
+  let sn = 0;
+  let n = 0;
+  while (sn <= k) {
+    n++;
+    sn += 1 / n;
+  }
+  console.log(n);
 </script>
 
 <script id="ch0105/28">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  while (n >= 1) {
+    let d = n % 10;
+    console.log(d);
+    n = (n - d) / 10;
+  }
 </script>
 
 <script id="ch0105/29">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let n = +prompt("n = ?");
+  let reversed = 0;
+  while (n >= 1 || n <= -1) {
+    let d = n % 10;
+    reversed = reversed * 10 + d;
+    n = (n - d) / 10;
+  }
+  console.log(reversed);
 </script>
 
 <script id="ch0105/30">
-  var a = +prompt("a = ?");
-  var b = +prompt("b = ?");
+  let m = +prompt("m = ?");
+  let k = +prompt("k = ?");
+  let threes = 0;
+  let result = "NO"
+  if (m % 19 == 0) {
+    while (m >= 1) {
+      let d = m % 10;
+      if (d == 3) {
+        threes++;
+      }
+      m = (m - d) / 10;
+    }
+    if (threes == k) {
+      result = "YES"
+    }
+  }
+  console.log(result);
 </script>
 
 <script id="ch0105/31">
