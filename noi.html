@@ -819,6 +819,7 @@
 <script id="ch0105/31">
   let n = +prompt("n = ?"); // 灯数
   let m = +prompt("m = ?"); // 人数
+  let result = [];
   for (let j = 1; j <= n; j++) {
     let flag = 1;
     for (let i = 1; i <= m; i++) {
@@ -827,9 +828,10 @@
       }
     }
     if (flag < 0) {
-      console.log(j);
+      result.push(j);
     }
   }
+  console.log(result.join());
 </script>
 
 <script id="ch0105/32">
