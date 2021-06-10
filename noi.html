@@ -252,7 +252,9 @@
 
   var bike_time = dist / 3.0 + 27 + 23;
   var walk_time = dist / 1.2;
-  console.log(bike_time < walk_time ? "Bike" : "Walk");
+  console.log(
+    bike_time < walk_time ? "Bike" : bike_time == walk_time ? "Both" : "Walk"
+  );
 </script>
 
 <script id="ch0104/13">
@@ -372,7 +374,7 @@
     result = `x1=${x1.toFixed(5)};x2= ${x2.toFixed(5)}`;
   } else if (delta < 0) {
     var r = -b / (2 * a);
-    var i = Math.sqrt(4 * a * c - b * b) / (2 * a);
+    var i = Math.sqrt(-delta) / (2 * a);
     x1 = r.toFixed(5) + "+" + i.toFixed(5) + "i";
     x2 = r.toFixed(5) + "-" + i.toFixed(5) + "i";
     result = `x1=${x1};x2=${x2}`;
@@ -434,7 +436,7 @@
 
 <script id="ch0105/05">
   let n = +prompt("n = ? (1<= n < 100)");
-  let max = 0;
+  let max = -Infinity;
   for (let i = 0; i < n; i++) {
     score = +prompt("score = ?");
     if (score > max) {
