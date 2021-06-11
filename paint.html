@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>画图</title>
+    <style>
+      canvas {
+        border: 2px solid #f0f;
+        display: block;
+        margin: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas width="500" height="500"></canvas>
+  </body>
+  <script>
+    var canvas = document.querySelector("canvas");
+    canvas.style.imageRendering = "pixelated"; //放大时的插帧方式：不插帧，直接放大像素
+    var ctx = canvas.getContext("2d");
+
+    function dot(x, y, color = "black") {
+      x = Math.round(x);
+      y = Math.round(y);
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, 1, 1);
+    }
+    /**
+   * YOUR TASK
+      * 在 坐标 (42, 42) 画出一个点
+      * 画一条实线
+      * 画一条一个实点一个空点的虚线
+      * 画一条两个实点两个空点的虚线
+      * 画一条三个实点两个空点的虚线
+      * 画一条45度的斜线
+      * 画一条30度的斜线（与x轴或y轴的夹角呈30度）
+      * 画一条跨越画布左上角和右下角的对角线
+      * 画一个空心矩形
+      * 画一个实心矩形
+      * 画两个个空心的圆，居中：
+        * 一个半径为50像素
+        * 一个半径为200像素
+      * 画一个实心的圆，半径至少为100像素
+      * 画一个【大小合适】的sin(x)的图像
+
+      * 画出rgb色彩空间的某一面（尺寸要大于100x100）
+        如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵（如(2,0,0,2)或(1,0.27得到新的位置，即绘制出被线性变幻后的色彩空间某一面
+        可以考虑如下几种矩阵：
+           2 0
+           0 2
+           ------
+           1  0.27
+           0  1
+           ------
+           0.5    0.87
+           -0.87  0.5
+
+   */
+  </script>
+  <script>
+    // 不可更改上面的代码
+    // 你的代码写在这里
+    // YOUR CODE GOES BELOW
+    // 在 坐标 (42, 42) 画出一个点
+    dot(42, 42);
+
+    // * 画一条实线
+    function hLine(x, y, length, color = "black") {
+      for (let px = x; px <= x + length; px++) {
+        dot(px, y, color);
+      }
+    }
+    function vLine(x, y, length, color = "black") {
+      for (let py = y; py <= y + length; py++) {
+        dot(x, py, color);
+      }
+    }
+
+    hLine(100, 100, 100, "#167175");
+
+    // * 画一条一个实点一个空点的虚线
+    let step = 1;
+    for (let x = 10; x < 200; ) {
+      for (let i = 0; i < step; i++) {
+        dot(x, 150, "#167175");
+        x++;
+      }
+      for (let i = 0; i < step; i++) {
+        x++;
+      }
+    }
+
+    // 画一条两个实点两个空点的虚线
+    step = 2;
+    for (let x = 10; x < 200; ) {
+      for (let i = 0; i < step; i++) {
+        dot(x, 160, "#167175");
+        x++;
+      }
+      for (let i = 0; i < step; i++) {
+        x++;
+      }
+    }
+
+    // 画一条三个实点两个空点的虚线
+    let stepR = 3;
+    let stepI = 2;
+    for (let x = 10; x < 200; ) {
+      for (let i = 0; i < stepR; i++) {
+        dot(x, 170, "#167175");
+        x++;
+      }
+      for (let i = 0; i < stepI; i++) {
+        x++;
+      }
+    }
+
+    // 画一条45度的斜线
+    let x1 = 100;
+    let y1 = 30;
+    let x = x1,
+      y = y1;
+    while (x <= 500 && y <= 500) {
+      dot(x, y, "#E14242");
+      x++;
+      y++;
+    }
+
+    // 画一条30度的斜线（与x轴或y轴的夹角呈30度）
+    x = x1;
+    y = y1;
+    while (x <= 500 && y <= 500) {
+      dot(x, y, "#FF3C48");
+      x++;
+      y += Math.tan(Math.PI / 6);
+    }
+
+    // 画一条跨越画布左上角和右下角的对角线
+    x = 0;
+    y = 0;
+    let ratio = (500 - 0) / (500 - 0);
+    while (x <= 500) {
+      dot(x, y);
+      x++;
+      y += ratio;
+    }
+
+    // 画一个空心矩形
+    function rect(x, y, w, h, color) {
+      hLine(x, y, w, color);
+      hLine(x, y + h, w, color);
+      vLine(x, y, h, color);
+      vLine(x + w, y, h, color);
+    }
+
+    rect(100, 200, 60, 50);
+
+    // 画一个实心矩形
+    function rectFill(x, y, w, h, color) {
+      for (let py = y; py <= Math.round(y + h); py++) {
+        hLine(x, py, w, color);
+      }
+    }
+
+    rectFill(150, 10, 30, 40);
+
+    // * 画两个个空心的圆，居中：
+    //     一个半径为50像素
+    //     一个半径为200像素
+    function circle(x, y, r, color = "black") {
+      for (let py = y - r; py <= y + r; py++) {
+        for (let px = x - r; px <= x + r; px++) {
+          if (Math.abs(dist(x, y, px, py) - r) < 0.5) {
+            dot(px, py, color);
+          }
+        }
+      }
+    }
+    function dist(x1, y1, x2, y2) {
+      return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+    }
+
+    circle(200, 100, 80);
+
+    // 画一个实心的圆，半径至少为100像素
+    function circleFill(x, y, r, color = "black") {
+      for (let py = y - r; py <= y + r; py++) {
+        for (let px = x - r; px <= x + r; px++) {
+          if (dist(x, y, px, py) < r) {
+            dot(px, py, color);
+          }
+        }
+      }
+    }
+
+    circleFill(400, 100, 100, "#A6CFE2");
+
+    // 画一个【大小合适】的sin(x)的图像
+
+    // 以 (x0, y0) 为原点，画出 func 的图像
+    function drawFunc(x0, y0, func, color = "black") {
+      let zoomFactor = 50;
+      for (let px = 0; px <= 500; px++) {
+        let val = func((px - x0) / zoomFactor) * zoomFactor;
+        let py = -val + y0;
+        dot(px, py, color);
+      }
+      // 坐标轴
+      hLine(0, y0, 500);
+      vLine(x0, 0, 500);
+    }
+    drawFunc(120, 320, Math.sin, "#2CAD6F");
+
+    // 画出rgb色彩空间的某一面（尺寸要大于100x100）
+    function drawRGBSpace(x0, y0, size) {
+      for (let py = y0; py - y0 <= size; py++) {
+        for (let px = x0; px - x0 <= size; px++) {
+          dot(
+            x0 + (px - x0),
+            y0 + (py - y0),
+            `rgb(${(255 / size) * (px - x0)}, ${(255 / size) * (py - y0)}, 100)`
+          );
+        }
+      }
+    }
+    drawRGBSpace(220, 100, 100);
+
+    // 如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵 如(2, 0, 0, 2)或(1, 0.27, 0, 1)得到新的位置，即绘制出被线性变幻后的色彩空间某一面
+    // 可以考虑如下几种矩阵：
+    //    2 0
+    //    0 2
+    //    ------
+    //    1  0.27
+    //    0  1
+    //    ------
+    //    0.5    0.87
+    //    -0.87  0.5
+    function drawRGBSpaceTransform(x0, y0, size) {
+      for (let py = y0; py - y0 <= size; py++) {
+        for (let px = x0; px - x0 <= size; px++) {
+          dot(
+            x0 + 0.5 * (px - x0) + 0.87 * (py - y0),
+            y0 - 0.87 * (px - x0) + 0.5 * (py - y0),
+            `rgb(${(255 / size) * (px - x0)}, ${(255 / size) * (py - y0)}, 100)`
+          );
+        }
+      }
+    }
+    drawRGBSpaceTransform(220, 100, 100);
+  </script>
+</html>
