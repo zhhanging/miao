@@ -181,7 +181,8 @@
       return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
     }
 
-    circle(200, 100, 80);
+    circle(200, 100, 50);
+    circle(200, 100, 200);
 
     // 画一个实心的圆，半径至少为100像素
     function circleFill(x, y, r, color = "black") {
@@ -236,6 +237,8 @@
     //    ------
     //    0.5    0.87
     //    -0.87  0.5
+    function transform(matrix, point) {}
+
     function drawRGBSpaceTransform(x0, y0, size) {
       for (let py = y0; py - y0 <= size; py++) {
         for (let px = x0; px - x0 <= size; px++) {
@@ -248,5 +251,53 @@
       }
     }
     drawRGBSpaceTransform(220, 100, 100);
+
+    // Bresenham's line drawing algorithm
+    function line(x1, y1, x2, y2, color = "black") {
+      // assume x1 < x2 && y1 < y2
+      let steep = Math.abs(y1 - y2) / Math.abs(x2 - x1) > 1;
+      if (steep) {
+        // swap the two values
+        [x1, y1] = [y1, x1];
+        [x2, y2] = [y2, x2];
+      }
+      if (x1 > x2) {
+        [x1, x2] = [x2, x1];
+        [y1, y2] = [y2, y1];
+      }
+      let deltaX = x2 - x1;
+      let deltaY = Math.abs(y2 - y1);
+
+      let dy = y1 < y2 ? 1 : -1; // py 增加 或 减少 的值
+      let q = 2 * deltaY - deltaX; // 判断 py是否 增加 或 减少
+
+      let py = y1;
+      for (let px = x1; px <= x2; px++) {
+        if (steep) {
+          dot(py, px, color);
+        } else {
+          dot(px, py, color);
+        }
+        if (q > 0) {
+          py += dy;
+          q += 2 * (deltaY - deltaX);
+        } else {
+          q += 2 * deltaY;
+        }
+      }
+    }
+
+    function angleLine(x0, y0, length, angle, color = "black") {
+      let radAngle = (Math.PI * angle) / 180;
+      let x1 = x0 + length * Math.cos(radAngle);
+      let y1 = y0 + length * Math.sin(radAngle);
+      line(x0, y0, x1, y1, color);
+    }
+
+    for (let angle = 0; angle < 360; angle += 30) {
+      angleLine(300, 250, 100, angle, "#BEA1A5");
+    }
+
+    // Bresenham's Midpoint Circle Algorithm
   </script>
 </html>
