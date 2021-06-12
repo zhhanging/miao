@@ -181,8 +181,8 @@
       return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
     }
 
-    circle(200, 100, 50);
-    circle(200, 100, 200);
+    // circle(200, 100, 50);
+    // circle(200, 100, 200);
 
     // 画一个实心的圆，半径至少为100像素
     function circleFill(x, y, r, color = "black") {
@@ -195,7 +195,7 @@
       }
     }
 
-    circleFill(400, 100, 100, "#A6CFE2");
+    // circleFill(400, 100, 100, "#A6CFE2");
 
     // 画一个【大小合适】的sin(x)的图像
 
@@ -299,5 +299,51 @@
     }
 
     // Bresenham's Midpoint Circle Algorithm
+    function drawEightSymmetry(x0, y0, x, y, color = "black") {
+      dot(x0 + x, y0 + y, color);
+      dot(x0 - x, y0 + y, color);
+      dot(x0 + x, y0 - y, color);
+      dot(x0 - x, y0 - y, color);
+      dot(x0 + y, y0 + x, color);
+      dot(x0 - y, y0 + x, color);
+      dot(x0 + y, y0 - x, color);
+      dot(x0 - y, y0 - x, color);
+    }
+    function circleB(x0, y0, r, color = "black", fill = false) {
+      let px = 0;
+      let py = r;
+      let d = 3 - 2 * r;
+
+      if (fill) {
+        let yi;
+        while (px < py) {
+          for (yi = 0; yi <= py; yi++) {
+            drawEightSymmetry(x0, y0, px, yi, color);
+          }
+          if (d < 0) {
+            d += 4 * px + 6;
+          } else {
+            d += 4 * (px - py) + 10;
+            py--;
+          }
+          px++;
+        }
+      } else {
+        while (px < py) {
+          drawEightSymmetry(x0, y0, px, py, color);
+          if (d < 0) {
+            d += 4 * px + 6;
+          } else {
+            d += 4 * (px - py) + 10;
+            py--;
+          }
+          px++;
+        }
+      }
+    }
+
+    circleB(400, 200, 100, "#A6CFE2", 1);
+    circleB(200, 200, 50, "#00A980");
+    circleB(200, 200, 200, "#00A980");
   </script>
 </html>
