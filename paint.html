@@ -391,53 +391,103 @@
       dot(x0 + x, y0 - y, color);
       dot(x0 - x, y0 - y, color);
     }
-    function ellipse(x0, y0, rx, ry, color = "black") {
+    function ellipse(x0, y0, rx, ry, fill = false, color = "black") {
       // x^2 / a + b^2 / y = 1
 
       let twoASquare = 2 * rx * rx;
       let twoBSquare = 2 * ry * ry;
 
-      // first group
-      let px = rx;
-      let py = 0;
-      let xChange = ry * ry * (1 - 2 * rx);
-      let yChange = rx * rx;
-      let error = 0;
-      let stoppingX = twoBSquare * rx;
-      let stoppingY = 0;
-      while (stoppingX >= stoppingY) {
-        drawFourSymmetry(x0, y0, px, py, color);
-        py++;
-        stoppingY += twoASquare;
-        error += yChange;
-        yChange += twoASquare;
-        if (2 * error + xChange > 0) {
-          px--;
-          stoppingX -= twoBSquare;
-          error += xChange;
-          xChange += twoBSquare;
-        }
-      }
-
-      // second group
-      px = 0;
-      py = ry;
-      xChange = ry * ry;
-      yChange = rx * rx * (1 - 2 * ry);
-      error = 0;
-      stoppingX = 0;
-      stoppingY = twoASquare * ry;
-      while (stoppingX <= stoppingY) {
-        drawFourSymmetry(x0, y0, px, py, color);
-        px++;
-        stoppingX += twoBSquare;
-        error += xChange;
-        xChange += twoBSquare;
-        if (2 * error + yChange > 0) {
-          py--;
-          stoppingY -= twoASquare;
+      if (fill) {
+        // first group
+        let px = rx;
+        let py = 0;
+        let xChange = ry * ry * (1 - 2 * rx);
+        let yChange = rx * rx;
+        let error = 0;
+        let stoppingX = twoBSquare * rx;
+        let stoppingY = 0;
+        while (stoppingX >= stoppingY) {
+          for (let xi = 0; xi <= px; xi++) {
+            drawFourSymmetry(x0, y0, xi, py, color);
+          }
+          py++;
+          stoppingY += twoASquare;
           error += yChange;
           yChange += twoASquare;
+          if (2 * error + xChange > 0) {
+            px--;
+            stoppingX -= twoBSquare;
+            error += xChange;
+            xChange += twoBSquare;
+          }
+        }
+  
+        // second group
+        px = 0;
+        py = ry;
+        xChange = ry * ry;
+        yChange = rx * rx * (1 - 2 * ry);
+        error = 0;
+        stoppingX = 0;
+        stoppingY = twoASquare * ry;
+        while (stoppingX <= stoppingY) {
+          for (let yi = 0; yi <= py; yi++) {
+            drawFourSymmetry(x0, y0, px, yi, color);
+          }
+          px++;
+          stoppingX += twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+          if (2 * error + yChange > 0) {
+            py--;
+            stoppingY -= twoASquare;
+            error += yChange;
+            yChange += twoASquare;
+          }
+        }
+      } else {
+        // first group
+        let px = rx;
+        let py = 0;
+        let xChange = ry * ry * (1 - 2 * rx);
+        let yChange = rx * rx;
+        let error = 0;
+        let stoppingX = twoBSquare * rx;
+        let stoppingY = 0;
+        while (stoppingX >= stoppingY) {
+          drawFourSymmetry(x0, y0, px, py, color);
+          py++;
+          stoppingY += twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+          if (2 * error + xChange > 0) {
+            px--;
+            stoppingX -= twoBSquare;
+            error += xChange;
+            xChange += twoBSquare;
+          }
+        }
+  
+        // second group
+        px = 0;
+        py = ry;
+        xChange = ry * ry;
+        yChange = rx * rx * (1 - 2 * ry);
+        error = 0;
+        stoppingX = 0;
+        stoppingY = twoASquare * ry;
+        while (stoppingX <= stoppingY) {
+          drawFourSymmetry(x0, y0, px, py, color);
+          px++;
+          stoppingX += twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+          if (2 * error + yChange > 0) {
+            py--;
+            stoppingY -= twoASquare;
+            error += yChange;
+            yChange += twoASquare;
+          }
         }
       }
     }
@@ -446,7 +496,7 @@
     circleB(200, 200, 50, "#00A980");
     circleB(200, 200, 200, "#00A980");
 
-    ellipse(100, 200, 30, 50, "red");
-    ellipse(100, 200, 50, 20, "blue");
+    ellipse(100, 200, 30, 50, 0, "red");
+    ellipse(100, 260, 50, 20, 1, "blue");
   </script>
 </html>
