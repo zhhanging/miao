@@ -214,18 +214,30 @@
     drawFunc(120, 320, Math.sin, "#2CAD6F");
 
     // 画出rgb色彩空间的某一面（尺寸要大于100x100）
-    function drawRGBSpace(x0, y0, size) {
-      for (let py = y0; py - y0 <= size; py++) {
-        for (let px = x0; px - x0 <= size; px++) {
+    function drawRGBSpaceTransform(
+      x0,
+      y0,
+      size,
+      matrix = [
+        [1, 0],
+        [0, 1],
+      ]
+    ) {
+      let pxi, pyi;
+      for (let py = 0; py <= size; py++) {
+        for (let px = 0; px <= size; px++) {
+          [pxi, pyi] = transform(px, py, matrix);
           dot(
-            x0 + (px - x0),
-            y0 + (py - y0),
-            `rgb(${(255 / size) * (px - x0)}, ${(255 / size) * (py - y0)}, 100)`
+            x0 + pxi,
+            y0 + pyi,
+            `rgb(${(255 / size) * px}, ${(255 / size) * py}, 100)`
           );
         }
       }
     }
-    drawRGBSpace(220, 100, 100);
+    drawRGBSpaceTransform(320, 50, 128);
+    drawRGBSpaceTransform(320, 50, 128, rotation(60));
+    drawRGBSpaceTransform(320, 200, 128, scale(2));
 
     // 如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵 如(2, 0, 0, 2)或(1, 0.27, 0, 1)得到新的位置，即绘制出被线性变幻后的色彩空间某一面
     // 可以考虑如下几种矩阵：
@@ -249,6 +261,12 @@
       return [
         [Math.cos(t), -Math.sin(t)],
         [Math.sin(t), Math.cos(t)],
+      ];
+    }
+    function scale(factor) {
+      return [
+        [factor, 0],
+        [0, factor],
       ];
     }
 
@@ -286,19 +304,6 @@
     rectTransform(100, 300, 50, 120, rotation(60));
     rectTransform(100, 300, 50, 120, rotation(-30));
     rectTransform(100, 300, 50, 120, rotation(-60));
-
-    function drawRGBSpaceTransform(x0, y0, size) {
-      for (let py = y0; py - y0 <= size; py++) {
-        for (let px = x0; px - x0 <= size; px++) {
-          dot(
-            x0 + 0.5 * (px - x0) + 0.87 * (py - y0),
-            y0 - 0.87 * (px - x0) + 0.5 * (py - y0),
-            `rgb(${(255 / size) * (px - x0)}, ${(255 / size) * (py - y0)}, 100)`
-          );
-        }
-      }
-    }
-    drawRGBSpaceTransform(220, 100, 100);
 
     // Bresenham's line drawing algorithm
     function line(x1, y1, x2, y2, color = "black") {
@@ -390,6 +395,7 @@
       }
     }
 
+    // 画 4个象限的对称点
     function drawFourSymmetry(x0, y0, x, y, color = "black") {
       dot(x0 + x, y0 + y, color);
       dot(x0 - x, y0 + y, color);
@@ -497,7 +503,7 @@
       }
     }
 
-    circleB(400, 200, 100, "#A6CFE2", 1);
+    circleB(400, 400, 100, "#A6CFE2", 1);
     circleB(200, 200, 50, "#00A980");
     circleB(200, 200, 200, "#00A980");
 
