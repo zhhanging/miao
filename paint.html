@@ -237,7 +237,50 @@
     //    ------
     //    0.5    0.87
     //    -0.87  0.5
-    function transform(matrix, point) {}
+
+    function transform(x0, y0, matrix) {
+      // assume matrix = [[a00, a01], [a10, a12]]
+      let px = matrix[0][0] * x0 + matrix[0][1] * y0;
+      let py = matrix[1][0] * x0 + matrix[1][1] * y0;
+      return [px, py];
+    }
+    function rotation(angle) {
+      let t = (angle * Math.PI) / 180;
+      return [
+        [Math.cos(t), -Math.sin(t)],
+        [Math.sin(t), Math.cos(t)],
+      ];
+    }
+
+    function translate(x0, y0, x, y) {
+      return [x0 + x, y0 + y];
+    }
+
+    function rectTransform(
+      x0,
+      y0,
+      w,
+      h,
+      matrix = [
+        [1, 0],
+        [0, 1],
+      ],
+      color = "black"
+    ) {
+      let px0 = transform(0, 0, matrix)[0] + x0;
+      let py0 = transform(0, 0, matrix)[1] + y0;
+      let px1 = transform(w, 0, matrix)[0] + x0;
+      let py1 = transform(w, 0, matrix)[1] + y0;
+      let px2 = transform(0, h, matrix)[0] + x0;
+      let py2 = transform(0, h, matrix)[1] + y0;
+      let px3 = transform(w, h, matrix)[0] + x0;
+      let py3 = transform(w, h, matrix)[1] + y0;
+
+      line(px0, py0, px1, py1, color);
+      line(px0, py0, px2, py2, color);
+      line(px1, py1, px3, py3, color);
+      line(px2, py2, px3, py3, color);
+    }
 
     function drawRGBSpaceTransform(x0, y0, size) {
       for (let py = y0; py - y0 <= size; py++) {
@@ -342,8 +385,68 @@
       }
     }
 
+    function drawFourSymmetry(x0, y0, x, y, color = "black") {
+      dot(x0 + x, y0 + y, color);
+      dot(x0 - x, y0 + y, color);
+      dot(x0 + x, y0 - y, color);
+      dot(x0 - x, y0 - y, color);
+    }
+    function ellipse(x0, y0, rx, ry, color = "black") {
+      // x^2 / a + b^2 / y = 1
+
+      let twoASquare = 2 * rx * rx;
+      let twoBSquare = 2 * ry * ry;
+
+      // first group
+      let px = rx;
+      let py = 0;
+      let xChange = ry * ry * (1 - 2 * rx);
+      let yChange = rx * rx;
+      let error = 0;
+      let stoppingX = twoBSquare * rx;
+      let stoppingY = 0;
+      while (stoppingX >= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, color);
+        py++;
+        stoppingY += twoASquare;
+        error += yChange;
+        yChange += twoASquare;
+        if (2 * error + xChange > 0) {
+          px--;
+          stoppingX -= twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+        }
+      }
+
+      // second group
+      px = 0;
+      py = ry;
+      xChange = ry * ry;
+      yChange = rx * rx * (1 - 2 * ry);
+      error = 0;
+      stoppingX = 0;
+      stoppingY = twoASquare * ry;
+      while (stoppingX <= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, color);
+        px++;
+        stoppingX += twoBSquare;
+        error += xChange;
+        xChange += twoBSquare;
+        if (2 * error + yChange > 0) {
+          py--;
+          stoppingY -= twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+        }
+      }
+    }
+
     circleB(400, 200, 100, "#A6CFE2", 1);
     circleB(200, 200, 50, "#00A980");
     circleB(200, 200, 200, "#00A980");
+
+    ellipse(100, 200, 30, 50, "red");
+    ellipse(100, 200, 50, 20, "blue");
   </script>
 </html>
