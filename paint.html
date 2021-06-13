@@ -282,6 +282,11 @@
       line(px2, py2, px3, py3, color);
     }
 
+    rectTransform(100, 300, 50, 120, rotation(30));
+    rectTransform(100, 300, 50, 120, rotation(60));
+    rectTransform(100, 300, 50, 120, rotation(-30));
+    rectTransform(100, 300, 50, 120, rotation(-60));
+
     function drawRGBSpaceTransform(x0, y0, size) {
       for (let py = y0; py - y0 <= size; py++) {
         for (let px = x0; px - x0 <= size; px++) {
@@ -421,7 +426,7 @@
             xChange += twoBSquare;
           }
         }
-  
+
         // second group
         px = 0;
         py = ry;
@@ -467,7 +472,7 @@
             xChange += twoBSquare;
           }
         }
-  
+
         // second group
         px = 0;
         py = ry;
@@ -497,6 +502,6 @@
     circleB(200, 200, 200, "#00A980");
 
     ellipse(100, 200, 30, 50, 0, "red");
-    ellipse(100, 260, 50, 20, 1, "blue");
+    ellipse(100, 260, 50, 20, 1, "#00A980");
   </script>
 </html>
