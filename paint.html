@@ -269,9 +269,61 @@
         [0, factor],
       ];
     }
+    function skew(angleX, angleY = 0) {
+      radAngleX = (angleX * Math.PI) / 180;
+      radAngleY = (angleY * Math.PI) / 180;
+      if (
+        (angleX != 0 && angleX % 90 == 0) ||
+        (angleY != 0 && angleY % 90 == 0)
+      ) {
+        return [
+          [0, 0],
+          [0, 0],
+        ];
+      }
+      return matrixApply(
+        [
+          [1, 0],
+          [Math.tan(radAngleY), 1],
+        ],
+        [
+          [1, Math.tan(radAngleX)],
+          [0, 1],
+        ]
+      );
+    }
+    // 2 by 2 矩阵乘法
+    function matrixApply() {
+      let result = [
+        [1, 0],
+        [0, 1],
+      ];
+      for (let i = arguments.length - 1; i >= 0; i--) {
+        result = [
+          [
+            arguments[i][0][0] * result[0][0] +
+              arguments[i][0][1] * result[1][0],
+            arguments[i][0][0] * result[0][1] +
+              arguments[i][0][1] * result[1][1],
+          ],
+          [
+            arguments[i][1][0] * result[0][0] +
+              arguments[i][1][1] * result[1][0],
+            arguments[i][1][0] * result[0][1] +
+              arguments[i][1][1] * result[1][1],
+          ],
+        ];
+      }
+      return result;
+    }
 
-    function translate(x0, y0, x, y) {
-      return [x0 + x, y0 + y];
+    // 尚未实现齐次坐标
+    function translate(x, y) {
+      return [
+        [1, 0, x],
+        [0, 1, y],
+        [0, 0, 1],
+      ];
     }
 
     function rectTransform(
