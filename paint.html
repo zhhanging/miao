@@ -447,12 +447,17 @@
       }
     }
 
+    // draw ellipse
     // 画 4个象限的对称点
-    function drawFourSymmetry(x0, y0, x, y, color = "black") {
-      dot(x0 + x, y0 + y, color);
-      dot(x0 - x, y0 + y, color);
-      dot(x0 + x, y0 - y, color);
-      dot(x0 - x, y0 - y, color);
+    function drawFourSymmetry(x0, y0, x, y, matrix=[[1, 0], [0, 1]], color = "black") {
+      [x1, y1] = transform(x, y, matrix);
+      [x2, y2] = transform(-x, y, matrix);
+      [x3, y3] = transform(x, -y, matrix);
+      [x4, y4] = transform(-x, -y, matrix);
+      dot(x0 + x1, y0 + y1, color);
+      dot(x0 + x2, y0 + y2, color);
+      dot(x0 + x3, y0 + y3, color);
+      dot(x0 + x4, y0 + y4, color);
     }
     function ellipse(x0, y0, rx, ry, fill = false, color = "black") {
       // x^2 / a + b^2 / y = 1
@@ -471,7 +476,7 @@
         let stoppingY = 0;
         while (stoppingX >= stoppingY) {
           for (let xi = 0; xi <= px; xi++) {
-            drawFourSymmetry(x0, y0, xi, py, color);
+            drawFourSymmetry(x0, y0, xi, py, [[1, 0], [0, 1]], color);
           }
           py++;
           stoppingY += twoASquare;
@@ -495,7 +500,7 @@
         stoppingY = twoASquare * ry;
         while (stoppingX <= stoppingY) {
           for (let yi = 0; yi <= py; yi++) {
-            drawFourSymmetry(x0, y0, px, yi, color);
+            drawFourSymmetry(x0, y0, px, yi, [[1, 0], [0, 1]], color);
           }
           px++;
           stoppingX += twoBSquare;
@@ -518,7 +523,7 @@
         let stoppingX = twoBSquare * rx;
         let stoppingY = 0;
         while (stoppingX >= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, color);
+          drawFourSymmetry(x0, y0, px, py, [[1, 0], [0, 1]], color);
           py++;
           stoppingY += twoASquare;
           error += yChange;
@@ -540,7 +545,7 @@
         stoppingX = 0;
         stoppingY = twoASquare * ry;
         while (stoppingX <= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, color);
+          drawFourSymmetry(x0, y0, px, py, [[1, 0], [0, 1]], color);
           px++;
           stoppingX += twoBSquare;
           error += xChange;
@@ -554,6 +559,57 @@
         }
       }
     }
+    
+    function ellipseTransform(x0, y0, rx, ry, matrix=[[1, 0], [0, 1]], color = "black") {
+      // x^2 / a + b^2 / y = 1
+
+      let twoASquare = 2 * rx * rx;
+      let twoBSquare = 2 * ry * ry;
+
+      // first group
+      let px = rx;
+      let py = 0;
+      let xChange = ry * ry * (1 - 2 * rx);
+      let yChange = rx * rx;
+      let error = 0;
+      let stoppingX = twoBSquare * rx;
+      let stoppingY = 0;
+      while (stoppingX >= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, matrix, color);
+        py++;
+        stoppingY += twoASquare;
+        error += yChange;
+        yChange += twoASquare;
+        if (2 * error + xChange > 0) {
+          px--;
+          stoppingX -= twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+        }
+      }
+
+      // second group
+      px = 0;
+      py = ry;
+      xChange = ry * ry;
+      yChange = rx * rx * (1 - 2 * ry);
+      error = 0;
+      stoppingX = 0;
+      stoppingY = twoASquare * ry;
+      while (stoppingX <= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, matrix, color);
+        px++;
+        stoppingX += twoBSquare;
+        error += xChange;
+        xChange += twoBSquare;
+        if (2 * error + yChange > 0) {
+          py--;
+          stoppingY -= twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+        }
+      }
+    }
 
     circleB(400, 400, 100, "#A6CFE2", 1);
     circleB(200, 200, 50, "#00A980");
@@ -561,5 +617,15 @@
 
     ellipse(100, 200, 30, 50, 0, "red");
     ellipse(100, 260, 50, 20, 1, "#00A980");
+
+    ellipseTransform(400, 400, 30, 50)
+    ellipseTransform(400, 400, 30, 50, rotation(90))
+    ellipseTransform(400, 400, 30, 50, rotation(-30))
+    ellipseTransform(400, 400, 30, 50, rotation(30))
+    ellipseTransform(400, 400, 30, 50, rotation(-60))
+    ellipseTransform(400, 400, 30, 50, rotation(-60))
+    circleB(400, 400, 50)
+
+
   </script>
 </html>
