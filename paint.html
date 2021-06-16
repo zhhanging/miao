@@ -207,22 +207,14 @@
         let py = -val + y0;
         dot(px, py, color);
       }
-      // 坐标轴
-      hLine(0, y0, 500);
-      vLine(x0, 0, 500);
+      // // 坐标轴
+      // hLine(0, y0, 500);
+      // vLine(x0, 0, 500);
     }
     drawFunc(120, 320, Math.sin, "#2CAD6F");
 
     // 画出rgb色彩空间的某一面（尺寸要大于100x100）
-    function drawRGBSpaceTransform(
-      x0,
-      y0,
-      size,
-      matrix = [
-        [1, 0],
-        [0, 1],
-      ]
-    ) {
+    function drawRGBSpaceTransform(x0, y0, size, matrix = scale(1)) {
       let pxi, pyi;
       for (let py = 0; py <= size; py++) {
         for (let px = 0; px <= size; px++) {
@@ -230,7 +222,7 @@
           dot(
             x0 + pxi,
             y0 + pyi,
-            `rgb(${(255 / size) * px}, ${(255 / size) * py}, 100)`
+            `rgb(${(255 / size) * px}, ${(255 / size) * py}, 255)`
           );
         }
       }
@@ -326,17 +318,7 @@
       ];
     }
 
-    function rectTransform(
-      x0,
-      y0,
-      w,
-      h,
-      matrix = [
-        [1, 0],
-        [0, 1],
-      ],
-      color = "black"
-    ) {
+    function rectTransform(x0, y0, w, h, matrix = scale(1), color = "black") {
       let px0 = transform(0, 0, matrix)[0] + x0;
       let py0 = transform(0, 0, matrix)[1] + y0;
       let px1 = transform(w, 0, matrix)[0] + x0;
@@ -449,7 +431,14 @@
 
     // draw ellipse
     // 画 4个象限的对称点
-    function drawFourSymmetry(x0, y0, x, y, matrix=[[1, 0], [0, 1]], color = "black") {
+    function drawFourSymmetry(
+      x0,
+      y0,
+      x,
+      y,
+      matrix = scale(1),
+      color = "black"
+    ) {
       [x1, y1] = transform(x, y, matrix);
       [x2, y2] = transform(-x, y, matrix);
       [x3, y3] = transform(x, -y, matrix);
@@ -476,7 +465,7 @@
         let stoppingY = 0;
         while (stoppingX >= stoppingY) {
           for (let xi = 0; xi <= px; xi++) {
-            drawFourSymmetry(x0, y0, xi, py, [[1, 0], [0, 1]], color);
+            drawFourSymmetry(x0, y0, xi, py, scale(1), color);
           }
           py++;
           stoppingY += twoASquare;
@@ -500,7 +489,7 @@
         stoppingY = twoASquare * ry;
         while (stoppingX <= stoppingY) {
           for (let yi = 0; yi <= py; yi++) {
-            drawFourSymmetry(x0, y0, px, yi, [[1, 0], [0, 1]], color);
+            drawFourSymmetry(x0, y0, px, yi, scale(1), color);
           }
           px++;
           stoppingX += twoBSquare;
@@ -523,7 +512,7 @@
         let stoppingX = twoBSquare * rx;
         let stoppingY = 0;
         while (stoppingX >= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, [[1, 0], [0, 1]], color);
+          drawFourSymmetry(x0, y0, px, py, scale(1), color);
           py++;
           stoppingY += twoASquare;
           error += yChange;
@@ -545,7 +534,7 @@
         stoppingX = 0;
         stoppingY = twoASquare * ry;
         while (stoppingX <= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, [[1, 0], [0, 1]], color);
+          drawFourSymmetry(x0, y0, px, py, scale(1), color);
           px++;
           stoppingX += twoBSquare;
           error += xChange;
@@ -559,13 +548,70 @@
         }
       }
     }
-    
-    function ellipseTransform(x0, y0, rx, ry, matrix=[[1, 0], [0, 1]], color = "black") {
+
+    function ellipseTransform(
+      x0,
+      y0,
+      rx,
+      ry,
+      matrix = scale(1),
+      fill = false,
+      color = "black"
+    ) {
       // x^2 / a + b^2 / y = 1
 
       let twoASquare = 2 * rx * rx;
       let twoBSquare = 2 * ry * ry;
 
+      if (fill) {
+        // first group
+        let px = rx;
+        let py = 0;
+        let xChange = ry * ry * (1 - 2 * rx);
+        let yChange = rx * rx;
+        let error = 0;
+        let stoppingX = twoBSquare * rx;
+        let stoppingY = 0;
+        while (stoppingX >= stoppingY) {
+          for (let xi = 0; xi <= px; xi++) {
+            drawFourSymmetry(x0, y0, xi, py, matrix, color);
+          }
+          py++;
+          stoppingY += twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+          if (2 * error + xChange > 0) {
+            px--;
+            stoppingX -= twoBSquare;
+            error += xChange;
+            xChange += twoBSquare;
+          }
+        }
+
+        // second group
+        px = 0;
+        py = ry;
+        xChange = ry * ry;
+        yChange = rx * rx * (1 - 2 * ry);
+        error = 0;
+        stoppingX = 0;
+        stoppingY = twoASquare * ry;
+        while (stoppingX <= stoppingY) {
+          for (let yi = 0; yi <= py; yi++) {
+            drawFourSymmetry(x0, y0, px, yi, matrix, color);
+          }
+          px++;
+          stoppingX += twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+          if (2 * error + yChange > 0) {
+            py--;
+            stoppingY -= twoASquare;
+            error += yChange;
+            yChange += twoASquare;
+          }
+        }
+      }
       // first group
       let px = rx;
       let py = 0;
@@ -618,14 +664,12 @@
     ellipse(100, 200, 30, 50, 0, "red");
     ellipse(100, 260, 50, 20, 1, "#00A980");
 
-    ellipseTransform(400, 400, 30, 50)
-    ellipseTransform(400, 400, 30, 50, rotation(90))
-    ellipseTransform(400, 400, 30, 50, rotation(-30))
-    ellipseTransform(400, 400, 30, 50, rotation(30))
-    ellipseTransform(400, 400, 30, 50, rotation(-60))
-    ellipseTransform(400, 400, 30, 50, rotation(-60))
-    circleB(400, 400, 50)
-
-
+    ellipseTransform(400, 400, 30, 50);
+    ellipseTransform(400, 400, 30, 50, rotation(90));
+    ellipseTransform(400, 400, 30, 50, rotation(-30));
+    ellipseTransform(400, 400, 30, 50, rotation(30));
+    ellipseTransform(400, 400, 30, 50, rotation(-60));
+    ellipseTransform(400, 400, 30, 50, rotation(-60));
+    circleB(400, 400, 50);
   </script>
 </html>
