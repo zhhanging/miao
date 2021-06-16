@@ -862,7 +862,7 @@
 <script id="ch0105/34">
   let n = +prompt("n = ?");
   let sum = 0;
-  let fact = 1
+  let fact = 1;
   for (let i = 1; i <= n; i++) {
     fact *= i;
     sum += fact;
@@ -1032,43 +1032,209 @@
   console.log(coin);
 </script>
 
-
 <script id="narcissistic">
+  function isNacrissistic(n) {
+    let num = n;
+    let length = 0;
+    let sum = 0;
+    while (num > 0) {
+      let digit = num % 10;
+      length++;
+      num = (num - digit) / 10;
+    }
+    num = n;
+    while (num > 0) {
+      let digit = num % 10;
+      sum += digit ** length;
+      num = (num - digit) / 10;
+    }
+    return sum == n;
+  }
 
+  n = +prompt("n = ?");
+  console.log(isNacrissistic(n) ? "YES" : "NO");
 </script>
 
 <script id="narcissistics">
-
+  for (let i = 0; i < 1000; i++) {
+    if (isNacrissistic(i)) {
+      console.log(i);
+    }
+  }
 </script>
 
 <script id="palindrom">
+  function isPalindrom(n) {
+    let num = n;
+    let digits = [];
+    while (num > 0) {
+      let digit = num % 10;
+      digits.push(digit);
+      num = (num - digit) / 10;
+    }
+    for (let i = 0; i <= digits.length / 2; i++) {
+      if (digits[i] !== digits[digits.length - 1 - i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
+  n = +prompt("n = ?");
+  console.log(isPalindrom(n) ? "YES" : "NO");
 </script>
 
 <script id="weekday">
+  function weekday(year, month) {
+    let day = 1;
+    for (let y = 1; y < year; y++) {
+      if (isLeap(y)) {
+        day += 2;
+      } else {
+        day += 1;
+      }
+    }
+    for (let m = 1; m < month; m++) {
+      if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10) {
+        day += 31;
+      } else if (m == 2) {
+        if (isLeap(year)) {
+          day += 29;
+        } else {
+          day += 28;
+        }
+      } else {
+        day += 30;
+      }
+    }
+    return day % 7;
+  }
+  function isLeap(year) {
+    return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+  }
 
+  let year = +prompt("year = ");
+  let month = +prompt("month = ");
+  console.log(weekday(year, month));
 </script>
 
 <script id="complete-number">
-
+  function isComplete(n) {
+    let sqrtN = Math.sqrt(n);
+    let sum = 0;
+    for (let i = 1; i <= sqrtN; i++) {
+      if (n % i == 0) {
+        sum += i;
+        if (i != 1 && i != sqrtN) {
+          sum += n / i;
+        }
+      }
+    }
+    return sum == n;
+  }
+  n = +prompt("n = ?");
+  console.log(isComplete(n) ? "YES" : "NO");
 </script>
 
 <script id="complete-numbers">
-
+  for (let i = 0; i < 1000; i++) {
+    if (isComplete(i)) {
+      console.log(i);
+    }
+  }
 </script>
 
 <script id="prime">
-
+  function isPrime(n) {
+    if (n < 2) {
+      return false;
+    }
+    let sqrtN = Math.sqrt(n);
+    let sum = 0;
+    for (let i = 2; i <= sqrtN; i++) {
+      if (n % i == 0) {
+        return false;
+      }
+    }
+    return true;
+  }
 </script>
 
 <script id="primes">
-
+  for (let i = 0; i < 1000; i++) {
+    if (isPrime(i)) {
+      console.log(i);
+    }
+  }
 </script>
 
 <script id="lcf&lcm">
+  function gcd(a, b) {
+    if (a < b) {
+      return gcd(b, a);
+    }
+    if (a % b == 0) {
+      return b;
+    }
+    if (a > b) {
+      return gcd(a % b, b);
+    } else {
+      return gcd(a, b % a);
+    }
+  }
+  function lcm(a, b) {
+    let d = gcd(a, b);
+    return (a * b) / d;
+  }
 
+  let a = +prompt("a = ?");
+  let b = +prompt("b = ?");
+  console.log(gcd(a, b));
+  console.log(lcm(a, b));
+</script>
+
+<script id="weekday">
+  function weekday(year, month) {
+    let day = 1;
+    for (let y = 1; y < year; y++) {
+      if (isLeap(y)) {
+        day += 2;
+      } else {
+        day += 1;
+      }
+    }
+    for (let m = 1; m < month; m++) {
+      if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10) {
+        day += 31;
+      } else if (m == 2) {
+        if (isLeap(year)) {
+          day += 29;
+        } else {
+          day += 28;
+        }
+      } else {
+        day += 30;
+      }
+    }
+    return day % 7;
+  }
+  function isLeap(year) {
+    return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+  }
 </script>
 
 <script id="sqrt">
-
+  function sqrt(x) {
+    let result = x;
+    let squareResult = result * result;
+    let last = 0;
+    while (Math.abs(last - result) > 0) {
+      last = result;
+      result = (result + x / result) / 2;
+    }
+    return result;
+  }
+  x = +prompt("x = ?")
+  console.log(sqrt(x));
 </script>
+
