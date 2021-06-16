@@ -1158,6 +1158,8 @@
     }
     return true;
   }
+  n = +prompt("n = ?");
+  console.log(isPrime(n) ? "YES" : "NO");
 </script>
 
 <script id="primes">
@@ -1224,6 +1226,7 @@
 </script>
 
 <script id="sqrt">
+  // Newton method
   function sqrt(x) {
     let result = x;
     let squareResult = result * result;
@@ -1234,7 +1237,6 @@
     }
     return result;
   }
-  x = +prompt("x = ?")
+  x = +prompt("x = ?");
   console.log(sqrt(x));
 </script>
-
