@@ -1037,11 +1037,11 @@
     let num = n;
     let length = 0;
     let sum = 0;
-    while (num > 0) {
+    do {
       let digit = num % 10;
       length++;
       num = (num - digit) / 10;
-    }
+    } while (num);
     num = n;
     while (num > 0) {
       let digit = num % 10;
@@ -1056,7 +1056,7 @@
 </script>
 
 <script id="narcissistics">
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 1; i < 1000; i++) {
     if (isNacrissistic(i)) {
       console.log(i);
     }
@@ -1066,18 +1066,14 @@
 <script id="palindrom">
   function isPalindrom(n) {
     let num = n;
-    let digits = [];
+    let reversed = 0;
     while (num > 0) {
       let digit = num % 10;
-      digits.push(digit);
+      reversed = reversed * 10 + digit;
       num = (num - digit) / 10;
     }
-    for (let i = 0; i <= digits.length / 2; i++) {
-      if (digits[i] !== digits[digits.length - 1 - i]) {
-        return false;
-      }
-    }
-    return true;
+
+    return reversed == n;
   }
 
   n = +prompt("n = ?");
