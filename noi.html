@@ -1081,29 +1081,30 @@
 </script>
 
 <script id="weekday">
-  function weekday(year, month) {
-    let day = 1;
+  function weekday(year, month, day=1) {
+    let days = 1;
     for (let y = 1; y < year; y++) {
       if (isLeap(y)) {
-        day += 2;
+        days += 2;
       } else {
-        day += 1;
+        days += 1;
       }
     }
     for (let m = 1; m < month; m++) {
       if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10) {
-        day += 31;
+        days += 31;
       } else if (m == 2) {
         if (isLeap(year)) {
-          day += 29;
+          days += 29;
         } else {
-          day += 28;
+          days += 28;
         }
       } else {
-        day += 30;
+        days += 30;
       }
     }
-    return day % 7;
+    days += day - 1;
+    return days % 7;
   }
   function isLeap(year) {
     return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
