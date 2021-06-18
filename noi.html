@@ -1081,7 +1081,7 @@
 </script>
 
 <script id="weekday">
-  function weekday(year, month, day=1) {
+  function weekday(year, month, day = 1) {
     let days = 1;
     for (let y = 1; y < year; y++) {
       if (isLeap(y)) {
@@ -1175,11 +1175,15 @@
     if (a % b == 0) {
       return b;
     }
-    if (a > b) {
-      return gcd(a % b, b);
-    } else {
-      return gcd(a, b % a);
+    return gcd(a, b % a);
+  }
+  function gcd2(a, b) {
+    while (a && b) {
+      let c = a % b
+      a = b;
+      b = c;
     }
+    return b;
   }
   function lcm(a, b) {
     let d = gcd(a, b);
