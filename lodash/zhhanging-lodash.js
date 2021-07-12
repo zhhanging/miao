@@ -52,13 +52,7 @@ var zhhanging = (function () {
   function uniqBy(array, iteratee) {}
 
   function flatten(array) {
-    let result = [];
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < array[i].length; j++) {
-        result.push(array[i][j]);
-      }
-    }
-    return result;
+    return flattenDepth(array, 1);
   }
 
   function flattenDeep(array) {
@@ -99,5 +93,5 @@ var zhhanging = (function () {
 })();
 
 // var array = [1, [2, [3, [4]], 5]];
-// console.log(zhhanging.flattenDepth(array, 1));
+// console.log(zhhanging.flatten(array));
 // console.log(zhhanging.flattenDepth(array, 2));
