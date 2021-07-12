@@ -149,6 +149,23 @@ var zhhanging = (function () {
     return collection;
   }
 
+  function map(collection, iteratee) {
+    if (typeof iteratee !== "function") {
+      iteratee = findProperty(iteratee);
+    }
+    result = [];
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        result.push(iteratee(collection[i], i, collection));
+      }
+    } else {
+      for (key in collection) {
+        result.push(iteratee(collection[key], key, collection));
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -161,6 +178,6 @@ var zhhanging = (function () {
     groupBy: groupBy,
     keyBy: keyBy,
     forEach: forEach,
+    map: map,
   };
 })();
-
