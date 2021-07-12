@@ -49,10 +49,24 @@ var zhhanging = (function () {
     return result;
   }
 
+  function uniqBy(array, iteratee) {}
+
+  function flatten(array) {
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array[i].length; j++) {
+        result.push(array[i][j]);
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
     difference: difference,
     uniq: uniq,
+
+    flatten: flatten,
   };
 })();
