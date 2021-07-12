@@ -133,6 +133,22 @@ var zhhanging = (function () {
     return result;
   }
 
+  function forEach(collection, iteratee) {
+    if (typeof iteratee !== "function") {
+      iteratee = findProperty(iteratee);
+    }
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        iteratee(collection[i], i, collection);
+      }
+    } else {
+      for (key in collection) {
+        iteratee(collection[key], key, collection);
+      }
+    }
+    return collection;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -144,11 +160,7 @@ var zhhanging = (function () {
     flattenDepth: flattenDepth,
     groupBy: groupBy,
     keyBy: keyBy,
+    forEach: forEach,
   };
 })();
 
-// var array = [1, [2, [3, [4]], 5]];
-// console.log(zhhanging.flatten(array));
-// console.log(zhhanging.flattenDepth(array, 2));
-console.log(zhhanging.groupBy([6.1, 4.2, 6.3], Math.floor));
-console.log(zhhanging.groupBy(["one", "two", "three"], "length"));
