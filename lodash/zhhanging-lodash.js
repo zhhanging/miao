@@ -241,7 +241,7 @@ var zhhanging = (function () {
 
   function filter(collection, predicate) {
     if (typeof predicate === "string") {
-      predicate = findProperty(predicate);
+      predicate = property(predicate);
     }
     if (Array.isArray(predicate)) {
       predicate = matchesProperty(...predicate);
@@ -266,6 +266,32 @@ var zhhanging = (function () {
     return result;
   }
 
+  function every(collection, predicate) {
+    if (typeof predicate === "string") {
+      predicate = property(predicate);
+    }
+    if (Array.isArray(predicate)) {
+      predicate = matchesProperty(...predicate);
+    }
+    if (typeof predicate === "object") {
+      predicate = matches(predicate);
+    }
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        if (!predicate(collection[i], i, collection)) {
+          return false;
+        }
+      }
+    } else {
+      for (key in collection) {
+        if (!predicate(collection[key], key, collection)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -284,5 +310,6 @@ var zhhanging = (function () {
     property: property,
     map: map,
     filter: filter,
+    every: every,
   };
 })();
