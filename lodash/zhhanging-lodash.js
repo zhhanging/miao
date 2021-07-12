@@ -23,10 +23,27 @@ var zhhanging = (function () {
     return result;
   }
 
+  function difference(array, values = []) {
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      let item = array[i];
+      let found = false;
+      for (let j = 0; j < values.length; j++) {
+        if (item === values[j]) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) result.push(item);
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
+    difference: difference,
   };
 })();
 
-// console.log(zhhanging.compact([0, 1, false, 2, "", 3, NaN, undefined]));
+// console.log(zhhanging.difference([2, 1, 5], [2, 3, 4]));
