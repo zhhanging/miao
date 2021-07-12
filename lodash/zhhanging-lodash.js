@@ -49,7 +49,27 @@ var zhhanging = (function () {
     return result;
   }
 
-  function uniqBy(array, iteratee) {}
+  function findProperty(name) {
+    return function (object) {
+      return object[name];
+    };
+  }
+
+  function uniqBy(array, iteratee) {
+    let result = [];
+    let uniqSet = new Set();
+    if (typeof iteratee !== "function") {
+      iteratee = findProperty(iteratee);
+    }
+    for (let i = 0; i < array.length; i++) {
+      let uniqVal = iteratee(array[i]);
+      if (!uniqSet.has(uniqVal)) {
+        uniqSet.add(uniqVal);
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
 
   function flatten(array) {
     return flattenDepth(array, 1);
@@ -85,7 +105,7 @@ var zhhanging = (function () {
     compact: compact,
     difference: difference,
     uniq: uniq,
-
+    uniqBy: uniqBy,
     flatten: flatten,
     flattenDeep: flattenDeep,
     flattenDepth: flattenDepth,
