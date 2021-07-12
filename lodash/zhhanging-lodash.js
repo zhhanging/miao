@@ -55,6 +55,25 @@ var zhhanging = (function () {
     };
   }
 
+  function findPropertyDeep(path) {
+    let paths = path.split(".");
+
+    return function (object) {
+      for (let path of paths) {
+        object = object[path];
+      }
+      return object;
+    };
+  }
+
+  function property(path) {
+    if (path.includes(".")) {
+      return findPropertyDeep(path);
+    } else {
+      return findProperty(path);
+    }
+  }
+
   function uniqBy(array, iteratee) {
     let result = [];
     let uniqSet = new Set();
@@ -151,7 +170,7 @@ var zhhanging = (function () {
 
   function map(collection, iteratee) {
     if (typeof iteratee !== "function") {
-      iteratee = findProperty(iteratee);
+      iteratee = property(iteratee);
     }
     result = [];
     if (Array.isArray(collection)) {
@@ -161,6 +180,68 @@ var zhhanging = (function () {
     } else {
       for (key in collection) {
         result.push(iteratee(collection[key], key, collection));
+      }
+    }
+    return result;
+  }
+
+  function isEqual(value, other) {
+    if (value === other) return true;
+    if (
+      value == null ||
+      typeof value != "object" ||
+      other == null ||
+      typeof other != "object"
+    )
+      return false;
+    let keysValue = Object.keys(value);
+    let keysOther = Object.keys(other);
+    if (keysValue.length !== keysOther.length) return false;
+    for (let key of keysValue) {
+      if (!keysOther.includes(key) || !isEqual(value[key], other[key]))
+        return false;
+    }
+
+    return true;
+  }
+
+  function matches(source) {
+    return function (object) {
+      for (let key in source) {
+        if (!isEqual(source[key], object[key])) return false;
+      }
+      return true;
+    };
+  }
+
+  function matchesProperty(path, srcValue) {
+    return function (object) {
+      return isEqual(property(path)(object), srcValue);
+    };
+  }
+
+  function filter(collection, predicate) {
+    if (typeof predicate === "string") {
+      predicate = findProperty(predicate);
+    }
+    if (Array.isArray(predicate)) {
+      predicate = matchesProperty(...predicate);
+    }
+    if (typeof predicate === "object") {
+      predicate = matches(predicate);
+    }
+    result = [];
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        if (predicate(collection[i], i, collection)) {
+          result.push(collection[i]);
+        }
+      }
+    } else {
+      for (key in collection) {
+        if (predicate(collection[key], key, collection)) {
+          result.push(collection[key]);
+        }
       }
     }
     return result;
@@ -178,6 +259,8 @@ var zhhanging = (function () {
     groupBy: groupBy,
     keyBy: keyBy,
     forEach: forEach,
+    isEqual: isEqual,
     map: map,
+    filter: filter,
   };
 })();
