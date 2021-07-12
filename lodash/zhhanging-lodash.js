@@ -39,6 +39,25 @@ var zhhanging = (function () {
     return result;
   }
 
+  function differenceBy(array, values, iteratee) {
+    if (typeof iteratee !== "function") {
+      iteratee = property(iteratee);
+    }
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      let item = array[i];
+      let found = false;
+      for (let j = 0; j < values.length; j++) {
+        if (iteratee(item) === iteratee(values[j])) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) result.push(item);
+    }
+    return result;
+  }
+
   function uniq(array) {
     let result = [];
     for (let i = 0; i < array.length; i++) {
@@ -251,6 +270,7 @@ var zhhanging = (function () {
     chunk: chunk,
     compact: compact,
     difference: difference,
+    differenceBy: differenceBy,
     uniq: uniq,
     uniqBy: uniqBy,
     flatten: flatten,
@@ -260,6 +280,8 @@ var zhhanging = (function () {
     keyBy: keyBy,
     forEach: forEach,
     isEqual: isEqual,
+    matches: matches,
+    property: property,
     map: map,
     filter: filter,
   };
