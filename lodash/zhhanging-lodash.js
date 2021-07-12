@@ -73,6 +73,19 @@ var zhhanging = (function () {
     return result;
   }
 
+  function flattenDepth(array, depth = 1) {
+    if (depth === 0) return array;
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      if (Array.isArray(array[i])) {
+        result = result.concat(flattenDepth(array[i], depth - 1));
+      } else {
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -81,7 +94,10 @@ var zhhanging = (function () {
 
     flatten: flatten,
     flattenDeep: flattenDeep,
+    flattenDepth: flattenDepth,
   };
 })();
 
-// console.log(zhhanging.flattenDeep([1, [2, [3, [4]], 5]]));
+// var array = [1, [2, [3, [4]], 5]];
+// console.log(zhhanging.flattenDepth(array, 1));
+// console.log(zhhanging.flattenDepth(array, 2));
