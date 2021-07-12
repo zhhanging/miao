@@ -23,13 +23,13 @@ var zhhanging = (function () {
     return result;
   }
 
-  function difference(array, values = []) {
+  function difference(array, ...values) {
     let result = [];
     for (let i = 0; i < array.length; i++) {
       let item = array[i];
       let found = false;
       for (let j = 0; j < values.length; j++) {
-        if (item === values[j]) {
+        if (values[j].includes(item)) {
           found = true;
           break;
         }
@@ -46,4 +46,6 @@ var zhhanging = (function () {
   };
 })();
 
-// console.log(zhhanging.difference([2, 1, 5], [2, 3, 4]));
+console.log(
+  zhhanging.difference([1, 2, 3, 4, 5, 6, 7, 8], [1, 3], [4, 8], [6])
+);
