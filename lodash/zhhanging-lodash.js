@@ -318,6 +318,13 @@ var zhhanging = (function () {
     return false;
   }
 
+  function fill(array, value, start = 0, end = array.length) {
+    for (let i = start; i < end; i++) {
+      array[i] = value;
+    }
+    return array;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -338,5 +345,6 @@ var zhhanging = (function () {
     filter: filter,
     every: every,
     some: some,
+    fill: fill,
   };
 })();
