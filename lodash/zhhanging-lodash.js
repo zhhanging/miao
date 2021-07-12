@@ -1,3 +1,8 @@
-let zhhanging = {
-  trunc: function () {},
-};
+let zhhanging = (function () {
+  function trunc(array, size = 1) {
+    
+  }
+  return {
+    trunc: trunc,
+  };
+})();
