@@ -1,10 +1,9 @@
 let zhhanging = (function () {
-  function trunc(array, size = 1) {
+  function chunk(array, size = 1) {
     let result = [];
     for (let i = 0; i < array.length; ) {
       let piece = [];
-      let j = 0;
-      for (j = 0; j < size; j++) {
+      for (let j = 0; j < size; j++) {
         if (!array[i]) break;
         piece.push(array[i]);
         i++;
@@ -14,8 +13,8 @@ let zhhanging = (function () {
     return result;
   }
   return {
-    trunc: trunc,
+    chunk: chunk,
   };
 })();
 
-// console.log(zhhanging.trunc(["a", "b", "c", "d", "e"], 3));
+// console.log(zhhanging.chunk(['a', 'b', 'c', 'd'], 6));
