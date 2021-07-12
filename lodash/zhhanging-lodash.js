@@ -61,6 +61,18 @@ var zhhanging = (function () {
     return result;
   }
 
+  function flattenDeep(array) {
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      if (Array.isArray(array[i])) {
+        result = result.concat(flattenDeep(array[i]));
+      } else {
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -68,5 +80,8 @@ var zhhanging = (function () {
     uniq: uniq,
 
     flatten: flatten,
+    flattenDeep: flattenDeep,
   };
 })();
+
+// console.log(zhhanging.flattenDeep([1, [2, [3, [4]], 5]]));
