@@ -39,13 +39,20 @@ var zhhanging = (function () {
     return result;
   }
 
+  function uniq(array) {
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      if (!result.includes(array[i])) {
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
     difference: difference,
+    uniq: uniq,
   };
 })();
-
-console.log(
-  zhhanging.difference([1, 2, 3, 4, 5, 6, 7, 8], [1, 3], [4, 8], [6])
-);
