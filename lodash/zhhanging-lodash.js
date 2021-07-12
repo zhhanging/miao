@@ -100,6 +100,22 @@ var zhhanging = (function () {
     return result;
   }
 
+  function groupBy(collection, iteratee) {
+    if (typeof iteratee !== "function") {
+      iteratee = findProperty(iteratee);
+    }
+    let result = {};
+    for (let i = 0; i < collection.length; i++) {
+      uniqVal = iteratee(collection[i]);
+      if (!(uniqVal in result)) {
+        result[uniqVal] = [collection[i]];
+      } else {
+        result[uniqVal].push(collection[i]);
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -109,9 +125,12 @@ var zhhanging = (function () {
     flatten: flatten,
     flattenDeep: flattenDeep,
     flattenDepth: flattenDepth,
+    groupBy: groupBy,
   };
 })();
 
 // var array = [1, [2, [3, [4]], 5]];
 // console.log(zhhanging.flatten(array));
 // console.log(zhhanging.flattenDepth(array, 2));
+console.log(zhhanging.groupBy([6.1, 4.2, 6.3], Math.floor));
+console.log(zhhanging.groupBy(["one", "two", "three"], "length"));
