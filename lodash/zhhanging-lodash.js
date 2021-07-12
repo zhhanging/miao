@@ -116,6 +116,23 @@ var zhhanging = (function () {
     return result;
   }
 
+  function keyBy(collection, iteratee) {
+    if (typeof iteratee !== "function") {
+      iteratee = findProperty(iteratee);
+    }
+    let result = {};
+    if (Array.isArray(collection)) {
+      for (item of collection) {
+        result[iteratee(item)] = item;
+      }
+    } else {
+      for (key in collection) {
+        result[iteratee(collection[key])] = collection[key];
+      }
+    }
+    return result;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -126,6 +143,7 @@ var zhhanging = (function () {
     flattenDeep: flattenDeep,
     flattenDepth: flattenDepth,
     groupBy: groupBy,
+    keyBy: keyBy,
   };
 })();
 
