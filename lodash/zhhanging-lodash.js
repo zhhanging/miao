@@ -1,4 +1,4 @@
-let zhhanging = (function () {
+var zhhanging = (function () {
   function chunk(array, size = 1) {
     let result = [];
     for (let i = 0; i < array.length; ) {
