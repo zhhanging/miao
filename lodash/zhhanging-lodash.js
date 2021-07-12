@@ -292,6 +292,32 @@ var zhhanging = (function () {
     return true;
   }
 
+  function some(collection, predicate) {
+    if (typeof predicate === "string") {
+      predicate = property(predicate);
+    }
+    if (Array.isArray(predicate)) {
+      predicate = matchesProperty(...predicate);
+    }
+    if (typeof predicate === "object") {
+      predicate = matches(predicate);
+    }
+    if (Array.isArray(collection)) {
+      for (let i = 0; i < collection.length; i++) {
+        if (predicate(collection[i], i, collection)) {
+          return true;
+        }
+      }
+    } else {
+      for (key in collection) {
+        if (predicate(collection[key], key, collection)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -311,5 +337,6 @@ var zhhanging = (function () {
     map: map,
     filter: filter,
     every: every,
+    some: some,
   };
 })();
