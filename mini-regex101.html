@@ -125,6 +125,7 @@ oafobfocfod
         let reStr = inputStr.value;
         let test = testStr.value;
         if (!reStr.length) {
+          message.innerHTML = "";
           result.innerHTML = "";
           return;
         }
@@ -154,10 +155,10 @@ oafobfocfod
           while ((match = re.exec(test))) {
             displayResult += test.slice(lastIndex, match.index);
             displayResult += "<em>" + match[0] + "</em>";
+            lastIndex = re.lastIndex;
             if (!match[0].length) {
               re.lastIndex++;
             }
-            lastIndex = re.lastIndex;
           }
           displayResult += test.slice(lastIndex);
         } else {
