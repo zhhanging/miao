@@ -1,122 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+    <style>
+      em {
+        font-style: normal;
+        background-color: #d5ebff;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <title>Document</title>
-  <style>
-    em {
-      font-style: normal;
-      background-color: #d5ebff;
-    }
+      em:nth-of-type(even) {
+        background-color: #9fcfff;
+      }
 
-    em:nth-of-type(even) {
-      background-color: #9fcfff;
-    }
+      em:empty {
+        outline: 1px dotted red;
+      }
 
-    em:empty {
-      outline: 1px dotted red;
-    }
+      textarea,
+      pre {
+        font-family: "consolas";
+      }
 
-    textarea,
-    pre {
-      font-family: "consolas";
-    }
+      div.result {
+        position: relative;
+        overflow: hidden;
+      }
 
-    div.result {
-      position: relative;
-    }
+      div.result textarea {
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+      }
 
-    div.result textarea {
-      position: relative;
-      z-index: 2;
-      background-color: transparent;
-    }
+      div.result textarea:focus {
+        background-color: transparent;
+      }
 
-    div.result textarea:focus {
-      background-color: transparent;
-    }
+      div.result pre {
+        color: transparent;
+        position: absolute;
+        top: 0;
+        border-color: transparent;
+        background-color: transparent;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
 
-    div.result pre {
-      color: transparent;
-      position: absolute;
-      top: 0;
-      border-color: transparent;
-      background-color: transparent;
-      word-wrap: break-word;
-      white-space: pre-wrap;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <h1>Mini-Regex101</h1>
-    <label for="" class="form-label">Regular Expression</label>
-    <lable><input type="checkbox" class="form-check-input" onclick="run()" name="g" id="g" checked />g</lable>
-    <lable><input type="checkbox" class="form-check-input" onclick="run()" name="m" id="m" />m</lable>
-    <lable><input type="checkbox" class="form-check-input" onclick="run()" name="i" id="i" />i</lable>
-    <input type="text" class="form-control" id="inputStr" onkeyup="run()" value="fo." />
-    <label for="" class="form-label">Test String</label>
-    <div class="result">
-      <textarea class="form-control" id="testStr" onkeyup="run()" cols="30" rows="10" spellcheck="false">
+  <body>
+    <div class="container">
+      <h1>Mini-Regex101</h1>
+      <label for="" class="form-label">Regular Expression</label>
+      <lable
+        ><input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="g"
+          id="g"
+          checked
+        />g</lable
+      >
+      <lable
+        ><input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="m"
+          id="m"
+        />m</lable
+      >
+      <lable
+        ><input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="i"
+          id="i"
+        />i</lable
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="inputStr"
+        onkeyup="run()"
+        value="fo."
+      />
+      <label for="" class="form-label">Test String</label>
+      <div class="result">
+        <textarea
+          class="form-control"
+          id="testStr"
+          onkeyup="run()"
+          onscroll="setScroll()"
+          cols="30"
+          rows="20"
+          spellcheck="false"
+        >
 foofooofoooofoooooofoo
 oafobfocfod
-  forest gump</textarea>
-      <pre class="form-control" id="result" value="" cols="30"></pre>
+  forest gump</textarea
+        >
+        <pre class="form-control" id="result" value="" cols="30"></pre>
+      </div>
     </div>
-  </div>
 
-  <script>
-    run();
-    function run() {
-      let reStr = inputStr.value;
-      let test = testStr.value;
-      if (!reStr.length) {
-        result.innerHTML = "";
-        return;
-      }
-      // get flags
-      let flags = "";
-      if (g.checked) {
-        flags += "g";
-      }
-      if (m.checked) {
-        flags += "m";
-      }
-      if (i.checked) {
-        flags += "i";
-      }
-      let re = new RegExp(reStr, flags);
+    <script>
+      run();
+      function run() {
+        let reStr = inputStr.value;
+        let test = testStr.value;
+        if (!reStr.length) {
+          result.innerHTML = "";
+          return;
+        }
+        // get flags
+        let flags = "";
+        if (g.checked) {
+          flags += "g";
+        }
+        if (m.checked) {
+          flags += "m";
+        }
+        if (i.checked) {
+          flags += "i";
+        }
+        let re = new RegExp(reStr, flags);
 
-      let displayResult = "";
-      let lastIndex = 0;
-      let match;
-      if (re.global) {
-        while ((match = re.exec(test))) {
-          displayResult += test.slice(lastIndex, match.index);
-          displayResult += "<em>" + match[0] + "</em>";
-          if (!match[0].length) {
-            re.lastIndex++;
+        let displayResult = "";
+        let lastIndex = 0;
+        let match;
+        if (re.global) {
+          while ((match = re.exec(test))) {
+            displayResult += test.slice(lastIndex, match.index);
+            displayResult += "<em>" + match[0] + "</em>";
+            if (!match[0].length) {
+              re.lastIndex++;
+            }
+            lastIndex = re.lastIndex;
           }
-          lastIndex = re.lastIndex;
+          displayResult += test.slice(lastIndex);
+        } else {
+          match = re.exec(test);
+          if (match) {
+            displayResult += test.slice(lastIndex, match.index);
+            displayResult += "<em>" + match[0] + "</em>";
+            displayResult += test.slice(match.index + match[0].length);
+          }
         }
-        displayResult += test.slice(lastIndex);
-      } else {
-        match = re.exec(test);
-        if (match) {
-          displayResult += test.slice(lastIndex, match.index);
-          displayResult += "<em>" + match[0] + "</em>";
-          displayResult += test.slice(match.index + match[0].length);
-        }
+        result.innerHTML = displayResult;
       }
-      result.innerHTML = displayResult;
-    }
-  </script>
-</body>
-
+      function setScroll() {
+        let scrollVal = testStr.scrollTop;
+        result.style.top = "-" + scrollVal + "px";
+      }
+    </script>
+  </body>
 </html>
