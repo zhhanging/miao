@@ -27,7 +27,7 @@
 
       textarea,
       pre {
-        font-family: "consolas";
+        font-family: "consolas" monospace;
       }
 
       div.result {
@@ -53,6 +53,9 @@
         background-color: transparent;
         word-wrap: break-word;
         white-space: pre-wrap;
+      }
+      #message {
+        color: red;
       }
     </style>
   </head>
@@ -96,6 +99,7 @@
         onkeyup="run()"
         value="fo."
       />
+      <div class="form-text" id="message"></div>
       <label for="" class="form-label">Test String</label>
       <div class="result">
         <textarea
@@ -135,7 +139,13 @@ oafobfocfod
         if (i.checked) {
           flags += "i";
         }
-        let re = new RegExp(reStr, flags);
+        let re;
+        try {
+          re = new RegExp(reStr, flags);
+          message.innerHTML = ""
+        } catch (e) {
+          message.innerHTML = e.message;
+        }
 
         let displayResult = "";
         let lastIndex = 0;
