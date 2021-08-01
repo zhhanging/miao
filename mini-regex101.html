@@ -10,8 +10,29 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
     <title>Document</title>
     <style>
+      header {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      input#inputStr {
+        font-family: "Source Code Pro", monospace;
+      }
+
+      div.flags {
+        float: right;
+      }
+
       em {
         font-style: normal;
         background-color: #d5ebff;
@@ -27,7 +48,7 @@
 
       textarea,
       pre {
-        font-family: "consolas", monospace;
+        font-family: "Source Code Pro", monospace;
       }
 
       div.result {
@@ -61,37 +82,38 @@
   </head>
 
   <body>
-    <div class="container">
+    <header class="container">
       <h1>Mini-Regex101</h1>
+    </header>
+    <div class="container">
       <label for="" class="form-label">Regular Expression</label>
-      <lable
-        ><input
+      <div class="flags">
+        <input
           type="checkbox"
           class="form-check-input"
           onclick="run()"
           name="g"
           id="g"
           checked
-        />g</lable
-      >
-      <lable
-        ><input
+        />
+        <lable class="form-check-label" for="g">g</lable>
+        <input
           type="checkbox"
           class="form-check-input"
           onclick="run()"
           name="m"
           id="m"
-        />m</lable
-      >
-      <lable
-        ><input
+        />
+        <lable class="form-check-label" for="m">m</lable>
+        <input
           type="checkbox"
           class="form-check-input"
           onclick="run()"
           name="i"
           id="i"
-        />i</lable
-      >
+        />
+        <lable class="form-check-label" for="i">i</lable>
+      </div>
       <input
         type="text"
         class="form-control"
@@ -143,7 +165,7 @@ oafobfocfod
         let re;
         try {
           re = new RegExp(reStr, flags);
-          message.innerHTML = ""
+          message.innerHTML = "";
         } catch (e) {
           message.innerHTML = e.message;
         }
