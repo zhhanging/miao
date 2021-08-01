@@ -60,6 +60,7 @@
         position: relative;
         z-index: 2;
         background-color: transparent;
+        overflow-y: scroll;
       }
 
       div.result textarea:focus {
@@ -72,8 +73,11 @@
         top: 0;
         border-color: transparent;
         background-color: transparent;
-        word-wrap: break-word;
+        /* 长单词折行 */
+        word-break: break-word;
+        /*  */
         white-space: pre-wrap;
+        overflow-y: scroll;
       }
       #message {
         color: red;
@@ -195,7 +199,7 @@ oafobfocfod
       }
       function setScroll() {
         let scrollVal = testStr.scrollTop;
-        result.style.top = "-" + scrollVal + "px";
+        result.style.transform = `translateY(-${scrollVal}px)`;
       }
     </script>
   </body>
