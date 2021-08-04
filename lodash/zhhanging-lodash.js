@@ -325,6 +325,117 @@ var zhhanging = (function () {
     return array;
   }
 
+  function parseJson(string) {
+    let i = 0;
+    return parseValue();
+    function parseValue() {
+      skip();
+      if (string[i] === '"') {
+        return parseString();
+      }
+      if (string[i] === "[") {
+        return parseArray();
+      }
+      if (string[i] === "{") {
+        return parseObject();
+      }
+      if (string[i] === "t" || string[i] === "f") {
+        return parseBoolean();
+      }
+      if (string[i] === "n") {
+        return parseNull();
+      }
+      return parseNumber();
+    }
+    function parseBoolean() {
+      if (string[i] === "t") {
+        if (string.subStr(i, 4) === "true") {
+          i += 4;
+          return true;
+        }
+        throw SyntaxError(`Invalid Value: ${string.subStr(i, 4)}`);
+      }
+      if (string[i] === "t") {
+        if (string.subStr(i, 5) === "false") {
+          i += 5;
+          return false;
+        }
+        throw SyntaxError(`Invalid Value: ${string.subStr(i, 5)}`);
+      }
+    }
+    function parseNull() {
+      if (string[i] === "n") {
+        if (string.subStr(i, 4) === "null") {
+          i += 4;
+          return null;
+        }
+        throw SyntaxError(`Invalid Value: ${string.subStr(i, 4)}`);
+      }
+    }
+    function parseString() {
+      i++; // skip the '"' at the beginning
+      let result = "";
+      while (string[i] !== '"') {
+        result += string[i];
+        i++;
+      }
+      i++; // skip the '"' at the end
+      skip();
+      return result;
+    }
+    function parseNumber() {
+      let numStr = "";
+      while (string[i] >= "0" && string[i] <= "9") {
+        numStr += string[i];
+        i++;
+      }
+      return Number(numStr);
+    }
+    function parseArray() {
+      let result = [];
+      i++; // skip the "[" at the beginning of the array
+      skip();
+      while (string[i] !== "]") {
+        if (string[i] == ",") {
+          i++;
+          skip();
+        }
+        let value = parseValue();
+        skip();
+        result.push(value);
+      }
+      skip();
+      i++; // skip the "]" at the end of the array
+      return result;
+    }
+    function parseObject() {
+      let result = {};
+      i++; // skip the "{" at the beginning of the object
+      skip();
+      while (string[i] !== "}") {
+        skip();
+        if (string[i] == ",") {
+          i++;
+          skip();
+        }
+        let key = parseValue();
+        skip();
+        i++;
+        skip();
+        let value = parseValue();
+        skip();
+        result[key] = value;
+      }
+      i++; //
+      return result;
+    }
+    function skip() {
+      while (string[i] === " " || string[i] === "\n" || string[i] === "\t") {
+        i++;
+      }
+    }
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -346,5 +457,7 @@ var zhhanging = (function () {
     every: every,
     some: some,
     fill: fill,
+
+    parseJson: parseJson,
   };
 })();
