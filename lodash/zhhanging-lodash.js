@@ -326,6 +326,9 @@ var zhhanging = (function () {
   }
 
   function parseJson(string) {
+    if (!string.length) {
+      throw SyntaxError("Unexpected end of JSON input");
+    }
     let i = 0;
     return parseValue();
     function parseValue() {
@@ -349,27 +352,32 @@ var zhhanging = (function () {
     }
     function parseBoolean() {
       if (string[i] === "t") {
-        if (string.subStr(i, 4) === "true") {
+        if (string.substr(i, 4) === "true") {
           i += 4;
+          skip();
+          seeEnd();
           return true;
         }
-        throw SyntaxError(`Invalid Value: ${string.subStr(i, 4)}`);
-      }
-      if (string[i] === "t") {
-        if (string.subStr(i, 5) === "false") {
+        throw SyntaxError(`Invalid Value: ${string.substr(i, 4)}`);
+      } else if (string[i] === "f") {
+        if (string.substr(i, 5) === "false") {
           i += 5;
+          skip();
+          seeEnd();
           return false;
         }
-        throw SyntaxError(`Invalid Value: ${string.subStr(i, 5)}`);
+        throw SyntaxError(`Invalid Value: ${string.substr(i, 5)}`);
       }
     }
     function parseNull() {
       if (string[i] === "n") {
-        if (string.subStr(i, 4) === "null") {
+        if (string.substr(i, 4) === "null") {
           i += 4;
+          skip();
+          seeEnd();
           return null;
         }
-        throw SyntaxError(`Invalid Value: ${string.subStr(i, 4)}`);
+        throw SyntaxError(`Invalid Value: ${string.substr(i, 4)}`);
       }
     }
     function parseString() {
@@ -433,6 +441,13 @@ var zhhanging = (function () {
       while (string[i] === " " || string[i] === "\n" || string[i] === "\t") {
         i++;
       }
+    }
+    function seeEnd() {
+      if (i == string.length) return;
+      if (string[i] == "," || string[i] == "]" || string[i] == "}") {
+        return;
+      }
+      throw SyntaxError(`Unexpected Token ${string[i]} at ${i}`);
     }
   }
 
