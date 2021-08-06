@@ -24,26 +24,26 @@
         align-items: center;
         justify-content: center;
       }
-
+      label {
+        margin-top: 10px;
+        font-weight: bold;
+      }
       input#inputStr {
         font-family: "Source Code Pro", monospace;
       }
-
       div.flags {
         float: right;
       }
-
       em {
         font-style: normal;
         background-color: #d5ebff;
       }
-
       em:nth-of-type(even) {
         background-color: #9fcfff;
       }
-
       em:empty {
-        outline: 1px dotted red;
+        border-right: 1px dotted red;
+        margin-right: -1px;
       }
 
       textarea,
@@ -76,6 +76,12 @@
         /* 长单词折行 */
         word-break: break-word;
         /*  */
+        white-space: pre-wrap;
+        overflow-y: scroll;
+      }
+      div.replace-result pre {
+        height: 300px;
+        word-break: break-word;
         white-space: pre-wrap;
         overflow-y: scroll;
       }
@@ -117,6 +123,30 @@
           id="i"
         />
         <lable class="form-check-label" for="i">i</lable>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="y"
+          id="y"
+        />
+        <lable class="form-check-label" for="y">y</lable>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="u"
+          id="u"
+        />
+        <lable class="form-check-label" for="u">u</lable>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          onclick="run()"
+          name="s"
+          id="s"
+        />
+        <lable class="form-check-label" for="s">s</lable>
       </div>
       <input
         type="text"
@@ -133,15 +163,27 @@
           id="testStr"
           oninput="run()"
           onscroll="setScroll()"
-          cols="30"
-          rows="20"
+          cols="20"
+          rows="10"
           spellcheck="false"
         >
 foofooofoooofoooooofoo
 oafobfocfod
   forest gump</textarea
         >
-        <pre class="form-control" id="result" value="" cols="30"></pre>
+        <pre class="form-control" id="result" value=""></pre>
+      </div>
+      <div class="replace-result">
+        <label for="" class="form-label">Replace String</label>
+        <input
+          type="text"
+          class="form-control"
+          id="replaceStr"
+          oninput="run()"
+          value="666"
+        />
+        <label for="" class="form-label">Replace Result</label>
+        <pre class="form-control" id="replaced" value=""></pre>
       </div>
     </div>
 
@@ -150,9 +192,11 @@ oafobfocfod
       function run() {
         let reStr = inputStr.value;
         let test = testStr.value;
+        let replace = replaceStr.value;
         if (!reStr.length) {
           message.innerHTML = "";
           result.innerHTML = "";
+          replace.innerHTML = "";
           return;
         }
         // get flags
@@ -165,6 +209,15 @@ oafobfocfod
         }
         if (i.checked) {
           flags += "i";
+        }
+        if (y.checked) {
+          flags += "y";
+        }
+        if (u.checked) {
+          flags += "u";
+        }
+        if (s.checked) {
+          flags += "s";
         }
         let re;
         try {
@@ -196,6 +249,9 @@ oafobfocfod
           }
         }
         result.innerHTML = displayResult;
+
+        let replaceResult = test.replace(re, replaceStr.value);
+        replaced.innerHTML = replaceResult;
       }
       function setScroll() {
         let scrollVal = testStr.scrollTop;
