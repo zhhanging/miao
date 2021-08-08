@@ -451,6 +451,37 @@ var zhhanging = (function () {
     }
   }
 
+  function stringifyJson(object) {
+    if (object === undefined) {
+      return;
+    }
+    if (typeof object != "object") {
+      if (typeof object == "string") {
+        return '"' + object + '"';
+      }
+      return String(object);
+    }
+    if (Array.isArray(object)) {
+      let result = "[";
+      for (item of object) {
+        result += stringifyJson(item);
+        result += ",";
+      }
+      result = result.slice(0, result.length - 1);
+      result += "]";
+      return result;
+    } else {
+      let result = "{";
+      for (key in object) {
+        result += `"${key}":${stringifyJson(object[key])}`;
+        result += ",";
+      }
+      result = result.slice(0, result.length - 1);
+      result += "}";
+      return result;
+    }
+  }
+
   return {
     chunk: chunk,
     compact: compact,
@@ -474,5 +505,6 @@ var zhhanging = (function () {
     fill: fill,
 
     parseJson: parseJson,
+    stringifyJson: stringifyJson,
   };
 })();
