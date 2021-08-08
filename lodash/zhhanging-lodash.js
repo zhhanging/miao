@@ -461,6 +461,9 @@ var zhhanging = (function () {
       }
       return String(object);
     }
+    if (object === null) {
+      return null;
+    }
     if (Array.isArray(object)) {
       let result = "[";
       for (item of object) {
