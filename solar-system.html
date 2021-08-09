@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>The Solar System</title>
+    <style>
+        html {
+            zoom: 40%;
+        }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        div.background {
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div.transparent {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        span.sun {
+            background-image: url("sun.png");
+        }
+
+        span.earth {
+            background-image: url("earth.png");
+        }
+
+        span.moon {
+            background-image: url("moon.png");
+        }
+
+        div span {
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 260px;
+            width: 260px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="background">
+    <span class="sun"></span>
+</div>
+<div class="transparent">
+    <span class="earth"></span>
+</div>
+<div class="transparent">
+    <span class="moon"></span>
+</div>
+
+<script>
+    let stars = document.querySelectorAll("span");
+    let sun = stars[0];
+    let earth = stars[1];
+    let moon = stars[2];
+
+    let angleSun = 0;
+    let angleEarth = 0;
+    let angleMoon = 0;
+    let lastTime = null;
+
+    function revolution(time) {
+        if (lastTime != null) {
+            angleSun += (time - lastTime) * 0.0001;
+            angleEarth += (time - lastTime) * 0.0005;
+            angleMoon += (time - lastTime) * 0.006;
+        }
+        lastTime = time;
+
+        sun.style.top = Math.sin(angleSun) * 400 + "px";
+        sun.style.left = Math.cos(angleSun) * 400 + "px";
+
+        earth.style.top =
+            Math.sin(angleSun) * 400 + Math.sin(angleEarth) * 400 + "px";
+        earth.style.left =
+            Math.cos(angleSun) * 400 + Math.cos(angleEarth) * 400 + "px";
+
+        moon.style.top =
+            Math.sin(angleSun) * 400 + Math.sin(angleEarth) * 400 + Math.sin(angleMoon) * 150 + "px";
+        moon.style.left =
+            Math.cos(angleSun) * 400 +
+            Math.cos(angleEarth) * 400 +
+            Math.cos(angleMoon) * 150 +
+            "px";
+
+        requestAnimationFrame(revolution);
+    }
+
+    requestAnimationFrame(revolution);
+</script>
+</body>
+</html>
