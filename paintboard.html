@@ -12,12 +12,8 @@
         border: 1px solid red;
         position: relative;
       }
-      .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 999px;
-        background-color: red;
-        position: absolute;
+      .hidden {
+        display: none;
       }
     </style>
   </head>
@@ -105,40 +101,35 @@
       });
 
       document.addEventListener("keydown", function (e) {
-        let platform = getPlatform();
-        if (platform == "Mac") {
-          if (e.code == "KeyZ" && e.metaKey) {
-            console.log(e);
-            svg.removeChild(svg.children[svg.children.length - 1]);
-          }
+        let isMac =
+          navigator.platform == "Mac68K" ||
+          navigator.platform == "MacPPC" ||
+          navigator.platform == "Macintosh" ||
+          navigator.platform == "MacIntel";
+
+        let control;
+        if (isMac) {
+          control = e.metaKey;
         } else {
-          if (e.code == "KeyZ" && e.ctrlKey) {
-            console.log(e);
-            svg.removeChild(svg.children[svg.children.length - 1]);
-          }
+          control = e.ctrlKey;
         }
+        if (e.code == "KeyZ" && control && !e.shiftKey) {
+          let groups = svg.querySelectorAll("svg > g:not(.hidden)");
+          groups[groups.length - 1].classList.add("hidden");
+        }
+        // if (e.code == "KeyZ" && control && e.shiftKey) {
+        //   let firstHidden = svg.querySelector("svg > g.hidden");
+        //   firstHidden.classList.remove("hidden");
+        // }
       });
 
+      // 获取鼠标事件发生时鼠标相对元素的位置
       function getReletivePos(node) {
         let rect = node.getBoundingClientRect();
         return {
           x: window.event.clientX - rect.x,
           y: window.event.clientY - rect.y,
         };
-      }
-
-      
-      // 获取用户所在的平台是 windows 还是 Mac， 用来监听不同的快捷键
-      function getPlatform() {
-        var isWin =
-          navigator.platform == "Win32" || navigator.platform == "Windows";
-        if (isWin) return "Win";
-        var isMac =
-          navigator.platform == "Mac68K" ||
-          navigator.platform == "MacPPC" ||
-          navigator.platform == "Macintosh" ||
-          navigator.platform == "MacIntel";
-        if (isMac) return "Mac";
       }
     </script>
   </body>
