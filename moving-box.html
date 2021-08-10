@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      span {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <span style="left: 100px; top: 100px"></span>
+    <script>
+      let span = document.querySelector("span");
+
+      let vh = 0;
+      let currentVH = 1;
+      let vv = 0;
+      let currentVV = 1;
+
+      let leftPressed = 0;
+      let rightPressed = 0;
+      let upPressed = 0;
+      let downPressed = 0;
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key == "ArrowLeft") {
+          leftPressed = 1;
+          vh = -currentVH;
+        }
+        if (e.key == "ArrowRight") {
+          rightPressed = 1;
+          vh = currentVH;
+        }
+        if (e.key == "ArrowUp") {
+          upPressed = 1;
+          vv = -currentVV;
+        }
+        if (e.key == "ArrowDown") {
+          downPressed = 1;
+          vv = currentVV;
+        }
+      });
+      document.addEventListener("keyup", function (e) {
+        if (e.key == "ArrowLeft") {
+          leftPressed = 0;
+          if (rightPressed) {
+            vh = currentVH;
+          } else {
+            vh = 0;
+          }
+        }
+        if (e.key == "ArrowRight") {
+          rightPressed = 0;
+          if (leftPressed) {
+            vh = -currentVH;
+          } else {
+            vh = 0;
+          }
+        }
+        if (e.key == "ArrowUp") {
+          upPressed = 0;
+          if (downPressed) {
+            vv = currentVV;
+          } else {
+            vv = 0;
+          }
+        }
+        if (e.key == "ArrowDown") {
+          downPressed = 0;
+          if (upPressed) {
+            vv = -currentVV;
+          } else {
+            vv = 0;
+          }
+        }
+      });
+
+      let lastTime = null;
+      requestAnimationFrame(function move(time) {
+        let timeElapsed;
+        if (lastTime != null) {
+          timeElapsed = time - lastTime;
+        } else {
+          timeElapsed = 0;
+        }
+        lastTime = time;
+
+        let dx = vh * timeElapsed * 0.2;
+        let dy = vv * timeElapsed * 0.2;
+
+        // 如果斜着走，将速度变为原来的 1/sqrt(2)
+        if (upPressed || downPressed) {
+          dx *= Math.SQRT1_2;
+        }
+        if (leftPressed || rightPressed) {
+          dy *= Math.SQRT1_2;
+        }
+        span.style.left = parseFloat(span.style.left) + dx + "px";
+        span.style.top = parseFloat(span.style.top) + dy + "px";
+
+        requestAnimationFrame(move);
+      });
+    </script>
+  </body>
+</html>
