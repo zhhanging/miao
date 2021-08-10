@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paint</title>
+    <style>
+      div.board {
+        height: 500px;
+        width: 500px;
+        border: 1px solid red;
+        position: relative;
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background-color: red;
+        position: absolute;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="board">
+      <svg
+        version="1.1"
+        baseProfile="full"
+        width="500"
+        height="500"
+        xmlns="http://www.w3.org/2000/svg"
+      ></svg>
+    </div>
+    <input type="color" name="color" id="pen-color" />
+    <input
+      type="range"
+      name="stroke-width"
+      id="stroke-width"
+      min="1"
+      max="20"
+      value="5"
+    />
+    <label for="stroke-width"></label>
+
+    <script>
+      let svg = document.querySelector("svg");
+      // svg.setAttribute("width", 1000)
+      let penColor = document.querySelector("#pen-color");
+      let strokeWidth = document.querySelector("#stroke-width");
+      let strokeWidthLable = document.querySelector("label");
+
+      let lastPos = null;
+
+      strokeWidthLable.textContent = strokeWidth.value;
+
+      strokeWidth.addEventListener("input", function (e) {
+        strokeWidthLable.textContent = strokeWidth.value;
+      });
+
+      function draw(e) {
+        // console.log(e);
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", draw);
+        } else {
+          let pos = getReletivePos(svg);
+          let line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+          );
+          if (lastPos == null) {
+            line.setAttribute("x1", pos.x);
+            line.setAttribute("y1", pos.y);
+          } else {
+            line.setAttribute("x1", lastPos.x);
+            line.setAttribute("y1", lastPos.y);
+          }
+          line.setAttribute("x2", pos.x);
+          line.setAttribute("y2", pos.y);
+          line.setAttribute("stroke", penColor.value);
+          line.setAttribute("stroke-width", strokeWidth.value);
+          line.setAttribute("stroke-linecap", "round");
+
+          svg.append(line);
+
+          lastPos = pos;
+        }
+      }
+
+      svg.addEventListener("mousedown", function (e) {
+        document.addEventListener("mousemove", draw);
+        document.addEventListener("mouseup", function reset() {
+          lastPos = null;
+          document.removeEventListener("mouseup", reset);
+          document.removeEventListener("mousemove", draw);
+
+          // 将一笔画的所有线放入一个 g 标签中，用以实现撤销功能
+          let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+          let lines = svg.querySelectorAll("svg > line");
+          lines.forEach((node) => {
+            g.appendChild(node);
+          });
+          svg.append(g);
+        });
+      });
+
+      document.addEventListener("keydown", function (e) {
+        let platform = getPlatform();
+        if (platform == "Mac") {
+          if (e.code == "KeyZ" && e.metaKey) {
+            console.log(e);
+            svg.removeChild(svg.children[svg.children.length - 1]);
+          }
+        } else {
+          if (e.code == "KeyZ" && e.ctrlKey) {
+            console.log(e);
+            svg.removeChild(svg.children[svg.children.length - 1]);
+          }
+        }
+      });
+
+      function getReletivePos(node) {
+        let rect = node.getBoundingClientRect();
+        return {
+          x: window.event.clientX - rect.x,
+          y: window.event.clientY - rect.y,
+        };
+      }
+
+      
+      // 获取用户所在的平台是 windows 还是 Mac， 用来监听不同的快捷键
+      function getPlatform() {
+        var isWin =
+          navigator.platform == "Win32" || navigator.platform == "Windows";
+        if (isWin) return "Win";
+        var isMac =
+          navigator.platform == "Mac68K" ||
+          navigator.platform == "MacPPC" ||
+          navigator.platform == "Macintosh" ||
+          navigator.platform == "MacIntel";
+        if (isMac) return "Mac";
+      }
+    </script>
+  </body>
+</html>
