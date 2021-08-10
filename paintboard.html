@@ -47,6 +47,8 @@
       let strokeWidthLable = document.querySelector("label");
 
       let lastPos = null;
+      let lastG;
+      let reduStack = [];
 
       strokeWidthLable.textContent = strokeWidth.value;
 
@@ -77,28 +79,28 @@
           line.setAttribute("stroke-width", strokeWidth.value);
           line.setAttribute("stroke-linecap", "round");
 
-          svg.append(line);
+          lastG.append(line);
 
           lastPos = pos;
         }
       }
+      
+      function reset() {
+        lastPos = null;
+        document.removeEventListener("mouseup", reset);
+        document.removeEventListener("mousemove", draw);
+      }
 
       svg.addEventListener("mousedown", function (e) {
-        draw(e)
-        document.addEventListener("mousemove", draw);
-        document.addEventListener("mouseup", function reset() {
-          lastPos = null;
-          document.removeEventListener("mouseup", reset);
-          document.removeEventListener("mousemove", draw);
+        let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        svg.append(g);
+        lastG = g;
 
-          // 将一笔画的所有线放入一个 g 标签中，用以实现撤销功能
-          let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-          let lines = svg.querySelectorAll("svg > line");
-          lines.forEach((node) => {
-            g.appendChild(node);
-          });
-          svg.append(g);
-        });
+        draw(e);
+
+        document.addEventListener("mousemove", draw);
+        document.addEventListener("mouseup", reset);
+        window.addEventListener("blur", reset);
       });
 
       document.addEventListener("keydown", function (e) {
