@@ -84,6 +84,7 @@
       }
 
       svg.addEventListener("mousedown", function (e) {
+        draw(e)
         document.addEventListener("mousemove", draw);
         document.addEventListener("mouseup", function reset() {
           lastPos = null;
