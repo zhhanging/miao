@@ -90,6 +90,9 @@
 
     <button id="clear">Clear All</button>
 
+    <p>Tips: 按住左键使用前景色绘制，按住右键使用背景色绘制</p>
+    <p>Tips: 点击 Fill 按钮使用 填充模式</p>
+
     <script>
       let toolBrush = document.querySelector("#tool-brush");
       let toolEllipse = document.querySelector("#tool-ellipse");
@@ -186,11 +189,14 @@
         let pos = getReletivePos(svg);
         startPos = pos;
         let paintColor;
+        let secondColor;
         if (e.button == 0) {
           paintColor = penColor.value;
+          secondColor = fillColor.value;
         }
         if (e.button == 2) {
           paintColor = fillColor.value;
+          secondColor = penColor.value;
         }
         if (e.button == 0 || e.button == 2) {
           if (tool == "brush") {
@@ -220,7 +226,7 @@
             );
             svg.append(ellipse);
             if (isFilled) {
-              ellipse.setAttribute("fill", fillColor.value);
+              ellipse.setAttribute("fill", secondColor);
             } else {
               ellipse.setAttribute("fill", "none");
             }
@@ -244,7 +250,7 @@
             );
             svg.append(rect);
             if (isFilled) {
-              rect.setAttribute("fill", fillColor.value);
+              rect.setAttribute("fill", secondColor);
             } else {
               rect.setAttribute("fill", "none");
             }
