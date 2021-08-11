@@ -7,28 +7,55 @@
     <title>Paint</title>
     <style>
       div.board {
-        height: 500px;
-        width: 500px;
+        margin-top: 10px;
+        height: 600px;
+        width: 800px;
         border: 1px solid red;
         position: relative;
+        overflow: hidden;
+        resize: both;
       }
-      .hidden {
+      input[type="radio"] {
         display: none;
       }
+      input[type="radio"]:checked + label {
+        background-color: #198754;
+        font-weight: bolder;
+        color: white;
+        border-color: black;
+      }
+      input[type="radio"] + label {
+        background-color: lightgray;
+        color: black;
+        display: inline-block;
+        width: 30px;
+        border: 1px solid;
+        border-radius: 5px;
+        text-align: center;
+      }
+      label:hover {
+        background-color: gray;
+        color: white;
+      }
+
+      /* .hidden {
+        display: none;
+      } */
     </style>
   </head>
 
   <body>
-    <div class="board">
-      <svg
-        version="1.1"
-        baseProfile="full"
-        width="500"
-        height="500"
-        xmlns="http://www.w3.org/2000/svg"
-      ></svg>
-    </div>
+    <span>Tool:</span>
+    <input type="radio" name="tool" id="tool-ellipse" />
+    <label for="tool-ellipse">&#9675;</label>
+    <input type="radio" name="tool" id="tool-brush" checked />
+    <label for="tool-brush">&#9998;</label>
+    <input type="radio" name="tool" id="tool-rect" />
+    <label for="tool-rect">&#9645;</label>
+
+    <span>Color:</span>
     <input type="color" name="color" id="pen-color" />
+    <span></span>
     <input
       type="range"
       name="stroke-width"
@@ -37,17 +64,37 @@
       max="20"
       value="5"
     />
-    <label for="stroke-width"></label>
+    <label for="stroke-width" id="label-width"></label>
+
+    <div class="board">
+      <svg
+        version="1.1"
+        baseProfile="full"
+        width="100%"
+        height="100%"
+        xmlns="http://www.w3.org/2000/svg"
+      ></svg>
+    </div>
+
+    <button id="clear">Clear All</button>
 
     <script>
+      let toolBrush = document.querySelector("#tool-brush");
+      let toolEllipse = document.querySelector("#tool-ellipse");
+      let toolRect = document.querySelector("#tool-rect");
+      let clearButton = document.querySelector("#clear");
+      toolBrush.addEventListener("click", () => (tool = "brush"));
+      toolEllipse.addEventListener("click", () => (tool = "ellipse"));
+      toolRect.addEventListener("click", () => (tool = "rect"));
+
       let svg = document.querySelector("svg");
-      // svg.setAttribute("width", 1000)
       let penColor = document.querySelector("#pen-color");
       let strokeWidth = document.querySelector("#stroke-width");
-      let strokeWidthLable = document.querySelector("label");
+      let strokeWidthLable = document.querySelector("#label-width");
 
-      let lastPos = null;
-      let lastG;
+      let tool = "brush";
+      let startPos;
+
       let reduStack = [];
 
       strokeWidthLable.textContent = strokeWidth.value;
@@ -56,53 +103,129 @@
         strokeWidthLable.textContent = strokeWidth.value;
       });
 
-      function draw(e) {
-        // console.log(e);
+      function drawLine(e) {
         if (e.buttons == 0) {
-          document.removeEventListener("mousemove", draw);
+          document.removeEventListener("mousemove", drawLine);
         } else {
           let pos = getReletivePos(svg);
-          let line = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line"
-          );
-          if (lastPos == null) {
-            line.setAttribute("x1", pos.x);
-            line.setAttribute("y1", pos.y);
-          } else {
-            line.setAttribute("x1", lastPos.x);
-            line.setAttribute("y1", lastPos.y);
-          }
-          line.setAttribute("x2", pos.x);
-          line.setAttribute("y2", pos.y);
-          line.setAttribute("stroke", penColor.value);
-          line.setAttribute("stroke-width", strokeWidth.value);
-          line.setAttribute("stroke-linecap", "round");
+          let polyline = svg.lastChild;
 
-          lastG.append(line);
-
-          lastPos = pos;
+          let points = polyline.getAttribute("points");
+          points += ` ${pos.x} ${pos.y}`;
+          polyline.setAttribute("points", points);
         }
       }
-      
+
+      function drawEllipse(e) {
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawEllipse);
+        } else {
+          let ellipse = svg.lastChild;
+          let pos = getReletivePos(svg);
+
+          ellipse.setAttribute("cx", (pos.x + startPos.x) / 2);
+          ellipse.setAttribute("cy", (pos.y + startPos.y) / 2);
+          ellipse.setAttribute("rx", Math.abs(pos.x - startPos.x) / 2);
+          ellipse.setAttribute("ry", Math.abs(pos.y - startPos.y) / 2);
+        }
+      }
+
+      function drawRect(e) {
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawRect);
+        } else {
+          let rect = svg.lastChild;
+          let pos = getReletivePos(svg);
+
+          if (pos.x < startPos.x) {
+            rect.setAttribute("x", pos.x);
+            rect.setAttribute("width", startPos.x - pos.x);
+          } else {
+            rect.setAttribute("width", pos.x - startPos.x);
+          }
+          if (pos.y < startPos.y) {
+            rect.setAttribute("y", pos.y);
+            rect.setAttribute("height", startPos.y - pos.y);
+          } else {
+            rect.setAttribute("height", pos.y - startPos.y);
+          }
+        }
+      }
+
       function reset() {
-        lastPos = null;
         document.removeEventListener("mouseup", reset);
-        document.removeEventListener("mousemove", draw);
+        document.removeEventListener("mousemove", drawLine);
+        document.removeEventListener("mousemove", drawEllipse);
+        document.removeEventListener("mousemove", drawRect);
       }
 
       svg.addEventListener("mousedown", function (e) {
-        let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        svg.append(g);
-        lastG = g;
+        let pos = getReletivePos(svg);
+        startPos = pos;
 
-        draw(e);
+        if (tool == "brush") {
+          let polyline = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polyline"
+          );
+          polyline.setAttribute("stroke", penColor.value);
+          polyline.setAttribute("stroke-width", strokeWidth.value);
+          polyline.setAttribute("stroke-linecap", "round");
+          polyline.setAttribute("stroke-linejoin", "round");
+          polyline.setAttribute("fill", "none");
 
-        document.addEventListener("mousemove", draw);
-        document.addEventListener("mouseup", reset);
-        window.addEventListener("blur", reset);
+          let points = `${pos.x} ${pos.y}`;
+          polyline.setAttribute("points", points);
+          svg.append(polyline);
+          drawLine(e);
+
+          document.addEventListener("mousemove", drawLine);
+          document.addEventListener("mouseup", reset);
+          window.addEventListener("blur", reset);
+        }
+        if (tool == "ellipse") {
+          let ellipse = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "ellipse"
+          );
+          svg.append(ellipse);
+          ellipse.setAttribute("fill", "none");
+          ellipse.setAttribute("stroke", penColor.value);
+          ellipse.setAttribute("stroke-width", strokeWidth.value);
+          startPos = pos;
+
+          ellipse.setAttribute("cx", pos.x);
+          ellipse.setAttribute("cy", pos.x);
+          ellipse.setAttribute("rx", 0);
+          ellipse.setAttribute("ry", 0);
+
+          document.addEventListener("mousemove", drawEllipse);
+          document.addEventListener("mouseup", reset);
+          window.addEventListener("blur", reset);
+        }
+        if (tool == "rect") {
+          let rect = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "rect"
+          );
+          svg.append(rect);
+          rect.setAttribute("fill", "none");
+          rect.setAttribute("stroke", penColor.value);
+          rect.setAttribute("stroke-width", strokeWidth.value);
+          startPos = pos;
+
+          rect.setAttribute("x", pos.x);
+          rect.setAttribute("y", pos.y);
+          rect.setAttribute("width", 0);
+          rect.setAttribute("height", 0);
+
+          document.addEventListener("mousemove", drawRect);
+          document.addEventListener("mouseup", reset);
+          window.addEventListener("blur", reset);
+        }
       });
 
+      // 简单撤销
       document.addEventListener("keydown", function (e) {
         let isMac =
           navigator.platform == "Mac68K" ||
@@ -110,20 +233,15 @@
           navigator.platform == "Macintosh" ||
           navigator.platform == "MacIntel";
 
-        let control;
-        if (isMac) {
-          control = e.metaKey;
-        } else {
-          control = e.ctrlKey;
-        }
+        let control = isMac ? e.metaKey : e.ctrlKey;
+
         if (e.code == "KeyZ" && control && !e.shiftKey) {
-          let groups = svg.querySelectorAll("svg > g:not(.hidden)");
-          groups[groups.length - 1].classList.add("hidden");
+          if (svg.lastChild) svg.removeChild(svg.lastChild);
         }
-        // if (e.code == "KeyZ" && control && e.shiftKey) {
-        //   let firstHidden = svg.querySelector("svg > g.hidden");
-        //   firstHidden.classList.remove("hidden");
-        // }
+      });
+
+      clearButton.addEventListener("click", function () {
+        Array.from(svg.children).forEach((child) => svg.removeChild(child));
       });
 
       // 获取鼠标事件发生时鼠标相对元素的位置
