@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Triple Cripples</title>
+    <style>
+      p {
+        user-select: none;
+      }
+      .double {
+        font-size: large;
+        font-weight: bold;
+      }
+      .triple {
+        font-size: xx-large;
+        font-weight: bolder;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let preClickTime = 0;
+      let isDoubleClick;
+      let isTripleClick;
+
+      let lastTimeEllapsed = 0;
+      let lastLastTimeEllapsed = 0;
+
+      document.addEventListener("click", function (e) {
+        let thisTimeEllapsed = e.timeStamp - preClickTime;
+        console.log(thisTimeEllapsed, lastTimeEllapsed, lastLastTimeEllapsed);
+        if (
+          thisTimeEllapsed < 200 &&
+          lastTimeEllapsed > 200 
+          // && lastLastTimeEllapsed < 200
+        ) {
+          isDoubleClick = true;
+        } else {
+          isDoubleClick = false;
+        }
+
+        if (
+          thisTimeEllapsed < 200 &&
+          lastTimeEllapsed < 200 &&
+          lastLastTimeEllapsed > 200
+        ) {
+          isTripleClick = true;
+        } else {
+          isTripleClick = false;
+        }
+
+        if (isDoubleClick) {
+          let double = document.createElement("p");
+          double.textContent = "Double Nipples!";
+          double.classList.add("double");
+          document.body.prepend(double);
+        }
+        if (isTripleClick) {
+          let triple = document.createElement("p");
+          triple.textContent = "Triple Cripples!";
+          triple.classList.add("triple");
+          document.body.prepend(triple);
+        }
+
+        preClickTime = e.timeStamp;
+        lastLastTimeEllapsed = lastTimeEllapsed;
+        lastTimeEllapsed = thisTimeEllapsed;
+      });
+    </script>
+  </body>
+</html>
