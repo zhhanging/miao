@@ -15,16 +15,19 @@
         overflow: hidden;
         resize: both;
       }
-      input[type="radio"] {
+      input[type="radio"],
+      input[type="checkbox"] {
         display: none;
       }
-      input[type="radio"]:checked + label {
-        background-color: #198754;
+      input[type="radio"]:checked + label,
+      input[type="checkbox"]:checked + label {
+        background-color: #0075ff;
         font-weight: bolder;
         color: white;
         border-color: black;
       }
-      input[type="radio"] + label {
+      input[type="radio"] + label,
+      input[type="checkbox"] + label {
         background-color: lightgray;
         color: black;
         display: inline-block;
@@ -33,9 +36,15 @@
         border-radius: 5px;
         text-align: center;
       }
-      label:hover {
-        background-color: gray;
+      input + label:hover {
+        background-color: #005cc8;
+        border-color: #000;
         color: white;
+        cursor: pointer;
+      }
+      input[type="color"] {
+        width: 20px;
+        cursor: pointer;
       }
 
       /* .hidden {
@@ -53,9 +62,6 @@
     <input type="radio" name="tool" id="tool-rect" />
     <label for="tool-rect">&#9645;</label>
 
-    <span>Color:</span>
-    <input type="color" name="color" id="pen-color" />
-    <span></span>
     <input
       type="range"
       name="stroke-width"
@@ -65,6 +71,12 @@
       value="5"
     />
     <label for="stroke-width" id="label-width"></label>
+
+    <input type="checkbox" name="fill" id="fill" />
+    <label for="fill">Fill</label>
+    <span>Color:</span>
+    <input type="color" name="color" id="pen-color" /> /
+    <input type="color" name="fillColor" id="fill-color" value="#ffffff" />
 
     <div class="board">
       <svg
@@ -83,16 +95,19 @@
       let toolEllipse = document.querySelector("#tool-ellipse");
       let toolRect = document.querySelector("#tool-rect");
       let clearButton = document.querySelector("#clear");
+      let fillButton = document.querySelector("#fill");
       toolBrush.addEventListener("click", () => (tool = "brush"));
       toolEllipse.addEventListener("click", () => (tool = "ellipse"));
       toolRect.addEventListener("click", () => (tool = "rect"));
 
       let svg = document.querySelector("svg");
       let penColor = document.querySelector("#pen-color");
+      let fillColor = document.querySelector("#fill-color");
       let strokeWidth = document.querySelector("#stroke-width");
       let strokeWidthLable = document.querySelector("#label-width");
 
       let tool = "brush";
+      let isFilled = false;
       let startPos;
 
       let reduStack = [];
@@ -101,6 +116,14 @@
 
       strokeWidth.addEventListener("input", function (e) {
         strokeWidthLable.textContent = strokeWidth.value;
+      });
+
+      fillButton.addEventListener("click", function (e) {
+        if (this.checked) {
+          isFilled = true;
+        } else {
+          isFilled = false;
+        }
       });
 
       function drawLine(e) {
@@ -162,69 +185,88 @@
       svg.addEventListener("mousedown", function (e) {
         let pos = getReletivePos(svg);
         startPos = pos;
-
-        if (tool == "brush") {
-          let polyline = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "polyline"
-          );
-          polyline.setAttribute("stroke", penColor.value);
-          polyline.setAttribute("stroke-width", strokeWidth.value);
-          polyline.setAttribute("stroke-linecap", "round");
-          polyline.setAttribute("stroke-linejoin", "round");
-          polyline.setAttribute("fill", "none");
-
-          let points = `${pos.x} ${pos.y}`;
-          polyline.setAttribute("points", points);
-          svg.append(polyline);
-          drawLine(e);
-
-          document.addEventListener("mousemove", drawLine);
-          document.addEventListener("mouseup", reset);
-          window.addEventListener("blur", reset);
+        let paintColor;
+        if (e.button == 0) {
+          paintColor = penColor.value;
         }
-        if (tool == "ellipse") {
-          let ellipse = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "ellipse"
-          );
-          svg.append(ellipse);
-          ellipse.setAttribute("fill", "none");
-          ellipse.setAttribute("stroke", penColor.value);
-          ellipse.setAttribute("stroke-width", strokeWidth.value);
-          startPos = pos;
-
-          ellipse.setAttribute("cx", pos.x);
-          ellipse.setAttribute("cy", pos.x);
-          ellipse.setAttribute("rx", 0);
-          ellipse.setAttribute("ry", 0);
-
-          document.addEventListener("mousemove", drawEllipse);
-          document.addEventListener("mouseup", reset);
-          window.addEventListener("blur", reset);
+        if (e.button == 2) {
+          paintColor = fillColor.value;
         }
-        if (tool == "rect") {
-          let rect = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "rect"
-          );
-          svg.append(rect);
-          rect.setAttribute("fill", "none");
-          rect.setAttribute("stroke", penColor.value);
-          rect.setAttribute("stroke-width", strokeWidth.value);
-          startPos = pos;
+        if (e.button == 0 || e.button == 2) {
+          if (tool == "brush") {
+            let polyline = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "polyline"
+            );
+            polyline.setAttribute("stroke", paintColor);
+            polyline.setAttribute("stroke-width", strokeWidth.value);
+            polyline.setAttribute("stroke-linecap", "round");
+            polyline.setAttribute("stroke-linejoin", "round");
+            polyline.setAttribute("fill", "none");
 
-          rect.setAttribute("x", pos.x);
-          rect.setAttribute("y", pos.y);
-          rect.setAttribute("width", 0);
-          rect.setAttribute("height", 0);
+            let points = `${pos.x} ${pos.y}`;
+            polyline.setAttribute("points", points);
+            svg.append(polyline);
+            drawLine(e);
 
-          document.addEventListener("mousemove", drawRect);
-          document.addEventListener("mouseup", reset);
-          window.addEventListener("blur", reset);
+            document.addEventListener("mousemove", drawLine);
+            document.addEventListener("mouseup", reset);
+            window.addEventListener("blur", reset);
+          }
+          if (tool == "ellipse") {
+            let ellipse = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "ellipse"
+            );
+            svg.append(ellipse);
+            if (isFilled) {
+              ellipse.setAttribute("fill", fillColor.value);
+            } else {
+              ellipse.setAttribute("fill", "none");
+            }
+            ellipse.setAttribute("stroke", paintColor);
+            ellipse.setAttribute("stroke-width", strokeWidth.value);
+            startPos = pos;
+
+            ellipse.setAttribute("cx", pos.x);
+            ellipse.setAttribute("cy", pos.x);
+            ellipse.setAttribute("rx", 0);
+            ellipse.setAttribute("ry", 0);
+
+            document.addEventListener("mousemove", drawEllipse);
+            document.addEventListener("mouseup", reset);
+            window.addEventListener("blur", reset);
+          }
+          if (tool == "rect") {
+            let rect = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "rect"
+            );
+            svg.append(rect);
+            if (isFilled) {
+              rect.setAttribute("fill", fillColor.value);
+            } else {
+              rect.setAttribute("fill", "none");
+            }
+            rect.setAttribute("stroke", paintColor);
+            rect.setAttribute("stroke-width", strokeWidth.value);
+            startPos = pos;
+
+            rect.setAttribute("x", pos.x);
+            rect.setAttribute("y", pos.y);
+            rect.setAttribute("width", 0);
+            rect.setAttribute("height", 0);
+
+            document.addEventListener("mousemove", drawRect);
+            document.addEventListener("mouseup", reset);
+            window.addEventListener("blur", reset);
+          }
         }
       });
 
+      svg.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
       // 简单撤销
       document.addEventListener("keydown", function (e) {
         let isMac =
