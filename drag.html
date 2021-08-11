@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        border: 1px solid;
+        background-color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="top: 100px; left: 100px"></div>
+    <div style="top: 130px; left: 120px"></div>
+    <div style="top: 150px; left: 150px"></div>
+
+    <script>
+      let divs = document.querySelectorAll("div");
+
+      let lastX = null;
+      let lastY = null;
+
+      Array.from(divs).forEach((div) =>
+        div.addEventListener("mousedown", function (e) {
+
+          div.parentNode.insertBefore(div, null); // 把正在拖动的元素放到末尾，以在顶层显示
+
+          document.addEventListener("mousemove", move);
+          document.addEventListener("mouseup", reset);
+          function move(e) {
+            let dx = lastX ? e.pageX - lastX : 0;
+            let dy = lastY ? e.pageY - lastY : 0;
+            div.style.left = parseFloat(div.style.left) + dx + "px";
+            div.style.top = parseFloat(div.style.top) + dy + "px";
+
+            lastX = e.pageX;
+            lastY = e.pageY;
+          }
+          function reset(e) {
+            document.removeEventListener("mousemove", move);
+            lastX = null;
+            lastY = null;
+          }
+        })
+      );
+    </script>
+  </body>
+</html>
