@@ -27,6 +27,7 @@
 
     <script>
       let divs = document.querySelectorAll(".block");
+      let stickyFactor = 25;
 
       // 获取鼠标事件发生时鼠标相对元素的位置
       function getReletivePos(node) {
@@ -35,6 +36,19 @@
           x: window.event.clientX - rect.x,
           y: window.event.clientY - rect.y,
         };
+      }
+      window.addEventListener("resize", resize);
+      function resize(e) {
+        Array.from(divs).forEach((div) => {
+          let rect = div.getBoundingClientRect();
+          if (rect.x > window.innerWidth - rect.width) {
+            console.log(rect.x, window.innerWidth - rect.x)
+            div.style.left = window.innerWidth - rect.width + "px";
+          }
+          if (rect.y > window.innerHeight - rect.height) {
+            div.style.top = window.innerHeight - rect.height + "px";
+          }
+        });
       }
 
       Array.from(divs).forEach((div) => {
@@ -50,22 +64,23 @@
             let x = e.pageX - pos.x;
             let y = e.pageY - pos.y;
             let rect = div.getBoundingClientRect();
-            if (x < 0) {
+            if (x < stickyFactor) {
               x = 0;
             }
-            if (y < 0) {
+            if (y < stickyFactor) {
               y = 0;
             }
-            if (x > window.innerWidth - rect.width) {
+            if (x > window.innerWidth - rect.width - stickyFactor) {
               x = window.innerWidth - rect.width;
             }
-            if (y > window.innerHeight - rect.height) {
+            if (y > window.innerHeight - rect.height - stickyFactor) {
               y = window.innerHeight - rect.height;
             }
 
             div.style.left = x + "px";
             div.style.top = y + "px";
           }
+
           function reset(e) {
             window.removeEventListener("mousemove", move);
           }
