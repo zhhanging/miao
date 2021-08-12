@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shadow of the Mouse</title>
+    <style>
+      .trail {
+        position: fixed;
+        border: 1px solid #000;
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        pointer-events: none;
+      }
+      .block {
+        height: 500px;
+        width: 500px;
+        max-width: 100%;
+        border: 1px solid #000;
+        resize: both;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="trails">
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+      <div class="trail" style="top: 0; left: 0"></div>
+    </div>
+
+    <span>尾巴长度：</span>
+    <input type="range" name="tail-length-input" id="tail-length-input" min="1" , max="8" />
+    <span></span>
+
+    <div class="block"></div>
+    <script>
+      let block = document.querySelector(".block");
+      let rangeInput = document.querySelector("#tail-length-input");
+      let rangeLabel = document.querySelector("#tail-length-input + span");
+      let trails = Array.from(document.querySelectorAll(".trail"));
+      let trailCount = trails.length;
+
+      let tailLength = rangeInput.value;
+      let posList = new Array(trailCount * tailLength).fill(0);
+      let lastPos = { x: 0, y: 0 };
+
+      let requestMove;
+
+      rangeLabel.textContent = rangeInput.value;
+
+      rangeInput.addEventListener("input", function (e) {
+        rangeLabel.textContent = rangeInput.value;
+
+        let lastTailLength = tailLength;
+        tailLength = e.target.value;
+        if (tailLength > lastTailLength) {
+          while (posList.length < trails.length * tailLength) {
+            posList.push(lastPos);
+          }
+        } else {
+          while (posList.length > trails.length * tailLength) {
+            posList.shift();
+          }
+        }
+
+      });
+
+      block.addEventListener("mousemove", function (e) {
+        lastPos = { x: e.clientX, y: e.clientY };
+        posList.push(lastPos);
+        while (posList.length > trails.length * tailLength) {
+          posList.shift();
+        }
+      });
+
+      function move(time) {
+        posList.push(lastPos);
+        while (posList.length > trails.length * tailLength) {
+          posList.shift();
+        }
+        for (let i = 0; i < trails.length; i++) {
+          // console.log(i, i * tailLength, posList.length);
+          trails[i].style.left = posList[i * tailLength].x + "px";
+          trails[i].style.top = posList[i * tailLength].y + "px";
+        }
+        requestAnimationFrame(move);
+      }
+      requestAnimationFrame(move);
+    </script>
+  </body>
+</html>
