@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mouse Trail</title>
+    <style>
+      .block {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        border: 1px solid;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+    </div>
+
+    <script>
+      let blocks = document.querySelectorAll(".block");
+
+      let lastPos = { x: 0, y: 0 };
+      let lastTime = 0;
+      let angle = 0;
+      let r = 50;
+
+      window.addEventListener("mousemove", function (e) {
+        lastPos = { x: e.clientX, y: e.clientY };
+      });
+
+      requestAnimationFrame(function spin(time) {
+        let timeEllapsed = time - lastTime;
+        lastTime = time;
+        angle += timeEllapsed * 0.005;
+
+        blocks[0].style.left = lastPos.x + r * Math.cos(angle) + "px";
+        blocks[0].style.top = lastPos.y - r * Math.sin(angle) + "px";
+
+        blocks[1].style.left = lastPos.x - r * Math.cos(angle) + "px";
+        blocks[1].style.top = lastPos.y + r * Math.sin(angle) + "px";
+
+        blocks[2].style.left = lastPos.x + r * Math.sin(angle) + "px";
+        blocks[2].style.top = lastPos.y + r * Math.cos(angle) + "px";
+
+        blocks[3].style.left = lastPos.x - r * Math.sin(angle) + "px";
+        blocks[3].style.top = lastPos.y - r * Math.cos(angle) + "px";
+
+        requestAnimationFrame(spin);
+      });
+    </script>
+  </body>
+</html>
