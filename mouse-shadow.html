@@ -106,35 +106,26 @@
       let block2 = document.querySelector(".block.second");
 
       let lastPos2 = { x: 0, y: 0 };
-      let posList2 = [lastPos2];
-      let posListLength = 10;
+
       block2.addEventListener("mousemove", function (e) {
         let pos = { x: e.clientX, y: e.clientY };
         lastPos2 = pos;
-        posList2.push(pos);
         while (posList2.length > posListLength) {
           posList2.shift();
         }
       });
-
-      setInterval(function () {
+      
+      setInterval(function drawTrail () {
         // let pos = posList2[0];
         let trail = document.createElement("div");
         trail.classList.add("trail");
-        trail.setAttribute("style", `left: ${posList2[0].x}px; top: ${posList2[0].y}px;`);
+        trail.setAttribute("style", `left: ${lastPos2.x}px; top: ${lastPos2.y}px;`);
         block2.append(trail);
         setTimeout(function () {
           block2.removeChild(trail);
-        }, 210);
-      }, 30);
+        }, 280);
+      }, 40);
 
-      requestAnimationFrame(function move2() {
-        posList2.push(lastPos2);
-        while (posList2.length > posListLength) {
-          posList2.shift();
-        }
-        requestAnimationFrame(move2);
-      });
     </script>
   </body>
 </html>
