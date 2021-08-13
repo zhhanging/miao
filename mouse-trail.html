@@ -20,28 +20,65 @@
       <div class="block" style="top: 0; left: 0"></div>
       <div class="block" style="top: 0; left: 0"></div>
       <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
+      <div class="block" style="top: 0; left: 0"></div>
     </div>
+    <p style="user-select: none;">Tips: 点击鼠标左键增加方块数量，点击鼠标右键减少方块数量，鼠标中键切换波浪效果</p>
 
     <script>
-      let blocks = document.querySelectorAll(".block");
+      let container = document.querySelector(".container");
+      let blocks = document.getElementsByClassName("block");
 
       let lastPos = { x: -9999, y: -99999 };
       let lastTime = 0;
       let angle = 0;
-      let r = 50;
+      let r = 40 + 10 * blocks.length;
+      let wave = false;
 
       window.addEventListener("mousemove", function (e) {
         lastPos = { x: e.clientX, y: e.clientY };
+      });
+      window.addEventListener("mousedown", function (e) {
+        if (e.button == 0) {
+          let block = document.createElement("div");
+          block.classList.add("block");
+          block.style.left = "0";
+          block.style.top = "0";
+          container.append(block);
+          r += 10;
+        }
+        if (e.button == 1) {
+          wave = !wave;
+        }
+        if (e.button == 2) {
+          if (blocks.length) {
+            container.removeChild(container.lastElementChild);
+            r -= 10;
+          }
+        }
+      });
+      window.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
       });
 
       requestAnimationFrame(function spin(time) {
         let timeEllapsed = time - lastTime;
         lastTime = time;
-        angle += timeEllapsed * 0.005;
+        angle += (timeEllapsed * 0.08) / r;
+        if (angle > Math.PI * 2) {
+          angle -= Math.PI * 2;
+        }
+
+        if (wave) {
+          r += 2 * Math.sin(angle * (5 + 0.8 * blocks.length));
+        }
 
         for (let block of blocks) {
           block.style.left = lastPos.x + r * Math.cos(angle) + "px";
-          block.style.top = lastPos.y - r * Math.sin(angle) + "px";
+          block.style.top = lastPos.y + r * Math.sin(angle) + "px";
           angle += (Math.PI * 2) / blocks.length;
         }
 
