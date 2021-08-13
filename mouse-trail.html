@@ -25,7 +25,7 @@
     <script>
       let blocks = document.querySelectorAll(".block");
 
-      let lastPos = { x: 0, y: 0 };
+      let lastPos = { x: -9999, y: -99999 };
       let lastTime = 0;
       let angle = 0;
       let r = 50;
@@ -39,17 +39,11 @@
         lastTime = time;
         angle += timeEllapsed * 0.005;
 
-        blocks[0].style.left = lastPos.x + r * Math.cos(angle) + "px";
-        blocks[0].style.top = lastPos.y - r * Math.sin(angle) + "px";
-
-        blocks[1].style.left = lastPos.x - r * Math.cos(angle) + "px";
-        blocks[1].style.top = lastPos.y + r * Math.sin(angle) + "px";
-
-        blocks[2].style.left = lastPos.x + r * Math.sin(angle) + "px";
-        blocks[2].style.top = lastPos.y + r * Math.cos(angle) + "px";
-
-        blocks[3].style.left = lastPos.x - r * Math.sin(angle) + "px";
-        blocks[3].style.top = lastPos.y - r * Math.cos(angle) + "px";
+        for (let block of blocks) {
+          block.style.left = lastPos.x + r * Math.cos(angle) + "px";
+          block.style.top = lastPos.y - r * Math.sin(angle) + "px";
+          angle += (Math.PI * 2) / blocks.length;
+        }
 
         requestAnimationFrame(spin);
       });
