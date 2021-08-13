@@ -107,22 +107,14 @@
 
       let lastPos2 = { x: 0, y: 0 };
       let posList2 = [lastPos2];
-      let trailLength = 15;
+      let posListLength = 10;
       block2.addEventListener("mousemove", function (e) {
         let pos = { x: e.clientX, y: e.clientY };
         lastPos2 = pos;
         posList2.push(pos);
-        while (posList2.length > trailLength) {
+        while (posList2.length > posListLength) {
           posList2.shift();
         }
-
-        // let trail = document.createElement("div");
-        // trail.classList.add("trail");
-        // trail.setAttribute("style", `left: ${e.clientX}px; top: ${e.clientY}px;`);
-        // block2.append(trail);
-        // setTimeout(function () {
-        //   block2.removeChild(trail);
-        // }, 200);
       });
 
       setInterval(function () {
@@ -133,12 +125,12 @@
         block2.append(trail);
         setTimeout(function () {
           block2.removeChild(trail);
-        }, 560);
-      }, 80);
+        }, 210);
+      }, 30);
 
       requestAnimationFrame(function move2() {
         posList2.push(lastPos2);
-        while (posList2.length > trailLength) {
+        while (posList2.length > posListLength) {
           posList2.shift();
         }
         requestAnimationFrame(move2);
