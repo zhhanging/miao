@@ -109,6 +109,7 @@
       let tool = "brush";
       let isFilled = false;
       let startPos;
+      let saved = true;
 
       // let reduStack = [];
 
@@ -191,6 +192,7 @@
       }
 
       svg.addEventListener("mousedown", function (e) {
+        saved = false;
         let pos = getReletivePos(svg);
         startPos = pos;
         let paintColor;
@@ -301,6 +303,13 @@
         anchor.setAttribute("href", link);
         anchor.download = "untitled";
         anchor.click();
+        saved = true;
+      });
+
+      window.addEventListener("beforeunload", function (e) {
+        if (!saved) {
+          return (e.returnValue = " ");
+        }
       });
 
       // 获取鼠标事件发生时鼠标相对元素的位置
