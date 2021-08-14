@@ -8,7 +8,7 @@
     <style>
       div.board {
         margin-top: 10px;
-        height: 600px;
+        height: 400px;
         width: 800px;
         max-width: 100%;
         border: 1px solid red;
@@ -56,21 +56,14 @@
 
   <body>
     <span>Tool:</span>
-    <input type="radio" name="tool" id="tool-ellipse" />
-    <label for="tool-ellipse">&#9675;</label>
     <input type="radio" name="tool" id="tool-brush" checked />
     <label for="tool-brush">&#9998;</label>
+    <input type="radio" name="tool" id="tool-ellipse" />
+    <label for="tool-ellipse">&#9675;</label>
     <input type="radio" name="tool" id="tool-rect" />
     <label for="tool-rect">&#9645;</label>
 
-    <input
-      type="range"
-      name="stroke-width"
-      id="stroke-width"
-      min="1"
-      max="20"
-      value="5"
-    />
+    <input type="range" name="stroke-width" id="stroke-width" min="1" max="20" value="5" />
     <label for="stroke-width" id="label-width"></label>
 
     <input type="checkbox" name="fill" id="fill" />
@@ -90,16 +83,19 @@
     </div>
 
     <button id="clear">Clear All</button>
+    <button id="save">Save File</button>
 
-    <p>Tips: 按住左键使用前景色绘制，按住右键使用背景色绘制</p>
-    <p>Tips: 点击 Fill 按钮使用 填充模式</p>
+    <p>鼠标左键使用前景色绘制，鼠标右键使用背景色绘制</p>
+    <p>点击 Fill 按钮使用 填充模式</p>
 
     <script>
       let toolBrush = document.querySelector("#tool-brush");
       let toolEllipse = document.querySelector("#tool-ellipse");
       let toolRect = document.querySelector("#tool-rect");
-      let clearButton = document.querySelector("#clear");
       let fillButton = document.querySelector("#fill");
+      let clearButton = document.querySelector("#clear");
+      let saveButton = document.querySelector("#save");
+
       toolBrush.addEventListener("click", () => (tool = "brush"));
       toolEllipse.addEventListener("click", () => (tool = "ellipse"));
       toolRect.addEventListener("click", () => (tool = "rect"));
@@ -114,7 +110,15 @@
       let isFilled = false;
       let startPos;
 
-      let reduStack = [];
+      // let reduStack = [];
+
+      let observer = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          svg.setAttribute("width", entry.contentRect.width);
+          svg.setAttribute("height", entry.contentRect.height);
+        }
+      });
+      observer.observe(svg.parentNode);
 
       strokeWidthLable.textContent = strokeWidth.value;
 
@@ -201,10 +205,7 @@
         }
         if (e.button == 0 || e.button == 2) {
           if (tool == "brush") {
-            let polyline = document.createElementNS(
-              "http://www.w3.org/2000/svg",
-              "polyline"
-            );
+            let polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
             polyline.setAttribute("stroke", paintColor);
             polyline.setAttribute("stroke-width", strokeWidth.value);
             polyline.setAttribute("stroke-linecap", "round");
@@ -221,10 +222,7 @@
             window.addEventListener("blur", reset);
           }
           if (tool == "ellipse") {
-            let ellipse = document.createElementNS(
-              "http://www.w3.org/2000/svg",
-              "ellipse"
-            );
+            let ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
             svg.append(ellipse);
             if (isFilled) {
               ellipse.setAttribute("fill", secondColor);
@@ -245,10 +243,7 @@
             window.addEventListener("blur", reset);
           }
           if (tool == "rect") {
-            let rect = document.createElementNS(
-              "http://www.w3.org/2000/svg",
-              "rect"
-            );
+            let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             svg.append(rect);
             if (isFilled) {
               rect.setAttribute("fill", secondColor);
@@ -291,6 +286,21 @@
 
       clearButton.addEventListener("click", function () {
         Array.from(svg.children).forEach((child) => svg.removeChild(child));
+      });
+
+      saveButton.addEventListener("click", function () {
+        let blob = new Blob(
+          [
+            `<?xml version="1.0"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`,
+            svg.outerHTML,
+          ],
+          { type: "image/svg+xml" }
+        );
+        let link = URL.createObjectURL(blob);
+        let anchor = document.createElement("a");
+        anchor.setAttribute("href", link);
+        anchor.download = "untitled";
+        anchor.click();
       });
 
       // 获取鼠标事件发生时鼠标相对元素的位置
