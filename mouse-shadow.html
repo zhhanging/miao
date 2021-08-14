@@ -8,11 +8,13 @@
     <style>
       .trail {
         position: fixed;
-        border: 1px solid #000;
-        width: 10px;
-        height: 10px;
+        /* border: 1px solid #000; */
+        width: 12px;
+        height: 19px;
         background-color: white;
         pointer-events: none;
+        background-image: url("data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAABLCAQAAACYGxwzAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAAMgAAADIAGP6560AAAAHdElNRQflCA4OLShF88N8AAAAAW9yTlQBz6J3mgAAABBjYU52AAAAgAAAAIAAAAAAAAAAAJUJAvQAAAJ5SURBVFjDvdlNS1RRGAfw/yKnlNSkEEPUVRt3QeAikAE/gxAoRYsg/QahVBAtqm3ts01EiiBIEYSGhGXlC5pEkm5iNq5qVRg8nWfOOMzMPffe8/KceWZ3z3PO7w73f1+4F3iPDkQvagZDzWCoGYwi+qMzCjiIzqjlKTpTRpgZiMhUkLhMFYnJ1CDxmDokFtOAxGESSAzGgMgzRkSaSUFkmVREkslA5JhMRIrJQWSYXESCsUDCGSsklLFEwhhrJIRxQPwZJ8SXcUT8GGfEh/FA3BkvxJXxRNwYb8SFCUDsmSDElglE7JhgxIYRQPIZESSPEUKyGTEkixFE0hlRJI0RRsyMOGJiIiBJxhEZIrj8Kowj8tQNqTCZyAcqNWz5Sz08tSj2SLRGnXQnsXWakRdCyGc6o8Z61L7XV4kKhCP0CyBfqIv3+B/oWWLsCo/cD0Y26CwvNItJqDw11iqPHaI1CNnSxDwKaqFDqEUb6xKPXw9AtukcL7GgCK5HoHFzkNe9ka+aWKwQUAf4qGAIcjd3DXshu3ryqyrBNQdDkKecglyDfNMn2mucqusohge5inyn80y8QVuiZxM0k/gvo9x9zwnZo16e9NZAADdCg1xGfmhi2UggLcgXec41S2Sf+rj9XQrB9RA0FhBk1Vi+wazgdEaXMch/9El72f6DQHtO3yzotneQuW0Vnbl9xiD/pBMc5N58ZM2C4NrwD/InSyIlyCs6yCezp3ZZX+VSgnyBmaty75Af1Af5Nz2mQR2cj3JITZB36Ca1a6CEu/mH3qVegm7Rcxo+fuBZwihapL9RFKvPU7/wBIOxPk+tK2AbE5nXh+Aasb8fHtd/7912gJa3NekAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDgtMTRUMTQ6NDU6NDArMDA6MDDOjqWvAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTA4LTE0VDE0OjQ1OjQwKzAwOjAwv9MdEwAAAABJRU5ErkJggg==");
+        background-size: contain;
       }
       .block {
         height: 400px;
@@ -114,8 +116,8 @@
           posList2.shift();
         }
       });
-      
-      setInterval(function drawTrail () {
+
+      setInterval(function drawTrail() {
         // let pos = posList2[0];
         let trail = document.createElement("div");
         trail.classList.add("trail");
@@ -125,7 +127,6 @@
           block2.removeChild(trail);
         }, 280);
       }, 40);
-
     </script>
   </body>
 </html>
