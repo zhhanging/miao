@@ -55,6 +55,7 @@
         display: flex;
         max-width: 100%;
         position: relative;
+        cursor: crosshair;
       }
 
       aside {
@@ -115,7 +116,6 @@
 
       div.message {
         padding-left: 40px;
-        width: 100%;
       }
       div.message p {
         font-size: 0.8em;
@@ -258,12 +258,14 @@
             rect.setAttribute("x", pos.x);
             rect.setAttribute("width", startPos.x - pos.x);
           } else {
+            rect.setAttribute("x", startPos.x);
             rect.setAttribute("width", pos.x - startPos.x);
           }
           if (pos.y < startPos.y) {
             rect.setAttribute("y", pos.y);
             rect.setAttribute("height", startPos.y - pos.y);
           } else {
+            rect.setAttribute("y", startPos.y);
             rect.setAttribute("height", pos.y - startPos.y);
           }
         }
@@ -355,6 +357,7 @@
             document.addEventListener("mousemove", drawLine);
             document.addEventListener("mouseup", reset);
             window.addEventListener("blur", reset);
+            progress = 1;
           }
           if (tool == "ellipse") {
             let ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
@@ -367,15 +370,12 @@
             ellipse.setAttribute("stroke", paintColor);
             ellipse.setAttribute("stroke-width", strokeWidth.value);
             startPos = pos;
-
-            ellipse.setAttribute("cx", pos.x);
-            ellipse.setAttribute("cy", pos.x);
-            ellipse.setAttribute("rx", 0);
-            ellipse.setAttribute("ry", 0);
+            drawEllipse(e)
 
             document.addEventListener("mousemove", drawEllipse);
             document.addEventListener("mouseup", reset);
             window.addEventListener("blur", reset);
+            progress = 1;
           }
           if (tool == "rect") {
             let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -391,12 +391,12 @@
 
             rect.setAttribute("x", pos.x);
             rect.setAttribute("y", pos.y);
-            rect.setAttribute("width", 0);
-            rect.setAttribute("height", 0);
+            drawRect(e)
 
             document.addEventListener("mousemove", drawRect);
             document.addEventListener("mouseup", reset);
             window.addEventListener("blur", reset);
+            progress = 1;
           }
           if (tool == "curve") {
             if (progress == 1) {
