@@ -122,7 +122,7 @@
         margin: 2px 0;
       }
 
-      #tool-curve + label::after {
+      /* #tool-curve + label::after {
         content: "1";
         color: white;
         position: absolute;
@@ -134,7 +134,7 @@
         line-height: 16px;
         border-radius: 999px;
         background-color: red;
-      }
+      } */
     </style>
   </head>
 
@@ -153,12 +153,16 @@
         <aside class="tools">
           <input type="radio" name="tool" id="tool-brush" checked />
           <label for="tool-brush">&#9998;</label>
+          <input type="radio" name="tool" id="tool-line" />
+          <label for="tool-line">&#8212;</label>
+          <input type="radio" name="tool" id="tool-curve" />
+          <label for="tool-curve">&#12316;</label>
           <input type="radio" name="tool" id="tool-ellipse" />
           <label for="tool-ellipse">&#9675;</label>
           <input type="radio" name="tool" id="tool-rect" />
           <label for="tool-rect">&#9645;</label>
-          <input type="radio" name="tool" id="tool-curve" />
-          <label for="tool-curve">&#12316;</label>
+          <input type="radio" name="tool" id="tool-polygon" />
+          <label for="tool-polygon">&#11040;</label>
           <hr />
           <input type="color" name="color" id="pen-color" />
           <input type="color" name="fillColor" id="fill-color" value="#ffffff" />
@@ -180,17 +184,55 @@
 
     <script>
       let toolBrush = document.querySelector("#tool-brush");
+      let toolLine = document.querySelector("#tool-line");
+      let toolCurve = document.querySelector("#tool-curve");
       let toolEllipse = document.querySelector("#tool-ellipse");
       let toolRect = document.querySelector("#tool-rect");
-      let toolCurve = document.querySelector("#tool-curve");
+      let toolPolygon = document.querySelector("#tool-polygon");
       let fillButton = document.querySelector("#fill");
       let clearButton = document.querySelector("#clear");
       let saveButton = document.querySelector("#save");
 
-      toolBrush.addEventListener("click", () => (tool = "brush"));
-      toolEllipse.addEventListener("click", () => (tool = "ellipse"));
-      toolRect.addEventListener("click", () => (tool = "rect"));
-      toolCurve.addEventListener("click", () => (tool = "curve"));
+      let toolBar = document.querySelector(".tools");
+
+      toolBar.addEventListener("click", function (e) {
+        lastTool = tool;
+        if (e.target == toolBrush) {
+          tool = "brush";
+        }
+        if (e.target == toolLine) {
+          tool = "line";
+        }
+        if (e.target == toolCurve) {
+          tool = "curve";
+        }
+        if (e.target == toolEllipse) {
+          tool = "ellipse";
+        }
+        if (e.target == toolRect) {
+          tool = "rect";
+        }
+        if (e.target == toolPolygon) {
+          tool = "polygon";
+        }
+        if (lastTool == "polygon" && progress != 1) {
+          let polyline = svg.lastChild;
+          let polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+
+          polygon.setAttribute("stroke", polyline.getAttribute("stroke"));
+          polygon.setAttribute("stroke-width", polyline.getAttribute("stroke-width"));
+          polygon.setAttribute("stroke-linecap", polyline.getAttribute("stroke-linecap"));
+          polygon.setAttribute("stroke-linejoin", polyline.getAttribute("stroke-linejoin"));
+          polygon.setAttribute("fill", polyline.getAttribute("fill"));
+
+          let points = polyline.getAttribute("points");
+
+          polygon.setAttribute("points", points);
+
+          svg.replaceChild(polygon, polyline);
+        }
+        progress = 1;
+      });
 
       let svg = document.querySelector("svg");
       let penColor = document.querySelector("#pen-color");
@@ -199,10 +241,12 @@
       let strokeWidthLable = document.querySelector("#label-width");
 
       let tool = "brush";
+      let lastTool;
       let isFilled = false;
       let startPos;
+      let polygonStartPos;
       let saved = true;
-      let progress = 1; // 画曲线的阶段
+      let progress = 1; // 画曲线 和 多边形 的阶段
 
       // let reduStack = [];
 
@@ -230,6 +274,18 @@
           let points = polyline.getAttribute("points");
           points += ` ${pos.x} ${pos.y}`;
           polyline.setAttribute("points", points);
+        }
+      }
+
+      function drawStraightLine(e) {
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawStraightLine);
+        } else {
+          let pos = getReletivePos(svg);
+          let line = svg.lastChild;
+
+          line.setAttribute("x2", pos.x);
+          line.setAttribute("y2", pos.y);
         }
       }
 
@@ -286,7 +342,6 @@
         }
       }
       function drawCurve2(e) {
-        console.log(2);
         if (e.buttons == 0) {
           document.removeEventListener("mousemove", drawCurve2);
         } else {
@@ -301,7 +356,6 @@
         }
       }
       function drawCurve3(e) {
-        console.log(2);
         if (e.buttons == 0) {
           document.removeEventListener("mousemove", drawCurve3);
         } else {
@@ -316,14 +370,50 @@
         }
       }
 
+      function drawPolygon(e) {
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawPolygon);
+        } else {
+          let pos = getReletivePos(svg);
+          let polyline = svg.lastChild;
+
+          let points = polyline.getAttribute("points");
+          polyline.setAttribute("points", points.replace(/\d+ \d+$/, `${pos.x} ${pos.y}`));
+        }
+      }
+
+      function finishPolygon(e) {
+        let polyline = svg.lastChild;
+        let pos = getReletivePos(svg);
+        if (Math.abs(pos.x - polygonStartPos.x) < 10 && Math.abs(pos.y - polygonStartPos.y) < 10) {
+          let polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+
+          polygon.setAttribute("stroke", polyline.getAttribute("stroke"));
+          polygon.setAttribute("stroke-width", polyline.getAttribute("stroke-width"));
+          polygon.setAttribute("stroke-linecap", polyline.getAttribute("stroke-linecap"));
+          polygon.setAttribute("stroke-linejoin", polyline.getAttribute("stroke-linejoin"));
+          polygon.setAttribute("fill", polyline.getAttribute("fill"));
+
+          let points = polyline.getAttribute("points");
+
+          polygon.setAttribute("points", points.replace(/\d+ \d+$/, ""));
+
+          svg.replaceChild(polygon, polyline);
+          progress = 1;
+        }
+      }
+
       function reset() {
         document.removeEventListener("mouseup", reset);
         document.removeEventListener("mousemove", drawLine);
+        document.removeEventListener("mousemove", drawStraightLine);
         document.removeEventListener("mousemove", drawEllipse);
         document.removeEventListener("mousemove", drawRect);
         document.removeEventListener("mousemove", drawCurve1);
         document.removeEventListener("mousemove", drawCurve2);
         document.removeEventListener("mousemove", drawCurve3);
+        document.removeEventListener("mousemove", drawPolygon);
+        document.removeEventListener("mousemove", finishPolygon);
       }
 
       svg.addEventListener("mousedown", function (e) {
@@ -341,6 +431,7 @@
           secondColor = penColor.value;
         }
         if (e.button == 0 || e.button == 2) {
+          lastTool = tool;
           if (tool == "brush") {
             let polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
             polyline.setAttribute("stroke", paintColor);
@@ -359,6 +450,24 @@
             window.addEventListener("blur", reset);
             progress = 1;
           }
+          if (tool == "line") {
+            let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("stroke", paintColor);
+            line.setAttribute("stroke-width", strokeWidth.value);
+            line.setAttribute("stroke-linecap", "round");
+            line.setAttribute("stroke-linejoin", "round");
+            line.setAttribute("fill", "none");
+            svg.append(line);
+
+            line.setAttribute("x1", pos.x);
+            line.setAttribute("y1", pos.y);
+
+            drawStraightLine(e);
+            document.addEventListener("mousemove", drawStraightLine);
+            document.addEventListener("mouseup", reset);
+            window.addEventListener("blur", reset);
+            progress = 1;
+          }
           if (tool == "ellipse") {
             let ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
             svg.append(ellipse);
@@ -370,7 +479,7 @@
             ellipse.setAttribute("stroke", paintColor);
             ellipse.setAttribute("stroke-width", strokeWidth.value);
             startPos = pos;
-            drawEllipse(e)
+            drawEllipse(e);
 
             document.addEventListener("mousemove", drawEllipse);
             document.addEventListener("mouseup", reset);
@@ -387,11 +496,10 @@
             }
             rect.setAttribute("stroke", paintColor);
             rect.setAttribute("stroke-width", strokeWidth.value);
-            startPos = pos;
 
             rect.setAttribute("x", pos.x);
             rect.setAttribute("y", pos.y);
-            drawRect(e)
+            drawRect(e);
 
             document.addEventListener("mousemove", drawRect);
             document.addEventListener("mouseup", reset);
@@ -406,7 +514,6 @@
               path.setAttribute("stroke-width", strokeWidth.value);
               path.setAttribute("stroke-linecap", "round");
               path.setAttribute("fill", "transparent");
-              startPos = pos;
               path.setAttribute(
                 "d",
                 `M ${startPos.x} ${startPos.y} C ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}`
@@ -414,21 +521,52 @@
               drawCurve1(e);
 
               document.addEventListener("mousemove", drawCurve1);
-              document.addEventListener("mouseup", reset);
-              window.addEventListener("blur", reset);
             } else if (progress == 2) {
+              let path = svg.lastChild;
+              path.setAttribute("stroke", paintColor);
               drawCurve2(e);
 
               document.addEventListener("mousemove", drawCurve2);
-              document.addEventListener("mouseup", reset);
-              window.addEventListener("blur", reset);
             } else if (progress == 3) {
+              let path = svg.lastChild;
+              path.setAttribute("stroke", paintColor);
               drawCurve3(e);
 
               document.addEventListener("mousemove", drawCurve3);
-              document.addEventListener("mouseup", reset);
-              window.addEventListener("blur", reset);
             }
+            document.addEventListener("mouseup", reset);
+            window.addEventListener("blur", reset);
+          }
+          if (tool == "polygon") {
+            if (progress == 1) {
+              polygonStartPos = pos;
+              progress = 2;
+              let polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+              svg.append(polyline);
+              if (isFilled) {
+                polyline.setAttribute("fill", secondColor);
+              } else {
+                polyline.setAttribute("fill", "none");
+              }
+              polyline.setAttribute("stroke", paintColor);
+              polyline.setAttribute("stroke-width", strokeWidth.value);
+              polyline.setAttribute("stroke-linecap", "round");
+              polyline.setAttribute("stroke-linejoin", "round");
+
+              let points = `${pos.x} ${pos.y}`;
+              polyline.setAttribute("points", points);
+            }
+            if (progress == 2) {
+              let polyline = svg.lastChild;
+              polyline.setAttribute("stroke", paintColor);
+              let points = polyline.getAttribute("points");
+              points += ` ${pos.x} ${pos.y}`;
+              polyline.setAttribute("points", points);
+            }
+            document.addEventListener("mousemove", drawPolygon);
+            document.addEventListener("mouseup", reset);
+            document.addEventListener("mouseup", finishPolygon);
+            window.addEventListener("blur", reset);
           }
         }
       });
