@@ -79,6 +79,7 @@
         text-align: center;
         font-size: 20px;
         line-height: 28px;
+        position: relative;
       }
 
       aside input[type="radio"]:checked + label {
@@ -116,6 +117,24 @@
         padding-left: 40px;
         width: 100%;
       }
+      div.message p {
+        font-size: 0.8em;
+        margin: 2px 0;
+      }
+
+      #tool-curve + label::after {
+        content: "1";
+        color: white;
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        line-height: 16px;
+        border-radius: 999px;
+        background-color: red;
+      }
     </style>
   </head>
 
@@ -138,6 +157,8 @@
           <label for="tool-ellipse">&#9675;</label>
           <input type="radio" name="tool" id="tool-rect" />
           <label for="tool-rect">&#9645;</label>
+          <input type="radio" name="tool" id="tool-curve" />
+          <label for="tool-curve">&#12316;</label>
           <hr />
           <input type="color" name="color" id="pen-color" />
           <input type="color" name="fillColor" id="fill-color" value="#ffffff" />
@@ -151,6 +172,7 @@
         ></svg>
       </div>
       <div class="message">
+        <p>新增画曲线功能，操作方法类似 windows 画图</p>
         <p>鼠标左键使用前景色绘制，鼠标右键使用背景色绘制</p>
         <p>点击 Fill 按钮使用 填充模式</p>
       </div>
@@ -160,6 +182,7 @@
       let toolBrush = document.querySelector("#tool-brush");
       let toolEllipse = document.querySelector("#tool-ellipse");
       let toolRect = document.querySelector("#tool-rect");
+      let toolCurve = document.querySelector("#tool-curve");
       let fillButton = document.querySelector("#fill");
       let clearButton = document.querySelector("#clear");
       let saveButton = document.querySelector("#save");
@@ -167,6 +190,7 @@
       toolBrush.addEventListener("click", () => (tool = "brush"));
       toolEllipse.addEventListener("click", () => (tool = "ellipse"));
       toolRect.addEventListener("click", () => (tool = "rect"));
+      toolCurve.addEventListener("click", () => (tool = "curve"));
 
       let svg = document.querySelector("svg");
       let penColor = document.querySelector("#pen-color");
@@ -178,6 +202,7 @@
       let isFilled = false;
       let startPos;
       let saved = true;
+      let progress = 1; // 画曲线的阶段
 
       // let reduStack = [];
 
@@ -244,11 +269,59 @@
         }
       }
 
+      function drawCurve1(e) {
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawCurve1);
+        } else {
+          let path = svg.lastChild;
+          let pos = getReletivePos(svg);
+
+          path.setAttribute(
+            "d",
+            `M ${startPos.x} ${startPos.y} C ${startPos.x} ${startPos.y}, ${pos.x} ${pos.y}, ${pos.x} ${pos.y}`
+          );
+          progress = 2;
+        }
+      }
+      function drawCurve2(e) {
+        console.log(2);
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawCurve2);
+        } else {
+          let path = svg.lastChild;
+          let pos = getReletivePos(svg);
+          let lastD = path.getAttribute("d");
+
+          path.setAttribute("d", lastD.replace(/(?<=C )\d+ \d+/, `${pos.x} ${pos.y}`));
+          // path.setAttribute("d", lastD.replace(/(?<=C*, )\d+ \d+/, `${pos.x} ${pos.y}`))
+
+          progress = 3;
+        }
+      }
+      function drawCurve3(e) {
+        console.log(2);
+        if (e.buttons == 0) {
+          document.removeEventListener("mousemove", drawCurve3);
+        } else {
+          let path = svg.lastChild;
+          let pos = getReletivePos(svg);
+          let lastD = path.getAttribute("d");
+
+          // path.setAttribute("d", lastD.replace(/(?<=C )\d+ \d+/, `${pos.x} ${pos.y}`));
+          path.setAttribute("d", lastD.replace(/(?<=C*, )\d+ \d+/, `${pos.x} ${pos.y}`));
+
+          progress = 1;
+        }
+      }
+
       function reset() {
         document.removeEventListener("mouseup", reset);
         document.removeEventListener("mousemove", drawLine);
         document.removeEventListener("mousemove", drawEllipse);
         document.removeEventListener("mousemove", drawRect);
+        document.removeEventListener("mousemove", drawCurve1);
+        document.removeEventListener("mousemove", drawCurve2);
+        document.removeEventListener("mousemove", drawCurve3);
       }
 
       svg.addEventListener("mousedown", function (e) {
@@ -324,6 +397,37 @@
             document.addEventListener("mousemove", drawRect);
             document.addEventListener("mouseup", reset);
             window.addEventListener("blur", reset);
+          }
+          if (tool == "curve") {
+            if (progress == 1) {
+              let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+              svg.append(path);
+              path.setAttribute("stroke", paintColor);
+              path.setAttribute("stroke-width", strokeWidth.value);
+              path.setAttribute("stroke-linecap", "round");
+              path.setAttribute("fill", "transparent");
+              startPos = pos;
+              path.setAttribute(
+                "d",
+                `M ${startPos.x} ${startPos.y} C ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}`
+              );
+
+              document.addEventListener("mousemove", drawCurve1);
+              document.addEventListener("mouseup", reset);
+              window.addEventListener("blur", reset);
+            } else if (progress == 2) {
+              drawCurve2(e);
+
+              document.addEventListener("mousemove", drawCurve2);
+              document.addEventListener("mouseup", reset);
+              window.addEventListener("blur", reset);
+            } else if (progress == 3) {
+              drawCurve2(e);
+
+              document.addEventListener("mousemove", drawCurve3);
+              document.addEventListener("mouseup", reset);
+              window.addEventListener("blur", reset);
+            }
           }
         }
       });
