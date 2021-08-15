@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Paint</title>
+    <title>No Paint No Giant</title>
     <style>
       html,
       body {
@@ -64,6 +64,7 @@
         display: flex;
         flex-flow: column;
         align-items: center;
+        user-select: none;
       }
 
       aside input[type="radio"] {
@@ -176,7 +177,7 @@
         ></svg>
       </div>
       <div class="message">
-        <p>新增画曲线功能，操作方法类似 windows 画图</p>
+        <p>按住 <kbd>Shift</kbd> 启用正交模式： 画正圆/正方形/水平和垂直线</p>
         <p>鼠标左键使用前景色绘制，鼠标右键使用背景色绘制</p>
         <p>点击 Fill 按钮使用 填充模式</p>
       </div>
@@ -247,6 +248,7 @@
       let polygonStartPos;
       let saved = true;
       let progress = 1; // 画曲线 和 多边形 的阶段
+      let orthomode = false; // 正交模式
 
       // let reduStack = [];
 
@@ -283,9 +285,19 @@
         } else {
           let pos = getReletivePos(svg);
           let line = svg.lastChild;
-
-          line.setAttribute("x2", pos.x);
-          line.setAttribute("y2", pos.y);
+          
+          if (orthomode) {
+            if (Math.abs(pos.x - startPos.x) > Math.abs(pos.y - startPos.y)) {
+              line.setAttribute("x2", pos.x);
+              line.setAttribute("y2", startPos.y);
+            } else {
+              line.setAttribute("x2", startPos.x);
+              line.setAttribute("y2", pos.y);
+            }
+          } else {
+            line.setAttribute("x2", pos.x);
+            line.setAttribute("y2", pos.y);
+          }
         }
       }
 
@@ -296,10 +308,26 @@
           let ellipse = svg.lastChild;
           let pos = getReletivePos(svg);
 
-          ellipse.setAttribute("cx", (pos.x + startPos.x) / 2);
-          ellipse.setAttribute("cy", (pos.y + startPos.y) / 2);
-          ellipse.setAttribute("rx", Math.abs(pos.x - startPos.x) / 2);
-          ellipse.setAttribute("ry", Math.abs(pos.y - startPos.y) / 2);
+          if (orthomode) {
+            let r = Math.min(Math.abs(pos.x - startPos.x) / 2, Math.abs(pos.y - startPos.y) / 2);
+            if (pos.x < startPos.x) {
+              ellipse.setAttribute("cx", startPos.x - r);
+            } else {
+              ellipse.setAttribute("cx", startPos.x + r);
+            }
+            if (pos.y < startPos.y) {
+              ellipse.setAttribute("cy", startPos.y - r);
+            } else {
+              ellipse.setAttribute("cy", startPos.y + r);
+            }
+            ellipse.setAttribute("rx", r);
+            ellipse.setAttribute("ry", r);
+          } else {
+            ellipse.setAttribute("cx", (pos.x + startPos.x) / 2);
+            ellipse.setAttribute("cy", (pos.y + startPos.y) / 2);
+            ellipse.setAttribute("rx", Math.abs(pos.x - startPos.x) / 2);
+            ellipse.setAttribute("ry", Math.abs(pos.y - startPos.y) / 2);
+          }
         }
       }
 
@@ -310,19 +338,37 @@
           let rect = svg.lastChild;
           let pos = getReletivePos(svg);
 
-          if (pos.x < startPos.x) {
-            rect.setAttribute("x", pos.x);
-            rect.setAttribute("width", startPos.x - pos.x);
+          if (orthomode) {
+            let width = Math.min(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y))
+            if (pos.x < startPos.x) {
+              rect.setAttribute("x", startPos.x - width);
+              rect.setAttribute("width", width);
+            } else {
+              rect.setAttribute("x", startPos.x);
+              rect.setAttribute("width", width);
+            }
+            if (pos.y < startPos.y) {
+              rect.setAttribute("y", startPos.y - width);
+              rect.setAttribute("height", width);
+            } else {
+              rect.setAttribute("y", startPos.y);
+              rect.setAttribute("height", width);
+            }
           } else {
-            rect.setAttribute("x", startPos.x);
-            rect.setAttribute("width", pos.x - startPos.x);
-          }
-          if (pos.y < startPos.y) {
-            rect.setAttribute("y", pos.y);
-            rect.setAttribute("height", startPos.y - pos.y);
-          } else {
-            rect.setAttribute("y", startPos.y);
-            rect.setAttribute("height", pos.y - startPos.y);
+            if (pos.x < startPos.x) {
+              rect.setAttribute("x", pos.x);
+              rect.setAttribute("width", startPos.x - pos.x);
+            } else {
+              rect.setAttribute("x", startPos.x);
+              rect.setAttribute("width", pos.x - startPos.x);
+            }
+            if (pos.y < startPos.y) {
+              rect.setAttribute("y", pos.y);
+              rect.setAttribute("height", startPos.y - pos.y);
+            } else {
+              rect.setAttribute("y", startPos.y);
+              rect.setAttribute("height", pos.y - startPos.y);
+            }
           }
         }
       }
@@ -588,6 +634,17 @@
         if (e.code == "KeyZ" && control && !e.shiftKey) {
           if (svg.lastChild && progress == 1) svg.removeChild(svg.lastChild);
         }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key == "Shift") {
+          orthomode = true;
+        }
+        document.addEventListener("keyup", function (e) {
+          if (e.key == "Shift") {
+            orthomode = false;
+          }
+        });
       });
 
       clearButton.addEventListener("click", function () {
