@@ -285,14 +285,27 @@
         } else {
           let pos = getReletivePos(svg);
           let line = svg.lastChild;
-          
+
           if (orthomode) {
-            if (Math.abs(pos.x - startPos.x) > Math.abs(pos.y - startPos.y)) {
+            let ratio = Math.abs(pos.y - startPos.y) / Math.abs(pos.x - startPos.x);
+            if (ratio < 0.414) {
               line.setAttribute("x2", pos.x);
               line.setAttribute("y2", startPos.y);
-            } else {
+            } else if (ratio > 2.414) {
               line.setAttribute("x2", startPos.x);
               line.setAttribute("y2", pos.y);
+            } else {
+              let delta = Math.SQRT1_2 * Math.max(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y));
+              if (pos.x < startPos.x) {
+                line.setAttribute("x2", startPos.x - delta);
+              } else {
+                line.setAttribute("x2", startPos.x + delta);
+              }
+              if (pos.y < startPos.y) {
+                line.setAttribute("y2", startPos.y - delta);
+              } else {
+                line.setAttribute("y2", startPos.y + delta);
+              }
             }
           } else {
             line.setAttribute("x2", pos.x);
@@ -339,7 +352,7 @@
           let pos = getReletivePos(svg);
 
           if (orthomode) {
-            let width = Math.min(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y))
+            let width = Math.min(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y));
             if (pos.x < startPos.x) {
               rect.setAttribute("x", startPos.x - width);
               rect.setAttribute("width", width);
