@@ -411,6 +411,7 @@
                 "d",
                 `M ${startPos.x} ${startPos.y} C ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}, ${startPos.x} ${startPos.y}`
               );
+              drawCurve1(e);
 
               document.addEventListener("mousemove", drawCurve1);
               document.addEventListener("mouseup", reset);
@@ -422,7 +423,7 @@
               document.addEventListener("mouseup", reset);
               window.addEventListener("blur", reset);
             } else if (progress == 3) {
-              drawCurve2(e);
+              drawCurve3(e);
 
               document.addEventListener("mousemove", drawCurve3);
               document.addEventListener("mouseup", reset);
@@ -435,6 +436,7 @@
       svg.addEventListener("contextmenu", (e) => {
         e.preventDefault();
       });
+
       // 简单撤销
       document.addEventListener("keydown", function (e) {
         let isMac =
@@ -446,12 +448,13 @@
         let control = isMac ? e.metaKey : e.ctrlKey;
 
         if (e.code == "KeyZ" && control && !e.shiftKey) {
-          if (svg.lastChild) svg.removeChild(svg.lastChild);
+          if (svg.lastChild && progress == 1) svg.removeChild(svg.lastChild);
         }
       });
 
       clearButton.addEventListener("click", function () {
         Array.from(svg.children).forEach((child) => svg.removeChild(child));
+        progress = 1;
       });
 
       saveButton.addEventListener("click", function () {
