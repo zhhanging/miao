@@ -146,7 +146,10 @@
         <span>粗细</span>
         <input type="range" name="stroke-width" id="stroke-width" min="1" max="20" value="1" />
         <span id="label-width"></span>
-        <label for="fill"><input type="checkbox" name="fill" id="fill" />Fill</label>
+        <label for="fill">
+          <input type="checkbox" name="fill" id="fill" />
+          Fill
+        </label>
         <button id="clear">Clear All</button>
       </header>
 
@@ -177,7 +180,11 @@
         ></svg>
       </div>
       <div class="message">
-        <p>按住 <kbd>Shift</kbd> 启用正交模式： 画正圆/正方形/水平和垂直线</p>
+        <p>
+          按住
+          <kbd>Shift</kbd>
+          启用正交模式： 画正圆/正方形/水平和垂直线
+        </p>
         <p>鼠标左键使用前景色绘制，鼠标右键使用背景色绘制</p>
         <p>点击 Fill 按钮使用 填充模式</p>
       </div>
@@ -295,7 +302,8 @@
               line.setAttribute("x2", startPos.x);
               line.setAttribute("y2", pos.y);
             } else {
-              let delta = Math.SQRT1_2 * Math.max(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y));
+              let delta =
+                Math.SQRT1_2 * Math.max(Math.abs(pos.x - startPos.x), Math.abs(pos.y - startPos.y));
               if (pos.x < startPos.x) {
                 line.setAttribute("x2", startPos.x - delta);
               } else {
