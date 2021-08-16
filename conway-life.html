@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stayin' Alive</title>
+    <style>
+      #grid {
+        margin-bottom: 10px;
+      }
+      #grid > div {
+        white-space: nowrap;
+        height: 14px;
+      }
+      input[type="checkbox"] {
+        height: 14px;
+        width: 14px;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <span>generation:</span>
+    <span id="gen"></span>
+    <div id="grid"></div>
+    <button id="next">Next generation</button>
+    <label for="auto-grow">
+      <input type="checkbox" id="auto-grow" />
+      Auto grow
+    </label>
+    <button id="random">random</button>
+    <button id="clear">clear</button>
+
+    <script>
+      class LifeBoard {
+        constructor(width = 10, height = 10, container) {
+          this.width = width;
+          this.height = height;
+          this.container = container;
+          this.liveStatus = new Array(this.height)
+            .fill(0)
+            .map((_) => new Array(this.width).fill(false));
+          this.generation = 0;
+          // this.checkboxList = [];
+        }
+        init() {
+          this.container.innerHTML = "";
+
+          for (let y = 0; y < this.liveStatus.length; y++) {
+            let line = document.createElement("div");
+            for (let x = 0; x < this.liveStatus[0].length; x++) {
+              this.liveStatus[y][x] = false;
+              let box = document.createElement("input");
+              line.append(box);
+              box.setAttribute("type", "checkbox");
+              box.addEventListener("change", (e) => {
+                // console.log(e, y, x)
+                this.liveStatus[y][x] = !this.liveStatus[y][x];
+                this.generation = 0;
+              });
+            }
+            this.container.append(line);
+          }
+          this.generation = 0;
+        }
+
+        random() {
+          this.liveStatus = this.liveStatus.map((line) =>
+            line.map((_) => (Math.random() > 0.5 ? true : false))
+          );
+          this.generation = 0;
+          this.refresh();
+        }
+
+        refresh() {
+          for (let y = 0; y < this.liveStatus.length; y++) {
+            for (let x = 0; x < this.liveStatus[0].length; x++) {
+              if (this.liveStatus[y][x]) {
+                // console.log(y, x);
+                this.container.children[y].children[x].checked = true;
+              } else {
+                this.container.children[y].children[x].checked = false;
+              }
+            }
+          }
+          this.generation++;
+        }
+
+        // 获取某个点的邻居数量
+        neighbors(y, x) {
+          let count = 0;
+          let row, col;
+          for (let j = y - 1; j <= y + 1; j++) {
+            row = j;
+            for (let i = x - 1; i <= x + 1; i++) {
+              col = i;
+              if (j == -1) row = this.height - 1;
+              if (j == this.height) row = 0;
+              if (i == -1) col = this.width - 1;
+              if (i == this.width) col = 0;
+
+              if (j != y || i != x) {
+                if (this.liveStatus[row][col]) {
+                  count++;
+                }
+              }
+            }
+          }
+          return count;
+        }
+
+        grow() {
+          let willLive = new Array(this.height)
+            .fill(0)
+            .map((_) => new Array(this.width).fill(false));
+          for (let y = 0; y < this.liveStatus.length; y++) {
+            for (let x = 0; x < this.liveStatus[0].length; x++) {
+              if (this.liveStatus[y][x]) {
+                if (this.neighbors(y, x) == 2 || this.neighbors(y, x) == 3) {
+                  willLive[y][x] = true;
+                } else {
+                  willLive[y][x] = false;
+                }
+              } else {
+                if (this.neighbors(y, x) == 3) {
+                  willLive[y][x] = true;
+                }
+              }
+            }
+          }
+          this.liveStatus = willLive;
+        }
+        run() {
+          this.grow();
+          this.refresh();
+        }
+      }
+
+      let grid = document.querySelector("#grid");
+      let nextButton = document.querySelector("#next");
+      let autoGrowButton = document.querySelector("#auto-grow");
+      let randomButton = document.querySelector("#random");
+      let clearButton = document.querySelector("#clear");
+      let gen = document.querySelector("#gen");
+
+      let board = new LifeBoard(25, 25, grid);
+      board.init();
+
+      gen.textContent = board.generation;
+
+      nextButton.addEventListener("click", () => {
+        board.run();
+        gen.textContent = board.generation;
+      });
+      let autorunId = 0;
+
+      autoGrowButton.addEventListener("change", function (e) {
+        if (e.target.checked) {
+          autorunId = setInterval(() => {
+            board.run();
+            gen.textContent = board.generation;
+          }, 700);
+        } else {
+          clearInterval(autorunId);
+        }
+      });
+
+      randomButton.addEventListener("click", function () {
+        board.random();
+        gen.textContent = board.generation;
+      });
+      clearButton.addEventListener("click", function () {
+        board.init();
+        gen.textContent = board.generation;
+      });
+    </script>
+  </body>
+</html>
