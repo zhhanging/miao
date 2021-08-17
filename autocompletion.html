@@ -2,15 +2,53 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fake Autocompletion</title>
 </head>
 
 <body>
-  <input type="text" name="" id="input" />
+  <input type="text" id="field">
+  <div id="suggestions" style="cursor: pointer"></div>
 
+  <script>
+    var terms = [];
+    for (var name in window) {
+      terms.push(name);
+    }
+
+    let field = document.querySelector("#field");
+    let suggestions = document.querySelector("#suggestions");
+
+    function generateSuggestions() {
+      suggestions.innerHTML = "";
+      if (field.value == "") {
+        return
+      }
+      let re = new RegExp(field.value, "i");
+      for (let term of terms) {
+        if (re.test(term)) {
+          let p = document.createElement("p");
+          p.textContent = term;
+          suggestions.append(p);
+        }
+      }
+    }
+
+    field.addEventListener("input", function () {
+      generateSuggestions();
+    })
+
+    suggestions.addEventListener("click", function (ev) {
+      if (suggestions.contains(ev.target)) {
+        field.value = ev.target.textContent;
+        generateSuggestions();
+      }
+    })
+
+
+  </script>
 </body>
 
 </html>
