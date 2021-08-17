@@ -1,186 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      span {
-        width: 50px;
-        height: 50px;
-        background-color: salmon;
-        position: absolute;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    span {
+      width: 50px;
+      height: 50px;
+      background-color: salmon;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <span class="p1" style="left: 100px; top: 100px"></span>
+  <span class="p2" style="left: 200px; top: 100px; background-color: lightblue"></span>
+  <script>
+    let p1 = document.querySelector(".p1");
+    let p2 = document.querySelector(".p2");
+
+    let stats1 = {
+      vh: 0,
+      currentVH: 1,
+      vv: 0,
+      currentVV: 1,
+      leftPressed: 0,
+      rightPressed: 0,
+      upPressed: 0,
+      downPressed: 0,
+    };
+
+    let stats2 = {
+      vh: 0,
+      currentVH: 1,
+      vv: 0,
+      currentVV: 1,
+      leftPressed: 0,
+      rightPressed: 0,
+      upPressed: 0,
+      downPressed: 0,
+    };
+
+    document.addEventListener("keydown", function (e) {
+      if (e.code == "ArrowLeft") {
+        stats1.leftPressed = 1;
+        stats1.vh = -stats1.currentVH;
       }
-    </style>
-  </head>
-  <body>
-    <span class="p1" style="left: 100px; top: 100px"></span>
-    <span
-      class="p2"
-      style="left: 200px; top: 100px; background-color: lightblue"
-    ></span>
-    <script>
-      let p1 = document.querySelector(".p1");
-      let p2 = document.querySelector(".p2");
-
-      let stats1 = {
-        vh: 0,
-        currentVH: 1,
-        vv: 0,
-        currentVV: 1,
-        leftPressed: 0,
-        rightPressed: 0,
-        upPressed: 0,
-        downPressed: 0,
-      };
-
-      let stats2 = {
-        vh: 0,
-        currentVH: 1,
-        vv: 0,
-        currentVV: 1,
-        leftPressed: 0,
-        rightPressed: 0,
-        upPressed: 0,
-        downPressed: 0,
-      };
-
-      document.addEventListener("keydown", function (e) {
-        if (e.code == "ArrowLeft") {
-          stats1.leftPressed = 1;
-          stats1.vh = -stats1.currentVH;
-        }
-        if (e.code == "ArrowRight") {
-          stats1.rightPressed = 1;
+      if (e.code == "ArrowRight") {
+        stats1.rightPressed = 1;
+        stats1.vh = stats1.currentVH;
+      }
+      if (e.code == "ArrowUp") {
+        stats1.upPressed = 1;
+        stats1.vv = -stats1.currentVV;
+      }
+      if (e.code == "ArrowDown") {
+        stats1.downPressed = 1;
+        stats1.vv = stats1.currentVV;
+      }
+      if (e.code == "KeyA") {
+        stats2.leftPressed = 1;
+        stats2.vh = -stats2.currentVH;
+      }
+      if (e.code == "KeyD") {
+        stats2.rightPressed = 1;
+        stats2.vh = stats2.currentVH;
+      }
+      if (e.code == "KeyW") {
+        stats2.upPressed = 1;
+        stats2.vv = -stats2.currentVV;
+      }
+      if (e.code == "KeyS") {
+        stats2.downPressed = 1;
+        stats2.vv = stats2.currentVV;
+      }
+    });
+    document.addEventListener("keyup", function (e) {
+      if (e.code == "ArrowLeft") {
+        stats1.leftPressed = 0;
+        if (stats1.rightPressed) {
           stats1.vh = stats1.currentVH;
-        }
-        if (e.code == "ArrowUp") {
-          stats1.upPressed = 1;
-          stats1.vv = -stats1.currentVV;
-        }
-        if (e.code == "ArrowDown") {
-          stats1.downPressed = 1;
-          stats1.vv = stats1.currentVV;
-        }
-        if (e.code == "KeyA") {
-          stats2.leftPressed = 1;
-          stats2.vh = -stats2.currentVH;
-        }
-        if (e.code == "KeyD") {
-          stats2.rightPressed = 1;
-          stats2.vh = stats2.currentVH;
-        }
-        if (e.code == "KeyW") {
-          stats2.upPressed = 1;
-          stats2.vv = -stats2.currentVV;
-        }
-        if (e.code == "KeyS") {
-          stats2.downPressed = 1;
-          stats2.vv = stats2.currentVV;
-        }
-      });
-      document.addEventListener("keyup", function (e) {
-        if (e.code == "ArrowLeft") {
-          stats1.leftPressed = 0;
-          if (stats1.rightPressed) {
-            stats1.vh = stats1.currentVH;
-          } else {
-            stats1.vh = 0;
-          }
-        }
-        if (e.code == "ArrowRight") {
-          stats1.rightPressed = 0;
-          if (stats1.leftPressed) {
-            stats1.vh = -stats1.currentVH;
-          } else {
-            stats1.vh = 0;
-          }
-        }
-        if (e.code == "ArrowUp") {
-          stats1.upPressed = 0;
-          if (stats1.downPressed) {
-            stats1.vv = stats1.currentVV;
-          } else {
-            stats1.vv = 0;
-          }
-        }
-        if (e.code == "ArrowDown") {
-          stats1.downPressed = 0;
-          if (stats1.upPressed) {
-            stats1.vv = -stats1.currentVV;
-          } else {
-            stats1.vv = 0;
-          }
-        }
-        if (e.code == "KeyA") {
-          stats2.leftPressed = 0;
-          if (stats2.rightPressed) {
-            stats2.vh = stats2.currentVH;
-          } else {
-            stats2.vh = 0;
-          }
-        }
-        if (e.code == "KeyD") {
-          stats2.rightPressed = 0;
-          if (stats2.leftPressed) {
-            stats2.vh = -stats2.currentVH;
-          } else {
-            stats2.vh = 0;
-          }
-        }
-        if (e.code == "KeyW") {
-          stats2.upPressed = 0;
-          if (stats2.downPressed) {
-            stats2.vv = stats2.currentVV;
-          } else {
-            stats2.vv = 0;
-          }
-        }
-        if (e.code == "KeyS") {
-          stats2.downPressed = 0;
-          if (stats2.upPressed) {
-            stats2.vv = -stats2.currentVV;
-          } else {
-            stats2.vv = 0;
-          }
-        }
-      });
-
-      let lastTime = null;
-      requestAnimationFrame(function move(time) {
-        let timeElapsed;
-        if (lastTime != null) {
-          timeElapsed = time - lastTime;
         } else {
-          timeElapsed = 0;
+          stats1.vh = 0;
         }
-        lastTime = time;
-
-        let dx1 = stats1.vh * timeElapsed * 0.2;
-        let dy1 = stats1.vv * timeElapsed * 0.2;
-
-        let dx2 = stats2.vh * timeElapsed * 0.2;
-        let dy2 = stats2.vv * timeElapsed * 0.2;
-
-        // 如果斜着走，将速度变为原来的 1/sqrt(2)
-        if (stats1.upPressed || stats1.downPressed) {
-          dx1 *= Math.SQRT1_2;
-          dx2 *= Math.SQRT1_2;
+      }
+      if (e.code == "ArrowRight") {
+        stats1.rightPressed = 0;
+        if (stats1.leftPressed) {
+          stats1.vh = -stats1.currentVH;
+        } else {
+          stats1.vh = 0;
         }
-        if (stats1.leftPressed || stats1.rightPressed) {
-          dy1 *= Math.SQRT1_2;
-          dy2 *= Math.SQRT1_2;
+      }
+      if (e.code == "ArrowUp") {
+        stats1.upPressed = 0;
+        if (stats1.downPressed) {
+          stats1.vv = stats1.currentVV;
+        } else {
+          stats1.vv = 0;
         }
+      }
+      if (e.code == "ArrowDown") {
+        stats1.downPressed = 0;
+        if (stats1.upPressed) {
+          stats1.vv = -stats1.currentVV;
+        } else {
+          stats1.vv = 0;
+        }
+      }
+      if (e.code == "KeyA") {
+        stats2.leftPressed = 0;
+        if (stats2.rightPressed) {
+          stats2.vh = stats2.currentVH;
+        } else {
+          stats2.vh = 0;
+        }
+      }
+      if (e.code == "KeyD") {
+        stats2.rightPressed = 0;
+        if (stats2.leftPressed) {
+          stats2.vh = -stats2.currentVH;
+        } else {
+          stats2.vh = 0;
+        }
+      }
+      if (e.code == "KeyW") {
+        stats2.upPressed = 0;
+        if (stats2.downPressed) {
+          stats2.vv = stats2.currentVV;
+        } else {
+          stats2.vv = 0;
+        }
+      }
+      if (e.code == "KeyS") {
+        stats2.downPressed = 0;
+        if (stats2.upPressed) {
+          stats2.vv = -stats2.currentVV;
+        } else {
+          stats2.vv = 0;
+        }
+      }
+    });
 
-        p1.style.left = parseFloat(p1.style.left) + dx1 + "px";
-        p1.style.top = parseFloat(p1.style.top) + dy1 + "px";
+    let lastTime = null;
+    requestAnimationFrame(function move(time) {
+      let timeElapsed;
+      if (lastTime != null) {
+        timeElapsed = time - lastTime;
+      } else {
+        timeElapsed = 0;
+      }
+      lastTime = time;
 
-        p2.style.left = parseFloat(p2.style.left) + dx2 + "px";
-        p2.style.top = parseFloat(p2.style.top) + dy2 + "px";
+      let dx1 = stats1.vh * timeElapsed * 0.2;
+      let dy1 = stats1.vv * timeElapsed * 0.2;
 
-        requestAnimationFrame(move);
-      });
-    </script>
-  </body>
+      let dx2 = stats2.vh * timeElapsed * 0.2;
+      let dy2 = stats2.vv * timeElapsed * 0.2;
+
+      // 如果斜着走，将速度变为原来的 1/sqrt(2)
+      if (stats1.upPressed || stats1.downPressed) {
+        dx1 *= Math.SQRT1_2;
+        dx2 *= Math.SQRT1_2;
+      }
+      if (stats1.leftPressed || stats1.rightPressed) {
+        dy1 *= Math.SQRT1_2;
+        dy2 *= Math.SQRT1_2;
+      }
+
+      p1.style.left = parseFloat(p1.style.left) + dx1 + "px";
+      p1.style.top = parseFloat(p1.style.top) + dy1 + "px";
+
+      p2.style.left = parseFloat(p2.style.left) + dx2 + "px";
+      p2.style.top = parseFloat(p2.style.top) + dy2 + "px";
+
+      requestAnimationFrame(move);
+    });
+  </script>
+</body>
+
 </html>

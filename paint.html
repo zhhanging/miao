@@ -1,617 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>画图</title>
-    <style>
-      canvas {
-        border: 2px solid #f0f;
-        display: block;
-        margin: auto;
-      }
-    </style>
-  </head>
 
-  <body>
-    <canvas width="500" height="500"></canvas>
-  </body>
-  <script>
-    var canvas = document.querySelector("canvas");
-    canvas.style.imageRendering = "pixelated"; //放大时的插帧方式：不插帧，直接放大像素
-    var ctx = canvas.getContext("2d");
-
-    function dot(x, y, color = "black") {
-      x = Math.round(x);
-      y = Math.round(y);
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, 1, 1);
+<head>
+  <meta charset="UTF-8" />
+  <title>画图</title>
+  <style>
+    canvas {
+      border: 2px solid #f0f;
+      display: block;
+      margin: auto;
     }
+  </style>
+</head>
+
+<body>
+  <canvas width="500" height="500"></canvas>
+</body>
+<script>
+  var canvas = document.querySelector("canvas");
+  canvas.style.imageRendering = "pixelated"; //放大时的插帧方式：不插帧，直接放大像素
+  var ctx = canvas.getContext("2d");
+
+  function dot(x, y, color = "black") {
+    x = Math.round(x);
+    y = Math.round(y);
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, 1, 1);
+  }
     /**
-   * YOUR TASK
-      * 在 坐标 (42, 42) 画出一个点
-      * 画一条实线
-      * 画一条一个实点一个空点的虚线
-      * 画一条两个实点两个空点的虚线
-      * 画一条三个实点两个空点的虚线
-      * 画一条45度的斜线
-      * 画一条30度的斜线（与x轴或y轴的夹角呈30度）
-      * 画一条跨越画布左上角和右下角的对角线
-      * 画一个空心矩形
-      * 画一个实心矩形
-      * 画两个个空心的圆，居中：
-        * 一个半径为50像素
-        * 一个半径为200像素
-      * 画一个实心的圆，半径至少为100像素
-      * 画一个【大小合适】的sin(x)的图像
+* YOUR TASK
+  * 在 坐标 (42, 42) 画出一个点
+  * 画一条实线
+  * 画一条一个实点一个空点的虚线
+  * 画一条两个实点两个空点的虚线
+  * 画一条三个实点两个空点的虚线
+  * 画一条45度的斜线
+  * 画一条30度的斜线（与x轴或y轴的夹角呈30度）
+  * 画一条跨越画布左上角和右下角的对角线
+  * 画一个空心矩形
+  * 画一个实心矩形
+  * 画两个个空心的圆，居中：
+    * 一个半径为50像素
+    * 一个半径为200像素
+  * 画一个实心的圆，半径至少为100像素
+  * 画一个【大小合适】的sin(x)的图像
 
-      * 画出rgb色彩空间的某一面（尺寸要大于100x100）
-        如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵（如(2,0,0,2)或(1,0.27得到新的位置，即绘制出被线性变幻后的色彩空间某一面
-        可以考虑如下几种矩阵：
-           2 0
-           0 2
-           ------
-           1  0.27
-           0  1
-           ------
-           0.5    0.87
-           -0.87  0.5
+  * 画出rgb色彩空间的某一面（尺寸要大于100x100）
+    如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵（如(2,0,0,2)或(1,0.27得到新的位置，即绘制出被线性变幻后的色彩空间某一面
+    可以考虑如下几种矩阵：
+       2 0
+       0 2
+       ------
+       1  0.27
+       0  1
+       ------
+       0.5    0.87
+       -0.87  0.5
 
-   */
-  </script>
-  <script>
-    // 不可更改上面的代码
-    // 你的代码写在这里
-    // YOUR CODE GOES BELOW
-    // 在 坐标 (42, 42) 画出一个点
-    dot(42, 42);
+*/
+</script>
+<script>
+  // 不可更改上面的代码
+  // 你的代码写在这里
+  // YOUR CODE GOES BELOW
+  // 在 坐标 (42, 42) 画出一个点
+  dot(42, 42);
 
-    // * 画一条实线
-    function hLine(x, y, length, color = "black") {
-      for (let px = x; px <= x + length; px++) {
-        dot(px, y, color);
-      }
+  // * 画一条实线
+  function hLine(x, y, length, color = "black") {
+    for (let px = x; px <= x + length; px++) {
+      dot(px, y, color);
     }
-    function vLine(x, y, length, color = "black") {
-      for (let py = y; py <= y + length; py++) {
-        dot(x, py, color);
-      }
+  }
+  function vLine(x, y, length, color = "black") {
+    for (let py = y; py <= y + length; py++) {
+      dot(x, py, color);
     }
+  }
 
-    hLine(100, 100, 100, "#167175");
+  hLine(100, 100, 100, "#167175");
 
-    // * 画一条一个实点一个空点的虚线
-    let step = 1;
-    for (let x = 10; x < 200; ) {
-      for (let i = 0; i < step; i++) {
-        dot(x, 150, "#167175");
-        x++;
-      }
-      for (let i = 0; i < step; i++) {
-        x++;
-      }
-    }
-
-    // 画一条两个实点两个空点的虚线
-    step = 2;
-    for (let x = 10; x < 200; ) {
-      for (let i = 0; i < step; i++) {
-        dot(x, 160, "#167175");
-        x++;
-      }
-      for (let i = 0; i < step; i++) {
-        x++;
-      }
-    }
-
-    // 画一条三个实点两个空点的虚线
-    let stepR = 3;
-    let stepI = 2;
-    for (let x = 10; x < 200; ) {
-      for (let i = 0; i < stepR; i++) {
-        dot(x, 170, "#167175");
-        x++;
-      }
-      for (let i = 0; i < stepI; i++) {
-        x++;
-      }
-    }
-
-    // 画一条45度的斜线
-    let x1 = 100;
-    let y1 = 30;
-    let x = x1,
-      y = y1;
-    while (x <= 500 && y <= 500) {
-      dot(x, y, "#E14242");
+  // * 画一条一个实点一个空点的虚线
+  let step = 1;
+  for (let x = 10; x < 200;) {
+    for (let i = 0; i < step; i++) {
+      dot(x, 150, "#167175");
       x++;
-      y++;
     }
+    for (let i = 0; i < step; i++) {
+      x++;
+    }
+  }
 
-    // 画一条30度的斜线（与x轴或y轴的夹角呈30度）
-    x = x1;
+  // 画一条两个实点两个空点的虚线
+  step = 2;
+  for (let x = 10; x < 200;) {
+    for (let i = 0; i < step; i++) {
+      dot(x, 160, "#167175");
+      x++;
+    }
+    for (let i = 0; i < step; i++) {
+      x++;
+    }
+  }
+
+  // 画一条三个实点两个空点的虚线
+  let stepR = 3;
+  let stepI = 2;
+  for (let x = 10; x < 200;) {
+    for (let i = 0; i < stepR; i++) {
+      dot(x, 170, "#167175");
+      x++;
+    }
+    for (let i = 0; i < stepI; i++) {
+      x++;
+    }
+  }
+
+  // 画一条45度的斜线
+  let x1 = 100;
+  let y1 = 30;
+  let x = x1,
     y = y1;
-    while (x <= 500 && y <= 500) {
-      dot(x, y, "#FF3C48");
-      x++;
-      y += Math.tan(Math.PI / 6);
+  while (x <= 500 && y <= 500) {
+    dot(x, y, "#E14242");
+    x++;
+    y++;
+  }
+
+  // 画一条30度的斜线（与x轴或y轴的夹角呈30度）
+  x = x1;
+  y = y1;
+  while (x <= 500 && y <= 500) {
+    dot(x, y, "#FF3C48");
+    x++;
+    y += Math.tan(Math.PI / 6);
+  }
+
+  // 画一条跨越画布左上角和右下角的对角线
+  x = 0;
+  y = 0;
+  let ratio = (500 - 0) / (500 - 0);
+  while (x <= 500) {
+    dot(x, y);
+    x++;
+    y += ratio;
+  }
+
+  // 画一个空心矩形
+  function rect(x, y, w, h, color) {
+    hLine(x, y, w, color);
+    hLine(x, y + h, w, color);
+    vLine(x, y, h, color);
+    vLine(x + w, y, h, color);
+  }
+
+  rect(100, 200, 60, 50);
+
+  // 画一个实心矩形
+  function rectFill(x, y, w, h, color) {
+    for (let py = y; py <= Math.round(y + h); py++) {
+      hLine(x, py, w, color);
     }
+  }
 
-    // 画一条跨越画布左上角和右下角的对角线
-    x = 0;
-    y = 0;
-    let ratio = (500 - 0) / (500 - 0);
-    while (x <= 500) {
-      dot(x, y);
-      x++;
-      y += ratio;
-    }
+  rectFill(150, 10, 30, 40);
 
-    // 画一个空心矩形
-    function rect(x, y, w, h, color) {
-      hLine(x, y, w, color);
-      hLine(x, y + h, w, color);
-      vLine(x, y, h, color);
-      vLine(x + w, y, h, color);
-    }
-
-    rect(100, 200, 60, 50);
-
-    // 画一个实心矩形
-    function rectFill(x, y, w, h, color) {
-      for (let py = y; py <= Math.round(y + h); py++) {
-        hLine(x, py, w, color);
-      }
-    }
-
-    rectFill(150, 10, 30, 40);
-
-    // * 画两个个空心的圆，居中：
-    //     一个半径为50像素
-    //     一个半径为200像素
-    function circle(x, y, r, color = "black") {
-      for (let py = y - r; py <= y + r; py++) {
-        for (let px = x - r; px <= x + r; px++) {
-          if (Math.abs(dist(x, y, px, py) - r) < 0.5) {
-            dot(px, py, color);
-          }
-        }
-      }
-    }
-    function dist(x1, y1, x2, y2) {
-      return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
-    }
-
-    // circle(200, 100, 50);
-    // circle(200, 100, 200);
-
-    // 画一个实心的圆，半径至少为100像素
-    function circleFill(x, y, r, color = "black") {
-      for (let py = y - r; py <= y + r; py++) {
-        for (let px = x - r; px <= x + r; px++) {
-          if (dist(x, y, px, py) < r) {
-            dot(px, py, color);
-          }
-        }
-      }
-    }
-
-    // circleFill(400, 100, 100, "#A6CFE2");
-
-    // 画一个【大小合适】的sin(x)的图像
-
-    // 以 (x0, y0) 为原点，画出 func 的图像
-    function drawFunc(x0, y0, func, color = "black") {
-      let zoomFactor = 50;
-      for (let px = 0; px <= 500; px++) {
-        let val = func((px - x0) / zoomFactor) * zoomFactor;
-        let py = -val + y0;
-        dot(px, py, color);
-      }
-      // // 坐标轴
-      // hLine(0, y0, 500);
-      // vLine(x0, 0, 500);
-    }
-    drawFunc(120, 320, Math.sin, "#2CAD6F");
-
-    // 画出rgb色彩空间的某一面（尺寸要大于100x100）
-    function drawRGBSpaceTransform(x0, y0, size, matrix = scale(1)) {
-      let pxi, pyi;
-      for (let py = 0; py <= size; py++) {
-        for (let px = 0; px <= size; px++) {
-          [pxi, pyi] = transform(px, py, matrix);
-          dot(
-            x0 + pxi,
-            y0 + pyi,
-            `rgb(${(255 / size) * px}, ${(255 / size) * py}, 255)`
-          );
-        }
-      }
-    }
-    drawRGBSpaceTransform(320, 50, 128);
-    drawRGBSpaceTransform(320, 50, 128, rotation(60));
-    drawRGBSpaceTransform(320, 200, 128, scale(2));
-
-    // 如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵 如(2, 0, 0, 2)或(1, 0.27, 0, 1)得到新的位置，即绘制出被线性变幻后的色彩空间某一面
-    // 可以考虑如下几种矩阵：
-    //    2 0
-    //    0 2
-    //    ------
-    //    1  0.27
-    //    0  1
-    //    ------
-    //    0.5    0.87
-    //    -0.87  0.5
-
-    function transform(x0, y0, matrix) {
-      // assume matrix = [[a00, a01], [a10, a12]]
-      let px = matrix[0][0] * x0 + matrix[0][1] * y0;
-      let py = matrix[1][0] * x0 + matrix[1][1] * y0;
-      return [px, py];
-    }
-    function rotation(angle) {
-      let t = (angle * Math.PI) / 180;
-      return [
-        [Math.cos(t), -Math.sin(t)],
-        [Math.sin(t), Math.cos(t)],
-      ];
-    }
-    function scale(factor) {
-      return [
-        [factor, 0],
-        [0, factor],
-      ];
-    }
-    function skew(angleX, angleY = 0) {
-      radAngleX = (angleX * Math.PI) / 180;
-      radAngleY = (angleY * Math.PI) / 180;
-      if (
-        (angleX != 0 && angleX % 90 == 0) ||
-        (angleY != 0 && angleY % 90 == 0)
-      ) {
-        return [
-          [0, 0],
-          [0, 0],
-        ];
-      }
-      return matrixApply(
-        [
-          [1, 0],
-          [Math.tan(radAngleY), 1],
-        ],
-        [
-          [1, Math.tan(radAngleX)],
-          [0, 1],
-        ]
-      );
-    }
-    // 2 by 2 矩阵乘法
-    function matrixApply() {
-      let result = [
-        [1, 0],
-        [0, 1],
-      ];
-      for (let i = arguments.length - 1; i >= 0; i--) {
-        result = [
-          [
-            arguments[i][0][0] * result[0][0] +
-              arguments[i][0][1] * result[1][0],
-            arguments[i][0][0] * result[0][1] +
-              arguments[i][0][1] * result[1][1],
-          ],
-          [
-            arguments[i][1][0] * result[0][0] +
-              arguments[i][1][1] * result[1][0],
-            arguments[i][1][0] * result[0][1] +
-              arguments[i][1][1] * result[1][1],
-          ],
-        ];
-      }
-      return result;
-    }
-
-    // 尚未实现齐次坐标
-    function translate(x, y) {
-      return [
-        [1, 0, x],
-        [0, 1, y],
-        [0, 0, 1],
-      ];
-    }
-
-    function rectTransform(x0, y0, w, h, matrix = scale(1), color = "black") {
-      let px0 = transform(0, 0, matrix)[0] + x0;
-      let py0 = transform(0, 0, matrix)[1] + y0;
-      let px1 = transform(w, 0, matrix)[0] + x0;
-      let py1 = transform(w, 0, matrix)[1] + y0;
-      let px2 = transform(0, h, matrix)[0] + x0;
-      let py2 = transform(0, h, matrix)[1] + y0;
-      let px3 = transform(w, h, matrix)[0] + x0;
-      let py3 = transform(w, h, matrix)[1] + y0;
-
-      line(px0, py0, px1, py1, color);
-      line(px0, py0, px2, py2, color);
-      line(px1, py1, px3, py3, color);
-      line(px2, py2, px3, py3, color);
-    }
-
-    rectTransform(100, 300, 50, 120, rotation(30));
-    rectTransform(100, 300, 50, 120, rotation(60));
-    rectTransform(100, 300, 50, 120, rotation(-30));
-    rectTransform(100, 300, 50, 120, rotation(-60));
-
-    // Bresenham's line drawing algorithm
-    function line(x1, y1, x2, y2, color = "black") {
-      // assume x1 < x2 && y1 < y2
-      let steep = Math.abs(y1 - y2) / Math.abs(x2 - x1) > 1;
-      if (steep) {
-        // swap the two values
-        [x1, y1] = [y1, x1];
-        [x2, y2] = [y2, x2];
-      }
-      if (x1 > x2) {
-        [x1, x2] = [x2, x1];
-        [y1, y2] = [y2, y1];
-      }
-      let deltaX = x2 - x1;
-      let deltaY = Math.abs(y2 - y1);
-
-      let dy = y1 < y2 ? 1 : -1; // py 增加 或 减少 的值
-      let q = 2 * deltaY - deltaX; // 判断 py是否 增加 或 减少
-
-      let py = y1;
-      for (let px = x1; px <= x2; px++) {
-        if (steep) {
-          dot(py, px, color);
-        } else {
+  // * 画两个个空心的圆，居中：
+  //     一个半径为50像素
+  //     一个半径为200像素
+  function circle(x, y, r, color = "black") {
+    for (let py = y - r; py <= y + r; py++) {
+      for (let px = x - r; px <= x + r; px++) {
+        if (Math.abs(dist(x, y, px, py) - r) < 0.5) {
           dot(px, py, color);
         }
-        if (q > 0) {
-          py += dy;
-          q += 2 * (deltaY - deltaX);
+      }
+    }
+  }
+  function dist(x1, y1, x2, y2) {
+    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+  }
+
+  // circle(200, 100, 50);
+  // circle(200, 100, 200);
+
+  // 画一个实心的圆，半径至少为100像素
+  function circleFill(x, y, r, color = "black") {
+    for (let py = y - r; py <= y + r; py++) {
+      for (let px = x - r; px <= x + r; px++) {
+        if (dist(x, y, px, py) < r) {
+          dot(px, py, color);
+        }
+      }
+    }
+  }
+
+  // circleFill(400, 100, 100, "#A6CFE2");
+
+  // 画一个【大小合适】的sin(x)的图像
+
+  // 以 (x0, y0) 为原点，画出 func 的图像
+  function drawFunc(x0, y0, func, color = "black") {
+    let zoomFactor = 50;
+    for (let px = 0; px <= 500; px++) {
+      let val = func((px - x0) / zoomFactor) * zoomFactor;
+      let py = -val + y0;
+      dot(px, py, color);
+    }
+    // // 坐标轴
+    // hLine(0, y0, 500);
+    // vLine(x0, 0, 500);
+  }
+  drawFunc(120, 320, Math.sin, "#2CAD6F");
+
+  // 画出rgb色彩空间的某一面（尺寸要大于100x100）
+  function drawRGBSpaceTransform(x0, y0, size, matrix = scale(1)) {
+    let pxi, pyi;
+    for (let py = 0; py <= size; py++) {
+      for (let px = 0; px <= size; px++) {
+        [pxi, pyi] = transform(px, py, matrix);
+        dot(
+          x0 + pxi,
+          y0 + pyi,
+          `rgb(${(255 / size) * px}, ${(255 / size) * py}, 255)`
+        );
+      }
+    }
+  }
+  drawRGBSpaceTransform(320, 50, 128);
+  drawRGBSpaceTransform(320, 50, 128, rotation(60));
+  drawRGBSpaceTransform(320, 200, 128, scale(2));
+
+  // 如果做出上一题后，尝试将其每个点的坐标乘以一个矩阵 如(2, 0, 0, 2)或(1, 0.27, 0, 1)得到新的位置，即绘制出被线性变幻后的色彩空间某一面
+  // 可以考虑如下几种矩阵：
+  //    2 0
+  //    0 2
+  //    ------
+  //    1  0.27
+  //    0  1
+  //    ------
+  //    0.5    0.87
+  //    -0.87  0.5
+
+  function transform(x0, y0, matrix) {
+    // assume matrix = [[a00, a01], [a10, a12]]
+    let px = matrix[0][0] * x0 + matrix[0][1] * y0;
+    let py = matrix[1][0] * x0 + matrix[1][1] * y0;
+    return [px, py];
+  }
+  function rotation(angle) {
+    let t = (angle * Math.PI) / 180;
+    return [
+      [Math.cos(t), -Math.sin(t)],
+      [Math.sin(t), Math.cos(t)],
+    ];
+  }
+  function scale(factor) {
+    return [
+      [factor, 0],
+      [0, factor],
+    ];
+  }
+  function skew(angleX, angleY = 0) {
+    radAngleX = (angleX * Math.PI) / 180;
+    radAngleY = (angleY * Math.PI) / 180;
+    if (
+      (angleX != 0 && angleX % 90 == 0) ||
+      (angleY != 0 && angleY % 90 == 0)
+    ) {
+      return [
+        [0, 0],
+        [0, 0],
+      ];
+    }
+    return matrixApply(
+      [
+        [1, 0],
+        [Math.tan(radAngleY), 1],
+      ],
+      [
+        [1, Math.tan(radAngleX)],
+        [0, 1],
+      ]
+    );
+  }
+  // 2 by 2 矩阵乘法
+  function matrixApply() {
+    let result = [
+      [1, 0],
+      [0, 1],
+    ];
+    for (let i = arguments.length - 1; i >= 0; i--) {
+      result = [
+        [
+          arguments[i][0][0] * result[0][0] +
+          arguments[i][0][1] * result[1][0],
+          arguments[i][0][0] * result[0][1] +
+          arguments[i][0][1] * result[1][1],
+        ],
+        [
+          arguments[i][1][0] * result[0][0] +
+          arguments[i][1][1] * result[1][0],
+          arguments[i][1][0] * result[0][1] +
+          arguments[i][1][1] * result[1][1],
+        ],
+      ];
+    }
+    return result;
+  }
+
+  // 尚未实现齐次坐标
+  function translate(x, y) {
+    return [
+      [1, 0, x],
+      [0, 1, y],
+      [0, 0, 1],
+    ];
+  }
+
+  function rectTransform(x0, y0, w, h, matrix = scale(1), color = "black") {
+    let px0 = transform(0, 0, matrix)[0] + x0;
+    let py0 = transform(0, 0, matrix)[1] + y0;
+    let px1 = transform(w, 0, matrix)[0] + x0;
+    let py1 = transform(w, 0, matrix)[1] + y0;
+    let px2 = transform(0, h, matrix)[0] + x0;
+    let py2 = transform(0, h, matrix)[1] + y0;
+    let px3 = transform(w, h, matrix)[0] + x0;
+    let py3 = transform(w, h, matrix)[1] + y0;
+
+    line(px0, py0, px1, py1, color);
+    line(px0, py0, px2, py2, color);
+    line(px1, py1, px3, py3, color);
+    line(px2, py2, px3, py3, color);
+  }
+
+  rectTransform(100, 300, 50, 120, rotation(30));
+  rectTransform(100, 300, 50, 120, rotation(60));
+  rectTransform(100, 300, 50, 120, rotation(-30));
+  rectTransform(100, 300, 50, 120, rotation(-60));
+
+  // Bresenham's line drawing algorithm
+  function line(x1, y1, x2, y2, color = "black") {
+    // assume x1 < x2 && y1 < y2
+    let steep = Math.abs(y1 - y2) / Math.abs(x2 - x1) > 1;
+    if (steep) {
+      // swap the two values
+      [x1, y1] = [y1, x1];
+      [x2, y2] = [y2, x2];
+    }
+    if (x1 > x2) {
+      [x1, x2] = [x2, x1];
+      [y1, y2] = [y2, y1];
+    }
+    let deltaX = x2 - x1;
+    let deltaY = Math.abs(y2 - y1);
+
+    let dy = y1 < y2 ? 1 : -1; // py 增加 或 减少 的值
+    let q = 2 * deltaY - deltaX; // 判断 py是否 增加 或 减少
+
+    let py = y1;
+    for (let px = x1; px <= x2; px++) {
+      if (steep) {
+        dot(py, px, color);
+      } else {
+        dot(px, py, color);
+      }
+      if (q > 0) {
+        py += dy;
+        q += 2 * (deltaY - deltaX);
+      } else {
+        q += 2 * deltaY;
+      }
+    }
+  }
+
+  function angleLine(x0, y0, length, angle, color = "black") {
+    let radAngle = (Math.PI * angle) / 180;
+    let x1 = x0 + length * Math.cos(radAngle);
+    let y1 = y0 + length * Math.sin(radAngle);
+    line(x0, y0, x1, y1, color);
+  }
+
+  for (let angle = 0; angle < 360; angle += 30) {
+    angleLine(300, 250, 100, angle, "#BEA1A5");
+  }
+
+  // Bresenham's Midpoint Circle Algorithm
+  function drawEightSymmetry(x0, y0, x, y, color = "black") {
+    dot(x0 + x, y0 + y, color);
+    dot(x0 - x, y0 + y, color);
+    dot(x0 + x, y0 - y, color);
+    dot(x0 - x, y0 - y, color);
+    dot(x0 + y, y0 + x, color);
+    dot(x0 - y, y0 + x, color);
+    dot(x0 + y, y0 - x, color);
+    dot(x0 - y, y0 - x, color);
+  }
+  function circleB(x0, y0, r, color = "black", fill = false) {
+    let px = 0;
+    let py = r;
+    let d = 3 - 2 * r;
+
+    if (fill) {
+      let yi;
+      while (px < py) {
+        for (yi = 0; yi <= py; yi++) {
+          drawEightSymmetry(x0, y0, px, yi, color);
+        }
+        if (d < 0) {
+          d += 4 * px + 6;
         } else {
-          q += 2 * deltaY;
+          d += 4 * (px - py) + 10;
+          py--;
         }
+        px++;
+      }
+    } else {
+      while (px < py) {
+        drawEightSymmetry(x0, y0, px, py, color);
+        if (d < 0) {
+          d += 4 * px + 6;
+        } else {
+          d += 4 * (px - py) + 10;
+          py--;
+        }
+        px++;
       }
     }
+  }
 
-    function angleLine(x0, y0, length, angle, color = "black") {
-      let radAngle = (Math.PI * angle) / 180;
-      let x1 = x0 + length * Math.cos(radAngle);
-      let y1 = y0 + length * Math.sin(radAngle);
-      line(x0, y0, x1, y1, color);
-    }
+  // draw ellipse
+  // 画 4个象限的对称点
+  function drawFourSymmetry(
+    x0,
+    y0,
+    x,
+    y,
+    matrix = scale(1),
+    color = "black"
+  ) {
+    [x1, y1] = transform(x, y, matrix);
+    [x2, y2] = transform(-x, y, matrix);
+    [x3, y3] = transform(x, -y, matrix);
+    [x4, y4] = transform(-x, -y, matrix);
+    dot(x0 + x1, y0 + y1, color);
+    dot(x0 + x2, y0 + y2, color);
+    dot(x0 + x3, y0 + y3, color);
+    dot(x0 + x4, y0 + y4, color);
+  }
+  function ellipse(x0, y0, rx, ry, fill = false, color = "black") {
+    // x^2 / a + b^2 / y = 1
 
-    for (let angle = 0; angle < 360; angle += 30) {
-      angleLine(300, 250, 100, angle, "#BEA1A5");
-    }
+    let twoASquare = 2 * rx * rx;
+    let twoBSquare = 2 * ry * ry;
 
-    // Bresenham's Midpoint Circle Algorithm
-    function drawEightSymmetry(x0, y0, x, y, color = "black") {
-      dot(x0 + x, y0 + y, color);
-      dot(x0 - x, y0 + y, color);
-      dot(x0 + x, y0 - y, color);
-      dot(x0 - x, y0 - y, color);
-      dot(x0 + y, y0 + x, color);
-      dot(x0 - y, y0 + x, color);
-      dot(x0 + y, y0 - x, color);
-      dot(x0 - y, y0 - x, color);
-    }
-    function circleB(x0, y0, r, color = "black", fill = false) {
-      let px = 0;
-      let py = r;
-      let d = 3 - 2 * r;
-
-      if (fill) {
-        let yi;
-        while (px < py) {
-          for (yi = 0; yi <= py; yi++) {
-            drawEightSymmetry(x0, y0, px, yi, color);
-          }
-          if (d < 0) {
-            d += 4 * px + 6;
-          } else {
-            d += 4 * (px - py) + 10;
-            py--;
-          }
-          px++;
-        }
-      } else {
-        while (px < py) {
-          drawEightSymmetry(x0, y0, px, py, color);
-          if (d < 0) {
-            d += 4 * px + 6;
-          } else {
-            d += 4 * (px - py) + 10;
-            py--;
-          }
-          px++;
-        }
-      }
-    }
-
-    // draw ellipse
-    // 画 4个象限的对称点
-    function drawFourSymmetry(
-      x0,
-      y0,
-      x,
-      y,
-      matrix = scale(1),
-      color = "black"
-    ) {
-      [x1, y1] = transform(x, y, matrix);
-      [x2, y2] = transform(-x, y, matrix);
-      [x3, y3] = transform(x, -y, matrix);
-      [x4, y4] = transform(-x, -y, matrix);
-      dot(x0 + x1, y0 + y1, color);
-      dot(x0 + x2, y0 + y2, color);
-      dot(x0 + x3, y0 + y3, color);
-      dot(x0 + x4, y0 + y4, color);
-    }
-    function ellipse(x0, y0, rx, ry, fill = false, color = "black") {
-      // x^2 / a + b^2 / y = 1
-
-      let twoASquare = 2 * rx * rx;
-      let twoBSquare = 2 * ry * ry;
-
-      if (fill) {
-        // first group
-        let px = rx;
-        let py = 0;
-        let xChange = ry * ry * (1 - 2 * rx);
-        let yChange = rx * rx;
-        let error = 0;
-        let stoppingX = twoBSquare * rx;
-        let stoppingY = 0;
-        while (stoppingX >= stoppingY) {
-          for (let xi = 0; xi <= px; xi++) {
-            drawFourSymmetry(x0, y0, xi, py, scale(1), color);
-          }
-          py++;
-          stoppingY += twoASquare;
-          error += yChange;
-          yChange += twoASquare;
-          if (2 * error + xChange > 0) {
-            px--;
-            stoppingX -= twoBSquare;
-            error += xChange;
-            xChange += twoBSquare;
-          }
-        }
-
-        // second group
-        px = 0;
-        py = ry;
-        xChange = ry * ry;
-        yChange = rx * rx * (1 - 2 * ry);
-        error = 0;
-        stoppingX = 0;
-        stoppingY = twoASquare * ry;
-        while (stoppingX <= stoppingY) {
-          for (let yi = 0; yi <= py; yi++) {
-            drawFourSymmetry(x0, y0, px, yi, scale(1), color);
-          }
-          px++;
-          stoppingX += twoBSquare;
-          error += xChange;
-          xChange += twoBSquare;
-          if (2 * error + yChange > 0) {
-            py--;
-            stoppingY -= twoASquare;
-            error += yChange;
-            yChange += twoASquare;
-          }
-        }
-      } else {
-        // first group
-        let px = rx;
-        let py = 0;
-        let xChange = ry * ry * (1 - 2 * rx);
-        let yChange = rx * rx;
-        let error = 0;
-        let stoppingX = twoBSquare * rx;
-        let stoppingY = 0;
-        while (stoppingX >= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, scale(1), color);
-          py++;
-          stoppingY += twoASquare;
-          error += yChange;
-          yChange += twoASquare;
-          if (2 * error + xChange > 0) {
-            px--;
-            stoppingX -= twoBSquare;
-            error += xChange;
-            xChange += twoBSquare;
-          }
-        }
-
-        // second group
-        px = 0;
-        py = ry;
-        xChange = ry * ry;
-        yChange = rx * rx * (1 - 2 * ry);
-        error = 0;
-        stoppingX = 0;
-        stoppingY = twoASquare * ry;
-        while (stoppingX <= stoppingY) {
-          drawFourSymmetry(x0, y0, px, py, scale(1), color);
-          px++;
-          stoppingX += twoBSquare;
-          error += xChange;
-          xChange += twoBSquare;
-          if (2 * error + yChange > 0) {
-            py--;
-            stoppingY -= twoASquare;
-            error += yChange;
-            yChange += twoASquare;
-          }
-        }
-      }
-    }
-
-    function ellipseTransform(
-      x0,
-      y0,
-      rx,
-      ry,
-      matrix = scale(1),
-      fill = false,
-      color = "black"
-    ) {
-      // x^2 / a + b^2 / y = 1
-
-      let twoASquare = 2 * rx * rx;
-      let twoBSquare = 2 * ry * ry;
-
-      if (fill) {
-        // first group
-        let px = rx;
-        let py = 0;
-        let xChange = ry * ry * (1 - 2 * rx);
-        let yChange = rx * rx;
-        let error = 0;
-        let stoppingX = twoBSquare * rx;
-        let stoppingY = 0;
-        while (stoppingX >= stoppingY) {
-          for (let xi = 0; xi <= px; xi++) {
-            drawFourSymmetry(x0, y0, xi, py, matrix, color);
-          }
-          py++;
-          stoppingY += twoASquare;
-          error += yChange;
-          yChange += twoASquare;
-          if (2 * error + xChange > 0) {
-            px--;
-            stoppingX -= twoBSquare;
-            error += xChange;
-            xChange += twoBSquare;
-          }
-        }
-
-        // second group
-        px = 0;
-        py = ry;
-        xChange = ry * ry;
-        yChange = rx * rx * (1 - 2 * ry);
-        error = 0;
-        stoppingX = 0;
-        stoppingY = twoASquare * ry;
-        while (stoppingX <= stoppingY) {
-          for (let yi = 0; yi <= py; yi++) {
-            drawFourSymmetry(x0, y0, px, yi, matrix, color);
-          }
-          px++;
-          stoppingX += twoBSquare;
-          error += xChange;
-          xChange += twoBSquare;
-          if (2 * error + yChange > 0) {
-            py--;
-            stoppingY -= twoASquare;
-            error += yChange;
-            yChange += twoASquare;
-          }
-        }
-      }
+    if (fill) {
       // first group
       let px = rx;
       let py = 0;
@@ -621,7 +465,9 @@
       let stoppingX = twoBSquare * rx;
       let stoppingY = 0;
       while (stoppingX >= stoppingY) {
-        drawFourSymmetry(x0, y0, px, py, matrix, color);
+        for (let xi = 0; xi <= px; xi++) {
+          drawFourSymmetry(x0, y0, xi, py, scale(1), color);
+        }
         py++;
         stoppingY += twoASquare;
         error += yChange;
@@ -643,7 +489,53 @@
       stoppingX = 0;
       stoppingY = twoASquare * ry;
       while (stoppingX <= stoppingY) {
-        drawFourSymmetry(x0, y0, px, py, matrix, color);
+        for (let yi = 0; yi <= py; yi++) {
+          drawFourSymmetry(x0, y0, px, yi, scale(1), color);
+        }
+        px++;
+        stoppingX += twoBSquare;
+        error += xChange;
+        xChange += twoBSquare;
+        if (2 * error + yChange > 0) {
+          py--;
+          stoppingY -= twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+        }
+      }
+    } else {
+      // first group
+      let px = rx;
+      let py = 0;
+      let xChange = ry * ry * (1 - 2 * rx);
+      let yChange = rx * rx;
+      let error = 0;
+      let stoppingX = twoBSquare * rx;
+      let stoppingY = 0;
+      while (stoppingX >= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, scale(1), color);
+        py++;
+        stoppingY += twoASquare;
+        error += yChange;
+        yChange += twoASquare;
+        if (2 * error + xChange > 0) {
+          px--;
+          stoppingX -= twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+        }
+      }
+
+      // second group
+      px = 0;
+      py = ry;
+      xChange = ry * ry;
+      yChange = rx * rx * (1 - 2 * ry);
+      error = 0;
+      stoppingX = 0;
+      stoppingY = twoASquare * ry;
+      while (stoppingX <= stoppingY) {
+        drawFourSymmetry(x0, y0, px, py, scale(1), color);
         px++;
         stoppingX += twoBSquare;
         error += xChange;
@@ -656,20 +548,130 @@
         }
       }
     }
+  }
 
-    circleB(400, 400, 100, "#A6CFE2", 1);
-    circleB(200, 200, 50, "#00A980");
-    circleB(200, 200, 200, "#00A980");
+  function ellipseTransform(
+    x0,
+    y0,
+    rx,
+    ry,
+    matrix = scale(1),
+    fill = false,
+    color = "black"
+  ) {
+    // x^2 / a + b^2 / y = 1
 
-    ellipse(100, 200, 30, 50, 0, "red");
-    ellipse(100, 260, 50, 20, 1, "#00A980");
+    let twoASquare = 2 * rx * rx;
+    let twoBSquare = 2 * ry * ry;
 
-    ellipseTransform(400, 400, 30, 50);
-    ellipseTransform(400, 400, 30, 50, rotation(90));
-    ellipseTransform(400, 400, 30, 50, rotation(-30));
-    ellipseTransform(400, 400, 30, 50, rotation(30));
-    ellipseTransform(400, 400, 30, 50, rotation(-60));
-    ellipseTransform(400, 400, 30, 50, rotation(-60));
-    circleB(400, 400, 50);
-  </script>
+    if (fill) {
+      // first group
+      let px = rx;
+      let py = 0;
+      let xChange = ry * ry * (1 - 2 * rx);
+      let yChange = rx * rx;
+      let error = 0;
+      let stoppingX = twoBSquare * rx;
+      let stoppingY = 0;
+      while (stoppingX >= stoppingY) {
+        for (let xi = 0; xi <= px; xi++) {
+          drawFourSymmetry(x0, y0, xi, py, matrix, color);
+        }
+        py++;
+        stoppingY += twoASquare;
+        error += yChange;
+        yChange += twoASquare;
+        if (2 * error + xChange > 0) {
+          px--;
+          stoppingX -= twoBSquare;
+          error += xChange;
+          xChange += twoBSquare;
+        }
+      }
+
+      // second group
+      px = 0;
+      py = ry;
+      xChange = ry * ry;
+      yChange = rx * rx * (1 - 2 * ry);
+      error = 0;
+      stoppingX = 0;
+      stoppingY = twoASquare * ry;
+      while (stoppingX <= stoppingY) {
+        for (let yi = 0; yi <= py; yi++) {
+          drawFourSymmetry(x0, y0, px, yi, matrix, color);
+        }
+        px++;
+        stoppingX += twoBSquare;
+        error += xChange;
+        xChange += twoBSquare;
+        if (2 * error + yChange > 0) {
+          py--;
+          stoppingY -= twoASquare;
+          error += yChange;
+          yChange += twoASquare;
+        }
+      }
+    }
+    // first group
+    let px = rx;
+    let py = 0;
+    let xChange = ry * ry * (1 - 2 * rx);
+    let yChange = rx * rx;
+    let error = 0;
+    let stoppingX = twoBSquare * rx;
+    let stoppingY = 0;
+    while (stoppingX >= stoppingY) {
+      drawFourSymmetry(x0, y0, px, py, matrix, color);
+      py++;
+      stoppingY += twoASquare;
+      error += yChange;
+      yChange += twoASquare;
+      if (2 * error + xChange > 0) {
+        px--;
+        stoppingX -= twoBSquare;
+        error += xChange;
+        xChange += twoBSquare;
+      }
+    }
+
+    // second group
+    px = 0;
+    py = ry;
+    xChange = ry * ry;
+    yChange = rx * rx * (1 - 2 * ry);
+    error = 0;
+    stoppingX = 0;
+    stoppingY = twoASquare * ry;
+    while (stoppingX <= stoppingY) {
+      drawFourSymmetry(x0, y0, px, py, matrix, color);
+      px++;
+      stoppingX += twoBSquare;
+      error += xChange;
+      xChange += twoBSquare;
+      if (2 * error + yChange > 0) {
+        py--;
+        stoppingY -= twoASquare;
+        error += yChange;
+        yChange += twoASquare;
+      }
+    }
+  }
+
+  circleB(400, 400, 100, "#A6CFE2", 1);
+  circleB(200, 200, 50, "#00A980");
+  circleB(200, 200, 200, "#00A980");
+
+  ellipse(100, 200, 30, 50, 0, "red");
+  ellipse(100, 260, 50, 20, 1, "#00A980");
+
+  ellipseTransform(400, 400, 30, 50);
+  ellipseTransform(400, 400, 30, 50, rotation(90));
+  ellipseTransform(400, 400, 30, 50, rotation(-30));
+  ellipseTransform(400, 400, 30, 50, rotation(30));
+  ellipseTransform(400, 400, 30, 50, rotation(-60));
+  ellipseTransform(400, 400, 30, 50, rotation(-60));
+  circleB(400, 400, 50);
+</script>
+
 </html>

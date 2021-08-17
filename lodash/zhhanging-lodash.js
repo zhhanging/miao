@@ -1,7 +1,7 @@
 var zhhanging = (function () {
   function chunk(array, size = 1) {
     let result = [];
-    for (let i = 0; i < array.length; ) {
+    for (let i = 0; i < array.length;) {
       let piece = [];
       for (let j = 0; j < size; j++) {
         if (!array[i]) break;

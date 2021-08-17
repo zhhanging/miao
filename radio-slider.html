@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,9 +13,11 @@
       height: 400px;
       position: relative;
     }
+
     div.main input {
       display: none;
     }
+
     div.main div.labels {
       width: 100%;
       height: 50px;
@@ -24,6 +27,7 @@
       bottom: 20px;
       z-index: 5;
     }
+
     div.main div.labels label {
       box-sizing: border-box;
       width: 50px;
@@ -31,11 +35,13 @@
       border-radius: 999px;
       background-color: #6ccccc;
     }
+
     div.image {
       width: 600px;
       height: 400px;
       font-size: 0;
     }
+
     div.image div {
       display: inline-block;
       box-sizing: border-box;
@@ -45,14 +51,17 @@
       position: relative;
       overflow: hidden;
     }
+
     @keyframes slideout {
       from {
         right: 0;
       }
+
       to {
         right: -100%;
       }
     }
+
     div.image div span {
       width: 150px;
       height: 400px;
@@ -60,12 +69,15 @@
       right: 100%;
       animation: slideout 1s;
     }
+
     div.image div:nth-child(2) span {
       background-position: -150px 0;
     }
+
     div.image div:nth-child(3) span {
       background-position: -300px 0;
     }
+
     div.image div:nth-child(4) span {
       background-position: -450px 0;
     }
@@ -73,33 +85,39 @@
     div.image div span:nth-child(1) {
       background-image: url(radio-slider-images/1.jpg);
     }
+
     div.image div span:nth-child(2) {
       background-image: url(radio-slider-images/2.jpg);
     }
+
     div.image div span:nth-child(3) {
       background-image: url(radio-slider-images/3.jpg);
     }
+
     div.image div span:nth-child(4) {
       background-image: url(radio-slider-images/4.jpg);
     }
-    input:nth-child(1):checked ~ div.image span:nth-child(1),
-    input:nth-child(2):checked ~ div.image span:nth-child(2),
-    input:nth-child(3):checked ~ div.image span:nth-child(3),
-    input:nth-child(4):checked ~ div.image span:nth-child(4){
+
+    input:nth-child(1):checked~div.image span:nth-child(1),
+    input:nth-child(2):checked~div.image span:nth-child(2),
+    input:nth-child(3):checked~div.image span:nth-child(3),
+    input:nth-child(4):checked~div.image span:nth-child(4) {
       right: 0;
       z-index: 1;
       transition: 1s;
       animation: none;
     }
-    input:nth-child(1):checked ~ div.labels label:nth-child(1),
-    input:nth-child(2):checked ~ div.labels label:nth-child(2),
-    input:nth-child(3):checked ~ div.labels label:nth-child(3),
-    input:nth-child(4):checked ~ div.labels label:nth-child(4) {
+
+    input:nth-child(1):checked~div.labels label:nth-child(1),
+    input:nth-child(2):checked~div.labels label:nth-child(2),
+    input:nth-child(3):checked~div.labels label:nth-child(3),
+    input:nth-child(4):checked~div.labels label:nth-child(4) {
       background-color: #182c51;
       border: 5px solid #8ed9d6;
     }
   </style>
 </head>
+
 <body>
   <div class="main">
     <input type="radio" name="slider" id="s1" checked>
@@ -117,4 +135,5 @@
     </div>
   </div>
 </body>
+
 </html>

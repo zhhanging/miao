@@ -1,108 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Note! It's a Book</title>
-  </head>
-  <body>
-    <select name="note-list" id="note-list"></select>
-    <button id="new-button">New</button>
-    <button id="del-button">Delete</button>
-    <br />
-    <textarea name="" id="cur-note" cols="30" rows="10"></textarea>
 
-    <script>
-      let noteList = document.querySelector("#note-list");
-      let newButton = document.querySelector("#new-button");
-      let delButton = document.querySelector("#del-button");
-      let curNote = document.querySelector("#cur-note");
-      let id = 0;
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note! It's a Book</title>
+</head>
 
-      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+<body>
+  <select name="note-list" id="note-list"></select>
+  <button id="new-button">New</button>
+  <button id="del-button">Delete</button>
+  <br />
+  <textarea name="" id="cur-note" cols="30" rows="10"></textarea>
 
-      function addToList(note) {
-        let option = document.createElement("option");
-        option.textContent = note.content.slice(0, 16) || "[ Empty ]";
-        option.value = note.id;
-        noteList.append(option);
-      }
+  <script>
+    let noteList = document.querySelector("#note-list");
+    let newButton = document.querySelector("#new-button");
+    let delButton = document.querySelector("#del-button");
+    let curNote = document.querySelector("#cur-note");
+    let id = 0;
 
-      for (let note of notes.reverse()) {
-        addToList(note);
-      }
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-      newButton.addEventListener("click", function () {
-        let note = { id: Math.random().toFixed(8).toString().slice(2) + "-" + id++, content: "" };
-        notes.push(note);
-        addToList(note);
-        localStorage.setItem("notes", JSON.stringify(notes));
-        noteList.value = note.id;
-        curNote.value = note.content;
-      });
+    function addToList(note) {
+      let option = document.createElement("option");
+      option.textContent = note.content.slice(0, 16) || "[ Empty ]";
+      option.value = note.id;
+      noteList.append(option);
+    }
 
-      delButton.addEventListener("click", function () {
-        let delId = noteList.value;
-        console.log("deleting", delId);
-        for (let option of noteList.children) {
-          if (delId == option.value) {
-            noteList.removeChild(option);
-            break;
-          }
+    for (let note of notes.reverse()) {
+      addToList(note);
+    }
+
+    newButton.addEventListener("click", function () {
+      let note = { id: Math.random().toFixed(8).toString().slice(2) + "-" + id++, content: "" };
+      notes.push(note);
+      addToList(note);
+      localStorage.setItem("notes", JSON.stringify(notes));
+      noteList.value = note.id;
+      curNote.value = note.content;
+    });
+
+    delButton.addEventListener("click", function () {
+      let delId = noteList.value;
+      console.log("deleting", delId);
+      for (let option of noteList.children) {
+        if (delId == option.value) {
+          noteList.removeChild(option);
+          break;
         }
-        for (let i = 0; i < notes.length; i++) {
-          if (notes[i].id == delId) {
-            notes.splice(i, 1);
-            if (notes.length == 0) {
-              newButton.click();
-              return;
-            }
-            noteList.value = noteList[i].value;
-            curNote.value = notes[i].content;
-            break;
-          }
-        }
-
-        localStorage.setItem("notes", JSON.stringify(notes));
-      });
-
-      noteList.addEventListener("change", function (e) {
-        for (let note of notes) {
-          if (note.id == noteList.value) {
-            curNote.value = note.content;
+      }
+      for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id == delId) {
+          notes.splice(i, 1);
+          if (notes.length == 0) {
+            newButton.click();
             return;
           }
+          noteList.value = noteList[i].value;
+          curNote.value = notes[i].content;
+          break;
         }
-      });
-      function update() {
-        for (let note of notes) {
-          if (note.id == noteList.value) {
-            note.content = curNote.value;
-            for (let option of noteList.children) {
-              if (note.id == option.value) {
-                option.textContent = note.content.slice(0, 16) || "[ Empty ]";
-                break;
-              }
-            }
-            break;
-          }
-        }
-        localStorage.setItem("notes", JSON.stringify(notes));
       }
-      let inputTimeoutId = 0;
-      curNote.addEventListener("input", function () {
-        clearTimeout(inputTimeoutId);
-        inputTimeoutId = setTimeout(() => {
-          update();
-        }, 800);
-      });
 
-      if (notes.length == 0) {
-        console.log("empty");
-        newButton.click();
+      localStorage.setItem("notes", JSON.stringify(notes));
+    });
+
+    noteList.addEventListener("change", function (e) {
+      for (let note of notes) {
+        if (note.id == noteList.value) {
+          curNote.value = note.content;
+          return;
+        }
       }
-      curNote.value = notes[0].content;
-    </script>
-  </body>
+    });
+    function update() {
+      for (let note of notes) {
+        if (note.id == noteList.value) {
+          note.content = curNote.value;
+          for (let option of noteList.children) {
+            if (note.id == option.value) {
+              option.textContent = note.content.slice(0, 16) || "[ Empty ]";
+              break;
+            }
+          }
+          break;
+        }
+      }
+      localStorage.setItem("notes", JSON.stringify(notes));
+    }
+    let inputTimeoutId = 0;
+    curNote.addEventListener("input", function () {
+      clearTimeout(inputTimeoutId);
+      inputTimeoutId = setTimeout(() => {
+        update();
+      }, 800);
+    });
+
+    if (notes.length == 0) {
+      console.log("empty");
+      newButton.click();
+    }
+    curNote.value = notes[0].content;
+  </script>
+</body>
+
 </html>

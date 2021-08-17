@@ -2,14 +2,17 @@
   font-family: Vogue;
   src: url(Vogue.ttf);
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 html,
 body {
   margin: 0;
@@ -17,6 +20,7 @@ body {
   height: 100%;
   min-width: 440px;
 }
+
 main {
   height: 100%;
   width: 100%;
@@ -55,21 +59,26 @@ main {
         &:nth-child(#{$i}) {
           transform: rotate(30deg * $i);
         }
+
         &:nth-child(#{$i}) span {
           transform: rotate(-30deg * $i);
         }
       }
     }
   }
+
   .second-hand {
     animation: spin 60s steps(240) infinite;
   }
+
   .minute-hand {
     animation: spin 3600s linear infinite;
   }
+
   .hour-hand {
     animation: spin 43200s linear infinite;
   }
+
   .hand {
     display: flex;
     justify-content: center;
@@ -81,6 +90,7 @@ main {
     left: calc(50% - 10px);
     transform-origin: bottom;
     animation-delay: -30463s;
+
     &::after {
       content: "";
       display: block;
@@ -92,6 +102,7 @@ main {
       box-shadow: 0 0 10px -2px black;
       border-radius: 50%;
     }
+
     .pointer {
       position: absolute;
       bottom: -20px;
@@ -103,16 +114,19 @@ main {
       border-radius: 50% / 10px 10px 0 0;
       box-shadow: 0 0 10px -2px black;
     }
+
     .hour-pointer {
       height: 50%;
       bottom: -15px;
       border-width: 4px;
       border-radius: 50% / 20px 20px 0 0;
     }
+
     .minute-pointer {
       height: 90%;
       border-width: 4px;
     }
+
     .second-pointer {
       border-width: 1px;
       border-color: red;

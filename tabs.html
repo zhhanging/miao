@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Let There Be Tabs!</title>
-    <style>
-      button.active {
-        background-color: green;
-        color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="wrapper">
-      <p data-tabname="one" style="display: none">
-        p1: Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus eum, eos a sequi
-        aut reiciendis non iste doloribus beatae neque obcaecati saepe exercitationem illum magni
-        alias quia blanditiis omnis porro.
-      </p>
-      <p data-tabname="two" style="display: none">
-        p2: Iste aperiam, sed dignissimos beatae aut, aliquam perferendis facilis commodi impedit
-        deserunt repudiandae officiis labore dolorem neque facere? Sint vel voluptates alias sit
-        modi tempore accusantium, repellendus assumenda? Exercitationem, earum.
-      </p>
-      <p data-tabname="three" style="display: none">
-        p3: Impedit beatae sed voluptatibus temporibus soluta, labore facere veniam quos.
-        Exercitationem aut deserunt rerum, consectetur quae asperiores sint sapiente itaque. Facere
-        corrupti doloremque hic ullam quisquam omnis eaque. Voluptate, possimus?
-      </p>
-    </div>
 
-    <script>
-      function asTabs(node) {
-        let wrapper = document.querySelector("#wrapper");
-        let passages = Array.from(document.querySelectorAll("#wrapper > p"));
-        let buttons = [];
-        for (let p of passages) {
-          let button = document.createElement("button");
-          buttons.push(button);
-          button.textContent = p.dataset.tabname;
-          button.style.margin = "0 5px";
-          wrapper.insertBefore(button, passages[0]);
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Let There Be Tabs!</title>
+  <style>
+    button.active {
+      background-color: green;
+      color: white;
+    }
+  </style>
+</head>
 
-          button.addEventListener("click", function (e) {
-            for (let para of passages) {
-              para.style.display = "none";
-            }
-            p.style.display = "block";
-            for (let button of buttons) {
-              button.classList.remove("active");
-            }
-            button.classList.add("active");
-          });
-        }
-        buttons[0].click();
+<body>
+  <div id="wrapper">
+    <p data-tabname="one" style="display: none">
+      p1: Lorem ipsum, dolor sit amet consectetur adipisicing elit. Temporibus eum, eos a sequi
+      aut reiciendis non iste doloribus beatae neque obcaecati saepe exercitationem illum magni
+      alias quia blanditiis omnis porro.
+    </p>
+    <p data-tabname="two" style="display: none">
+      p2: Iste aperiam, sed dignissimos beatae aut, aliquam perferendis facilis commodi impedit
+      deserunt repudiandae officiis labore dolorem neque facere? Sint vel voluptates alias sit
+      modi tempore accusantium, repellendus assumenda? Exercitationem, earum.
+    </p>
+    <p data-tabname="three" style="display: none">
+      p3: Impedit beatae sed voluptatibus temporibus soluta, labore facere veniam quos.
+      Exercitationem aut deserunt rerum, consectetur quae asperiores sint sapiente itaque. Facere
+      corrupti doloremque hic ullam quisquam omnis eaque. Voluptate, possimus?
+    </p>
+  </div>
+
+  <script>
+    function asTabs(node) {
+      let wrapper = document.querySelector("#wrapper");
+      let passages = Array.from(document.querySelectorAll("#wrapper > p"));
+      let buttons = [];
+      for (let p of passages) {
+        let button = document.createElement("button");
+        buttons.push(button);
+        button.textContent = p.dataset.tabname;
+        button.style.margin = "0 5px";
+        wrapper.insertBefore(button, passages[0]);
+
+        button.addEventListener("click", function (e) {
+          for (let para of passages) {
+            para.style.display = "none";
+          }
+          p.style.display = "block";
+          for (let button of buttons) {
+            button.classList.remove("active");
+          }
+          button.classList.add("active");
+        });
       }
-      asTabs(document.querySelector("#wrapper"));
-    </script>
-  </body>
+      buttons[0].click();
+    }
+    asTabs(document.querySelector("#wrapper"));
+  </script>
+</body>
+
 </html>

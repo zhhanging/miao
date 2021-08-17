@@ -1,91 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drag</title>
-    <style>
-      div.block {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        border: 2px solid;
-        user-select: none;
-        font-size: 100px;
-        line-height: 100px;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="block" style="top: 100px; left: 100px; background-color: lightblue">1</div>
-      <div class="block" style="top: 130px; left: 120px; background-color: lightcoral">2</div>
-      <div class="block" style="top: 150px; left: 150px; background-color: lightgreen">3</div>
-    </main>
 
-    <script>
-      let divs = document.querySelectorAll(".block");
-      let stickyFactor = 25;
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drag</title>
+  <style>
+    div.block {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      border: 2px solid;
+      user-select: none;
+      font-size: 100px;
+      line-height: 100px;
+      text-align: center;
+    }
+  </style>
+</head>
 
-      // 获取鼠标事件发生时鼠标相对元素的位置
-      function getReletivePos(node) {
-        let rect = node.getBoundingClientRect();
-        return {
-          x: window.event.clientX - rect.x,
-          y: window.event.clientY - rect.y,
-        };
-      }
-      window.addEventListener("resize", resize);
-      function resize(e) {
-        Array.from(divs).forEach((div) => {
-          let rect = div.getBoundingClientRect();
-          if (rect.x > window.innerWidth - rect.width) {
-            console.log(rect.x, window.innerWidth - rect.x)
-            div.style.left = window.innerWidth - rect.width + "px";
-          }
-          if (rect.y > window.innerHeight - rect.height) {
-            div.style.top = window.innerHeight - rect.height + "px";
-          }
-        });
-      }
+<body>
+  <main>
+    <div class="block" style="top: 100px; left: 100px; background-color: lightblue">1</div>
+    <div class="block" style="top: 130px; left: 120px; background-color: lightcoral">2</div>
+    <div class="block" style="top: 150px; left: 150px; background-color: lightgreen">3</div>
+  </main>
 
+  <script>
+    let divs = document.querySelectorAll(".block");
+    let stickyFactor = 25;
+
+    // 获取鼠标事件发生时鼠标相对元素的位置
+    function getReletivePos(node) {
+      let rect = node.getBoundingClientRect();
+      return {
+        x: window.event.clientX - rect.x,
+        y: window.event.clientY - rect.y,
+      };
+    }
+    window.addEventListener("resize", resize);
+    function resize(e) {
       Array.from(divs).forEach((div) => {
-        div.addEventListener("mousedown", function (e) {
-          let pos = getReletivePos(div);
-          if (e.button == 0) {
-            div.parentNode.insertBefore(div, null); // 把正在拖动的元素放到末尾，以在顶层显示
-
-            window.addEventListener("mousemove", move);
-            window.addEventListener("mouseup", reset);
-          }
-          function move(e) {
-            let x = e.pageX - pos.x;
-            let y = e.pageY - pos.y;
-            let rect = div.getBoundingClientRect();
-            if (x < stickyFactor) {
-              x = 0;
-            }
-            if (y < stickyFactor) {
-              y = 0;
-            }
-            if (x > window.innerWidth - rect.width - stickyFactor) {
-              x = window.innerWidth - rect.width;
-            }
-            if (y > window.innerHeight - rect.height - stickyFactor) {
-              y = window.innerHeight - rect.height;
-            }
-
-            div.style.left = x + "px";
-            div.style.top = y + "px";
-          }
-
-          function reset(e) {
-            window.removeEventListener("mousemove", move);
-          }
-        });
+        let rect = div.getBoundingClientRect();
+        if (rect.x > window.innerWidth - rect.width) {
+          console.log(rect.x, window.innerWidth - rect.x)
+          div.style.left = window.innerWidth - rect.width + "px";
+        }
+        if (rect.y > window.innerHeight - rect.height) {
+          div.style.top = window.innerHeight - rect.height + "px";
+        }
       });
-    </script>
-  </body>
+    }
+
+    Array.from(divs).forEach((div) => {
+      div.addEventListener("mousedown", function (e) {
+        let pos = getReletivePos(div);
+        if (e.button == 0) {
+          div.parentNode.insertBefore(div, null); // 把正在拖动的元素放到末尾，以在顶层显示
+
+          window.addEventListener("mousemove", move);
+          window.addEventListener("mouseup", reset);
+        }
+        function move(e) {
+          let x = e.pageX - pos.x;
+          let y = e.pageY - pos.y;
+          let rect = div.getBoundingClientRect();
+          if (x < stickyFactor) {
+            x = 0;
+          }
+          if (y < stickyFactor) {
+            y = 0;
+          }
+          if (x > window.innerWidth - rect.width - stickyFactor) {
+            x = window.innerWidth - rect.width;
+          }
+          if (y > window.innerHeight - rect.height - stickyFactor) {
+            y = window.innerHeight - rect.height;
+          }
+
+          div.style.left = x + "px";
+          div.style.top = y + "px";
+        }
+
+        function reset(e) {
+          window.removeEventListener("mousemove", move);
+        }
+      });
+    });
+  </script>
+</body>
+
 </html>

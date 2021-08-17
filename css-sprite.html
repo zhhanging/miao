@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +14,8 @@
       background-size: cover;
       background-position: center;
     }
-    .gomez{
+
+    .gomez {
       background-image: url(FEZ-Gomez.png);
       background-repeat: no-repeat;
       width: 140px;
@@ -22,48 +24,63 @@
       display: block;
       border: 1px solid #000;
     }
+
     .spin-01 {
       background-position: 0 0;
     }
+
     .spin-02 {
       background-position: -140px 0;
     }
+
     .spin-03 {
       background-position: -280px 0;
     }
+
     .spin-04 {
       background-position: -420px 0;
     }
+
     .spin-05 {
       background-position: -560px 0;
     }
+
     .spin-06 {
       background-position: -700px 0;
     }
+
     .spin-07 {
       background-position: -840px 0;
     }
+
     .spin-08 {
       background-position: -980px 0;
     }
+
     .spin-09 {
       background-position: -1120px 0;
     }
+
     .spin-10 {
       background-position: -1260px 0;
     }
+
     .spin-11 {
       background-position: -1400px 0;
     }
+
     .spin-12 {
       background-position: -1540px 0;
     }
+
     .spin-13 {
       background-position: -1680px 0;
     }
+
     .spin-14 {
       background-position: -1820px 0;
     }
+
     .spin-15 {
       background-position: -1960px 0;
     }
@@ -71,42 +88,74 @@
     .move {
       position: fixed;
       border: none;
-      animation: 
-        moveX 1s steps(15) infinite, 
+      animation:
+        moveX 1s steps(15) infinite,
         leftToRight 13s linear infinite,
         topToBottom 17s linear infinite,
         rotate 5s linear infinite;
       animation-play-state: running, running, running, paused;
     }
+
     .move:hover {
       /* animation: moveX 0.2s steps(15) infinite; */
-      animation: 
-        moveX 0.2s steps(15) infinite, 
+      animation:
+        moveX 0.2s steps(15) infinite,
         leftToRight 13s linear infinite,
         topToBottom 17s linear infinite,
         rotate 5s linear infinite;
       animation-play-state: running, paused, paused, running;
     }
+
     @keyframes moveX {
-      from {background-position-x: 0;}
-      to {background-position-x: -2100px;}
+      from {
+        background-position-x: 0;
+      }
+
+      to {
+        background-position-x: -2100px;
+      }
     }
+
     @keyframes leftToRight {
-      from {left: 0;}
-      50% {left: calc(100% - 142px);}
-      to {left: 0;}
+      from {
+        left: 0;
+      }
+
+      50% {
+        left: calc(100% - 142px);
+      }
+
+      to {
+        left: 0;
+      }
     }
+
     @keyframes topToBottom {
-      from {top: 0;}
-      50% {top: calc(100% - 212px);}
-      to {top: 0;}
+      from {
+        top: 0;
+      }
+
+      50% {
+        top: calc(100% - 212px);
+      }
+
+      to {
+        top: 0;
+      }
     }
+
     @keyframes rotate {
-      from {transform: rotate(0);}
-      to {transform: rotate(360deg);}
+      from {
+        transform: rotate(0);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="gomez move"></div>
   <div class="gomez spin-01"></div>
@@ -125,4 +174,5 @@
   <div class="gomez spin-14"></div>
   <div class="gomez spin-15"></div>
 </body>
+
 </html>
