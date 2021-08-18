@@ -6,105 +6,312 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Note! It's a Book</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .main-container {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+    }
+
+    header {
+      box-sizing: border-box;
+      height: 50px;
+      border-bottom: 1px solid rgb(238, 238, 238);
+      padding-left: 10px;
+    }
+
+    header h2 {
+      margin: 0;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    div.note-container {
+      height: calc(100% - 50px);
+      display: flex;
+      flex: 1;
+    }
+
+    aside {
+      height: 100%;
+      width: 200px;
+      flex-shrink: 0;
+    }
+
+    aside .buttons {
+      box-sizing: border-box;
+      border-bottom: 1px solid rgb(238, 238, 238);
+      padding: 0;
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+    aside .buttons button {
+      width: 100px;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: 1px solid rgb(238, 238, 238);
+      background-color: #fff;
+      transition: all 300ms ease;
+    }
+    aside .buttons button:hover {
+      background-color: rgb(238, 238, 238);
+    }
+
+    aside ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+    }
+
+    aside ul li {
+      box-sizing: border-box;
+      padding: 10px;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid rgb(238, 238, 238);
+    }
+
+    aside ul li.active {
+      /* color: red; */
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 24px -12px;
+      z-index: 2;
+    }
+
+    aside ul li:hover::before {
+      background: rgb(235, 235, 235);
+    }
+
+    aside ul li.active::before {
+      background: rgb(15, 124, 255);
+    }
+
+    aside ul li::before {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+      transition: all 300ms ease 0s;
+    }
+
+    aside h4,
+    aside p {
+      margin: 5px 0;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-flow: column;
+      background-color: #f9f9f9;
+    }
+
+    main .title {
+      box-sizing: border-box;
+      height: 50px;
+      padding: 0 10px;
+      border-bottom: 1px solid rgb(238, 238, 238);
+    }
+
+    main .title input {
+      display: block;
+      height: 100%;
+      background-color: inherit;
+      border: none;
+      margin: 0;
+      width: 100%;
+      font-size: 2em;
+    }
+
+    main .title input:focus {
+      outline: none;
+    }
+
+    main .content {
+      padding: 0 10px;
+      flex: 1
+    }
+
+    main .content textarea {
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      font-size: 1.2em;
+      border: none;
+      background-color: inherit;
+    }
+
+    main .content textarea:focus {
+      outline: none;
+    }
+  </style>
 </head>
 
 <body>
-  <select name="note-list" id="note-list"></select>
-  <button id="new-button">New</button>
-  <button id="del-button">Delete</button>
-  <br />
-  <textarea name="" id="cur-note" cols="30" rows="10"></textarea>
+  <div class="main-container">
+    <header>
+      <h2>Notebook</h2>
+    </header>
+
+    <div class="note-container">
+      <aside>
+        <div class="buttons">
+          <button id="new-button">+</button>
+          <button id="del-button">Delete</button>
+        </div>
+        <ul id="notelist"> </ul>
+      </aside>
+      <main>
+        <div class="title">
+          <input type="text" name="" id="cur-title" placeholder="请输入笔记标题">
+        </div>
+        <div class="content">
+          <textarea name="" id="cur-note"></textarea>
+        </div>
+      </main>
+    </div>
+  </div>
 
   <script>
-    let noteList = document.querySelector("#note-list");
+    let noteList = document.querySelector("#notelist");
     let newButton = document.querySelector("#new-button");
     let delButton = document.querySelector("#del-button");
+    let curTitle = document.querySelector("#cur-title");
     let curNote = document.querySelector("#cur-note");
-    let id = 0;
+    let noteID = 0;
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    let workingNote = null;
 
-    function addToList(note) {
-      let option = document.createElement("option");
-      option.textContent = note.content.slice(0, 16) || "[ Empty ]";
-      option.value = note.id;
-      noteList.append(option);
+    function getAllNotes() {
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+      return notes.sort((a, b) => a.updateTime > b.updateTime ? -1 : 1)
     }
 
-    for (let note of notes.reverse()) {
-      addToList(note);
+    function updateNoteList() {
+      noteList.innerHTML = ""
+      let notes = getAllNotes();
+      if (notes.length == 0) {
+        let p = document.createElement("p");
+        p.textContent = "没有笔记，点击 \"+\" 按钮新建一条笔记";
+        noteList.append(p)
+        curTitle.value = "";
+        curNote.value = "";
+        curTitle.toggleAttribute("disabled")
+        curNote.toggleAttribute("disabled")
+      } else {
+        for (let note of notes) {
+          let li = document.createElement("li");
+          noteList.append(li);
+
+          li.classList.add("notelist-item");
+          let title = document.createElement("h4");
+          title.textContent = note.title || "无标题";
+          li.append(title)
+          let time = document.createElement("p");
+          time.textContent = new Date(note.updateTime).toDateString();
+          li.append(time);
+
+          li.addEventListener("click", function (e) {
+            workingNote = note;
+            curTitle.value = workingNote.title;
+            curNote.value = workingNote.content;
+            for (let child of noteList.children) {
+              child.classList.remove("active");
+            }
+            li.classList.add("active");
+          })
+        }
+        noteList.children[0].classList.add("active");
+        workingNote = notes[0];
+        curTitle.removeAttribute("disabled")
+        curNote.removeAttribute("disabled")
+        curTitle.value = workingNote.title;
+        curNote.value = workingNote.content;
+      }
+    }
+
+    function createNewNote() {
+      let id = Math.random().toFixed(8).toString().slice(2) + "-" + noteID++;
+      return {
+        id: id,
+        content: "",
+        title: "",
+        createTime: new Date(),
+        updateTime: new Date(),
+      };
+    }
+
+    function saveNote(n) {
+      n.updateTime = new Date();
+      let notes = getAllNotes();
+      let note = notes.find((item) => item.id == n.id)
+      if (note) {
+        note.title = n.title;
+        note.content = n.content;
+        note.updateTime = new Date();
+      } else {
+        notes.push(n);
+      }
+      localStorage.setItem("notes", JSON.stringify(notes));
+      updateNoteList()
+    }
+
+    function deleteNote(n) {
+      // if (window.confirm(`Do you really want to delete note "${n.title}"?`)) {
+      let notes = getAllNotes();
+      let newNotes = notes.filter((item) => item.id != n.id);
+      localStorage.setItem("notes", JSON.stringify(newNotes));
+      // }
+      updateNoteList()
     }
 
     newButton.addEventListener("click", function () {
-      let note = { id: Math.random().toFixed(8).toString().slice(2) + "-" + id++, content: "" };
-      notes.push(note);
-      addToList(note);
-      localStorage.setItem("notes", JSON.stringify(notes));
-      noteList.value = note.id;
-      curNote.value = note.content;
+      let note = createNewNote();
+      workingNote = note;
+      curNote.value = workingNote.content;
+      curTitle.value = workingNote.title;
+      saveNote(note);
+      updateNoteList()
     });
 
     delButton.addEventListener("click", function () {
-      let delId = noteList.value;
-      console.log("deleting", delId);
-      for (let option of noteList.children) {
-        if (delId == option.value) {
-          noteList.removeChild(option);
-          break;
-        }
-      }
-      for (let i = 0; i < notes.length; i++) {
-        if (notes[i].id == delId) {
-          notes.splice(i, 1);
-          if (notes.length == 0) {
-            newButton.click();
-            return;
-          }
-          noteList.value = noteList[i].value;
-          curNote.value = notes[i].content;
-          break;
-        }
-      }
-
-      localStorage.setItem("notes", JSON.stringify(notes));
+      let notes = getAllNotes()
+      let toBeDeleted = notes.find((item) => item.id == workingNote.id)
+      deleteNote(toBeDeleted);
     });
 
-    noteList.addEventListener("change", function (e) {
-      for (let note of notes) {
-        if (note.id == noteList.value) {
-          curNote.value = note.content;
-          return;
-        }
-      }
+    let inputTitleTimeoutId = 0;
+    let inputContentTimeoutId = 0;
+    curTitle.addEventListener("input", function () {
+      clearTimeout(inputTitleTimeoutId);
+      inputTitleTimeoutId = setTimeout(() => {
+        workingNote.title = curTitle.value;
+        workingNote.updateTime = new Date();
+        saveNote(workingNote);
+      }, 800);
     });
-    function update() {
-      for (let note of notes) {
-        if (note.id == noteList.value) {
-          note.content = curNote.value;
-          for (let option of noteList.children) {
-            if (note.id == option.value) {
-              option.textContent = note.content.slice(0, 16) || "[ Empty ]";
-              break;
-            }
-          }
-          break;
-        }
-      }
-      localStorage.setItem("notes", JSON.stringify(notes));
-    }
-    let inputTimeoutId = 0;
     curNote.addEventListener("input", function () {
-      clearTimeout(inputTimeoutId);
-      inputTimeoutId = setTimeout(() => {
-        update();
+      clearTimeout(inputContentTimeoutId);
+      inputContentTimeoutId = setTimeout(() => {
+        workingNote.content = curNote.value;
+        workingNote.updateTime = new Date();
+        saveNote(workingNote);
       }, 800);
     });
 
-    if (notes.length == 0) {
-      console.log("empty");
-      newButton.click();
-    }
-    curNote.value = notes[0].content;
+    updateNoteList()
   </script>
 </body>
 
