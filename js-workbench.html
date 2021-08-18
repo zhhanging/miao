@@ -9,7 +9,38 @@
 </head>
 
 <body>
+  <textarea id="code">console.log("Hello");</textarea>
+  <button id="button">Run</button>
+  <pre id="output"></pre>
 
+  <script>
+    let code = document.querySelector("#code")
+    let runButton = document.querySelector("#button")
+    let output = document.querySelector("#output")
+
+    // get console logs
+    console.stdlog = console.log.bind(console);
+
+    console.log = function () {
+      output.textContent += Array.from(arguments) + "\n";
+      console.stdlog.apply(console, arguments);
+    }
+
+    function evalAndRun(codeStr) {
+      try {
+        return eval(codeStr);
+      } catch (e) {
+        return e.toString()
+      }
+    }
+
+    runButton.addEventListener("click", function () {
+      output.textContent = ""
+      let returnVal = evalAndRun(code.value);
+      output.textContent += returnVal + "\n";
+    })
+
+  </script>
 </body>
 
 </html>
