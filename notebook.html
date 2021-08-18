@@ -195,7 +195,7 @@
     let workingNote = null;
 
     function getAllNotes() {
-      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+      let notes = JSON.parse(localStorage.getItem("user-notes")) || [];
       return notes.sort((a, b) => a.updateTime > b.updateTime ? -1 : 1)
     }
 
@@ -264,7 +264,7 @@
       } else {
         notes.push(n);
       }
-      localStorage.setItem("notes", JSON.stringify(notes));
+      localStorage.setItem("user-notes", JSON.stringify(notes));
       updateNoteList()
     }
 
@@ -272,7 +272,7 @@
       // if (window.confirm(`Do you really want to delete note "${n.title}"?`)) {
       let notes = getAllNotes();
       let newNotes = notes.filter((item) => item.id != n.id);
-      localStorage.setItem("notes", JSON.stringify(newNotes));
+      localStorage.setItem("user-notes", JSON.stringify(newNotes));
       // }
       updateNoteList()
     }
