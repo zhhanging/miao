@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <textarea id="code">console.log("Hello");</textarea>
+  <textarea id="code" cols="30", rows="10">console.log("Hello");</textarea>
   <button id="button">Run</button>
   <pre id="output"></pre>
 
@@ -21,9 +21,9 @@
     // get console logs
     console.stdlog = console.log.bind(console);
 
-    console.log = function () {
-      output.textContent += Array.from(arguments) + "\n";
-      console.stdlog.apply(console, arguments);
+    console.log = function (...args) {
+      output.textContent += args.join(" ") + "\n";
+      console.stdlog.apply(console, args);
     }
 
     function evalAndRun(codeStr) {
