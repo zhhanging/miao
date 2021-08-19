@@ -12,22 +12,27 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden;
     }
 
     .main-container {
       background-color: lightgrey;
       height: 100%;
-      min-width: 420px;
+      min-width: 450px;
       display: flex;
       flex-flow: column;
       justify-content: center;
+      overflow: hidden;
     }
 
     header {
       display: flex;
+      flex: 0 0 auto;
       align-items: center;
       height: 30px;
+      min-height: 30px;
       padding: 5px;
+      flex-grow: 0;
     }
 
     header>* {
@@ -52,11 +57,11 @@
     }
 
     div.board {
-      flex: 1;
+      flex: 1 1 auto;
       display: flex;
       max-width: 100%;
       position: relative;
-      cursor: crosshair;
+      overflow: hidden;
     }
 
     aside {
@@ -109,43 +114,45 @@
       margin-bottom: 5px;
     }
 
-    svg {
-      background-color: white;
-      flex-grow: 1;
-      box-sizing: border-box;
+    .svg-container {
+      flex: 1 1 auto;
+      overflow: auto;
+    }
+
+    .svg-resize {
+      width: 800px;
+      height: 600px;
       border: 1px solid;
       border-radius: 5px;
+      padding: 5px;
+      resize: both;
+      overflow: hidden;
+    }
+
+    svg {
+      background-color: white;
+      box-sizing: border-box;
+      cursor: crosshair;
     }
 
     div.message {
       padding-left: 40px;
+      flex: 0 0 auto;
     }
 
     div.message p {
       font-size: 0.8em;
       margin: 2px 0;
     }
-
-    /* #tool-curve + label::after {
-        content: "1";
-        color: white;
-        position: absolute;
-        top: -5px;
-        right: -10px;
-        width: 16px;
-        height: 16px;
-        font-size: 10px;
-        line-height: 16px;
-        border-radius: 999px;
-        background-color: red;
-      } */
   </style>
 </head>
 
 <body>
   <div class="main-container">
     <header>
-      <button id="save">Save File</button>
+      <button id="save">Save</button>
+      <button id="open">Open</button>
+      <input type="file" id="file-input" accept=".svg" hidden>
       <span>粗细</span>
       <input type="range" name="stroke-width" id="stroke-width" min="1" max="20" value="1" />
       <span id="label-width"></span>
@@ -174,13 +181,14 @@
         <input type="color" name="color" id="pen-color" />
         <input type="color" name="fillColor" id="fill-color" value="#ffffff" />
       </aside>
-      <svg version="1.1" baseProfile="full" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="svg-container">
+        <div class="svg-resize">
+          <svg version="1.1" baseProfile="full" width="800" height="600" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+      </div>
     </div>
     <div class="message">
-      <p>
-        按住
-        <kbd>Shift</kbd>
-        启用正交模式： 画正圆/正方形/水平和垂直线
+      <p>按住 <kbd>Shift</kbd> 启用正交模式： 画正圆/正方形/水平和垂直线
       </p>
       <p>鼠标左键使用前景色绘制，鼠标右键使用背景色绘制</p>
       <p>点击 Fill 按钮使用 填充模式</p>
@@ -197,6 +205,8 @@
     let fillButton = document.querySelector("#fill");
     let clearButton = document.querySelector("#clear");
     let saveButton = document.querySelector("#save");
+    let openButton = document.querySelector("#open");
+    let fileInput = document.querySelector("#file-input");
 
     let toolBar = document.querySelector(".tools");
 
@@ -239,6 +249,8 @@
       progress = 1;
     });
 
+    let svgContainer = document.querySelector(".svg-container");
+    let svgResize = document.querySelector(".svg-resize");
     let svg = document.querySelector("svg");
     let penColor = document.querySelector("#pen-color");
     let fillColor = document.querySelector("#fill-color");
@@ -480,7 +492,10 @@
       document.removeEventListener("mousemove", finishPolygon);
     }
 
-    svg.addEventListener("mousedown", function (e) {
+    svgContainer.addEventListener("mousedown", function (e) {
+      if (!svg.contains(e.target)) {
+        return
+      }
       saved = false;
       let pos = getReletivePos(svg);
       startPos = pos;
@@ -635,7 +650,7 @@
       }
     });
 
-    svg.addEventListener("contextmenu", (e) => {
+    svgContainer.addEventListener("contextmenu", (e) => {
       e.preventDefault();
     });
 
@@ -665,29 +680,46 @@
       });
     });
 
+    let ro = new ResizeObserver(entries => {
+      let rect = entries[0].contentRect;
+      svg.setAttribute("width", `${rect.width}`);
+      svg.setAttribute("height", `${rect.height}`);
+    })
+    ro.observe(svgResize);
+
     clearButton.addEventListener("click", function () {
       Array.from(svg.children).forEach((child) => svg.removeChild(child));
       progress = 1;
     });
 
     saveButton.addEventListener("click", function () {
-      let rect = svg.getBoundingClientRect();
       let blob = new Blob(
         [
-          `<?xml version="1.0"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`,
-          `<svg version="1.1" baseProfile="full" width="${rect.width}" height="${rect.height}" xmlns="http://www.w3.org/2000/svg" >`,
-          svg.innerHTML,
-          "</svg>",
+          svg.outerHTML,
         ],
         { type: "image/svg+xml" }
       );
       let link = URL.createObjectURL(blob);
       let anchor = document.createElement("a");
       anchor.setAttribute("href", link);
-      anchor.download = "untitled";
+      anchor.download = "您的大作";
       anchor.click();
       saved = true;
     });
+
+    openButton.addEventListener("click", function () {
+      fileInput.click();
+    })
+    fileInput.addEventListener("change", function (e) {
+      let file = fileInput.files[0];
+      let fr = new FileReader();
+      fr.addEventListener("load", function (e) {
+        svg.parentNode.innerHTML = fr.result;
+        svg = document.querySelector("svg");
+        svg.parentNode.style = `width: ${svg.getAttribute("width")}px; height: ${svg.getAttribute("height")}px;`
+      })
+      fr.readAsText(file);
+    })
 
     window.addEventListener("beforeunload", function (e) {
       if (!saved) {
