@@ -498,6 +498,7 @@
       }
       saved = false;
       let pos = getReletivePos(svg);
+      
       startPos = pos;
       let paintColor;
       let secondColor;
@@ -714,9 +715,17 @@
       let file = fileInput.files[0];
       let fr = new FileReader();
       fr.addEventListener("load", function (e) {
+        // console.log(fr.result)
+        ro.unobserve(svgResize);
         svg.parentNode.innerHTML = fr.result;
         svg = document.querySelector("svg");
-        svg.parentNode.style = `width: ${svg.getAttribute("width")}px; height: ${svg.getAttribute("height")}px;`
+
+        if (svg.getAttribute("width") && svg.getAttribute("height")) {
+          ro.observe(svgResize);
+          svg.parentNode.style = `width: ${svg.getAttribute("width")}px; height: ${svg.getAttribute("height")}px;`
+        }
+        // 读取完毕后清空 input
+        fileInput.value = null;
       })
       fr.readAsText(file);
     })
@@ -730,9 +739,20 @@
     // 获取鼠标事件发生时鼠标相对元素的位置
     function getReletivePos(node) {
       let rect = node.getBoundingClientRect();
+      let x = window.event.clientX - rect.x;
+      let y = window.event.clientY - rect.y;
+
+
+      if (svg.getAttribute("viewBox")) {
+        let viewBoxPoints = svg.getAttribute("viewBox").split(" ").map(s => Number(s));
+        x = viewBoxPoints[0] + x * viewBoxPoints[2] / rect.width;
+        y = viewBoxPoints[1] + y * viewBoxPoints[3] / rect.height;
+
+      }
+
       return {
-        x: window.event.clientX - rect.x,
-        y: window.event.clientY - rect.y,
+        x: x,
+        y: y,
       };
     }
   </script>
