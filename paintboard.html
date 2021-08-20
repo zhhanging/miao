@@ -720,7 +720,7 @@
         svg.parentNode.innerHTML = fr.result;
         svg = document.querySelector("svg");
 
-        if (svg.getAttribute("width") && svg.getAttribute("height")) {
+        if (!svg.getAttribute("viewBox")) {
           ro.observe(svgResize);
           svg.parentNode.style = `width: ${svg.getAttribute("width")}px; height: ${svg.getAttribute("height")}px;`
         }
@@ -742,11 +742,11 @@
       let x = window.event.clientX - rect.x;
       let y = window.event.clientY - rect.y;
 
-
+      // 如果svg元素有viewbox
       if (svg.getAttribute("viewBox")) {
-        let viewBoxPoints = svg.getAttribute("viewBox").split(" ").map(s => Number(s));
-        x = viewBoxPoints[0] + x * viewBoxPoints[2] / rect.width;
-        y = viewBoxPoints[1] + y * viewBoxPoints[3] / rect.height;
+        let viewBoxRect = svg.getAttribute("viewBox").split(" ").map(s => Number(s));
+        x = viewBoxRect[0] + x * viewBoxRect[2] / rect.width;
+        y = viewBoxRect[1] + y * viewBoxRect[3] / rect.height;
 
       }
 
