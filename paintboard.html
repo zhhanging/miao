@@ -425,7 +425,7 @@
         let pos = getReletivePos(svg);
         let lastD = path.getAttribute("d");
 
-        path.setAttribute("d", lastD.replace(/(?<=C )\d+ \d+/, `${pos.x} ${pos.y}`));
+        path.setAttribute("d", lastD.replace(/(?<=C )-?\d+ -?\d+/, `${pos.x} ${pos.y}`));
         // path.setAttribute("d", lastD.replace(/(?<=C*, )\d+ \d+/, `${pos.x} ${pos.y}`))
 
         progress = 3;
@@ -440,7 +440,7 @@
         let lastD = path.getAttribute("d");
 
         // path.setAttribute("d", lastD.replace(/(?<=C )\d+ \d+/, `${pos.x} ${pos.y}`));
-        path.setAttribute("d", lastD.replace(/(?<=C*, )\d+ \d+/, `${pos.x} ${pos.y}`));
+        path.setAttribute("d", lastD.replace(/(?<=C*, )-?\d+ -?\d+/, `${pos.x} ${pos.y}`));
 
         progress = 1;
       }
@@ -454,7 +454,7 @@
         let polyline = svg.lastChild;
 
         let points = polyline.getAttribute("points");
-        polyline.setAttribute("points", points.replace(/\d+ \d+$/, `${pos.x} ${pos.y}`));
+        polyline.setAttribute("points", points.replace(/-?\d+ -?\d+$/, `${pos.x} ${pos.y}`));
       }
     }
 
@@ -472,7 +472,7 @@
 
         let points = polyline.getAttribute("points");
 
-        polygon.setAttribute("points", points.replace(/\d+ \d+$/, ""));
+        polygon.setAttribute("points", points.replace(/-?\d+ -?\d+$/, ""));
 
         svg.replaceChild(polygon, polyline);
         progress = 1;
