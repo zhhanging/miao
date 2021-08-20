@@ -10,6 +10,7 @@
     pre {
       font-family: 'Courier New', Courier, monospace;
       line-height: 0.6;
+      font-size: 3em;
     }
   </style>
 </head>
@@ -44,16 +45,19 @@
       }
     }
     class Game {
-      constructor(width = 18, height = 10) {
+      constructor(width = 20, height = 20) {
         this.width = width
         this.height = height
         this.snake = [];
         this.apples = [];
         this.intervalID = 0;
-        this.speed = 2;
+        this.speed = 1;
         this.status = "pre"
       }
       init() {
+        this.snake = [];
+        this.apples = [];
+        this.speed = 2;
         this.snake.push(new Snake(3, 3, "right"))
         this.snake.push(new Snake(2, 3, "right"))
         this.apples.push(this.generateApple());
@@ -96,7 +100,9 @@
             grow = 1;
             this.apples.splice(this.apples.indexOf(apple), 1);
             this.apples.push(this.generateApple());
-            this.speed++
+            this.speed++;
+            clearInterval(game.intervalID);
+            game.run();
           }
         }
         for (let s of this.snake) {
@@ -117,7 +123,7 @@
         this.status = "play"
         this.intervalID = setInterval(() => {
           this.next()
-        }, 1000 / this.speed);
+        }, 1000 / Math.log2(1 + this.speed));
       }
 
       gameOver() {
@@ -136,11 +142,15 @@
           resultArr[a.y][a.x] = "◯";
         }
         if (this.status == "over") {
-          let endSign = "GAME OVER!"
+          let endSign = "GAME OVER!";
+          let endSign2 = "Press Enter";
           let startRow = Math.floor(this.height / 2) - 1
           let startCol = Math.floor((this.width - 10) / 2)
           for (let i = 0; i < endSign.length; i++) {
             resultArr[startRow][startCol + i] = endSign[i]
+          }
+          for (let i = 0; i <= endSign.length; i++) {
+            resultArr[startRow + 2][startCol - 1 + i] = endSign2[i]
           }
 
         }
@@ -176,6 +186,12 @@
             clearInterval(game.intervalID);
             game.run();
           }
+        }
+      }
+      if (game.status == "over") {
+        if (e.key == "Enter") {
+          game.init();
+          game.run();
         }
       }
     })
