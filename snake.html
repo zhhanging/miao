@@ -10,7 +10,7 @@
     pre {
       font-family: 'Courier New', Courier, monospace;
       line-height: 0.6;
-      font-size: 3em;
+      font-size: 2em;
     }
   </style>
 </head>
@@ -139,7 +139,7 @@
           // resultArr[s.y][s.x] = "█";
         }
         for (let a of this.apples) {
-          resultArr[a.y][a.x] = "◯";
+          resultArr[a.y][a.x] = "o";
         }
         if (this.status == "over") {
           let endSign = "GAME OVER!";
