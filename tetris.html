@@ -23,6 +23,7 @@
     </style>
   </head>
   <body>
+    <div>方向键：移动, 空格：直接下落, Z/X：旋转</div>
     <div>
       <pre id="game-board"></pre>
       <pre id="info"></pre>
@@ -259,12 +260,11 @@
         }
 
         // Super Rotation System
-        // Can perform wall kick, makes the game much more fun
+        // Can perform "wall kicks", makes the game much more fun
         superRotation(direction, board) {
-          // TODO: make this happen
           let startX = this.x;
           let startY = this.y;
-          let confirm = false;
+          let confirm = false; // whether to perform a rotation
 
           let tests;
 
@@ -283,7 +283,6 @@
           } else if (this.shape == "O") {
             return;
           }
-          console.log(111);
           this.basicRotation(direction);
           for (let test of tests[rotationDesc]) {
             this.x = startX + test[0];
@@ -335,7 +334,7 @@
             for (let row = 0; row < this.blocks.length; row++) {
               for (let col = 0; col < this.blocks[0].length; col++) {
                 if (this.blocks[row][col] === 1) {
-                  if (this.x + col === 0 || board.board[this.y + row][this.x + col - 1] === 1) {
+                  if (this.x + col === 0 || board.board[this.y + row][this.x + col - 1] !== 0) {
                     return true;
                   }
                 }
@@ -345,7 +344,7 @@
             for (let row = 0; row < this.blocks.length; row++) {
               for (let col = 0; col < this.blocks[0].length; col++) {
                 if (this.blocks[row][col] === 1) {
-                  if (this.x + col === board.width - 1 || board.board[this.y + row][this.x + col + 1] === 1) {
+                  if (this.x + col === board.width - 1 || board.board[this.y + row][this.x + col + 1] !== 0) {
                     return true;
                   }
                 }
@@ -402,6 +401,7 @@
             .fill(0)
             .map((row) => new Array(this.width).fill(0));
           this.score = 0;
+          this.lastScore = 0;
           this.level = 1;
           this.flashing = [];
           this.updateTime = 800;
@@ -441,7 +441,9 @@
             this.clear(this.flashing);
           }
 
-          if (this.score - 1000 == 0) {
+          if (this.score - this.lastScore > 1000) {
+            this.levelUp();
+            this.lastScore = this.score;
           }
 
           this.print();
@@ -453,11 +455,13 @@
           for (let lineNo of this.flashing) {
             this.board[lineNo] = this.board[lineNo].map((block) => "□");
           }
+          this.print();
           setTimeout(() => {
             for (let lineNo of this.flashing) {
               this.board.splice(lineNo, 1);
               this.board.unshift(new Array(this.width).fill(0));
             }
+            this.print();
             this.flashing = [];
           }, clearTime);
 
@@ -486,8 +490,10 @@
             }
           }
           if (e.key == "ArrowDown") {
-            this.moving.move("down");
-            this.print();
+            if (!this.moving.meet(this, "down")) {
+              this.moving.move("down");
+              this.print();
+            }
           }
           if (e.key == " ") {
             this.moving.drop(this);
@@ -496,12 +502,10 @@
           }
           if (e.key == "Z") {
             this.moving.rotation("left", this);
-            console.log("rotate left");
             this.print();
           }
           if (e.key == "X") {
             this.moving.rotation("right", this);
-            console.log("rotate right");
             this.print();
           }
         }
@@ -512,6 +516,15 @@
           }, this.updateTime);
 
           window.addEventListener("keydown", (e) => this.readInput(e));
+        }
+
+        levelUp() {
+          this.level++;
+          this.updateTime = this.updateTime / Math.log10(10 + this.level);
+          clearInterval(this.intervalID);
+          this.intervalID = setInterval(() => {
+            this.update();
+          }, this.updateTime);
         }
 
         gameOver() {
