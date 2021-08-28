@@ -477,34 +477,34 @@
         }
 
         readInput(e) {
-          if (e.key == "ArrowLeft") {
+          if (e.code == "ArrowLeft") {
             if (!this.moving.meet(this, "left")) {
               this.moving.move("left");
               this.print();
             }
           }
-          if (e.key == "ArrowRight") {
+          if (e.code == "ArrowRight") {
             if (!this.moving.meet(this, "right")) {
               this.moving.move("right");
               this.print();
             }
           }
-          if (e.key == "ArrowDown") {
+          if (e.code == "ArrowDown") {
             if (!this.moving.meet(this, "down")) {
               this.moving.move("down");
               this.print();
             }
           }
-          if (e.key == " ") {
+          if (e.code == "Space") {
             this.moving.drop(this);
             this.generateMinos();
             this.print();
           }
-          if (e.key == "Z") {
+          if (e.code == "KeyZ") {
             this.moving.rotation("left", this);
             this.print();
           }
-          if (e.key == "X") {
+          if (e.code == "KeyX") {
             this.moving.rotation("right", this);
             this.print();
           }
