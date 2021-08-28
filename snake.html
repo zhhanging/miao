@@ -1,255 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .game-container {
+        display: flex;
+        justify-content: center;
+      }
+      pre {
+        font-family: "Courier New", Courier, monospace;
+        line-height: 0.6;
+        font-size: 2em;
+        margin: 0;
+        flex: 0 0 auto;
+      }
+      .info {
+        text-align: center;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snake</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-    .game-container {
-      display: flex;
-      justify-content: center;
-    }
-    pre {
-      font-family: 'Courier New', Courier, monospace;
-      line-height: 0.6;
-      font-size: 2em;
-      margin: 0;
-      flex: 0 0 auto;
-    }
-    .info {
-      text-align: center;
-    }
-  </style>
-</head>
+  <body>
+    <div class="game-container">
+      <pre></pre>
+    </div>
+    <div class="info">
+      操作说明
+      <p>方向键控制蛇移动</p>
+      <p>移动端可以滑动来改变方向</p>
+    </div>
 
-<body>
-  <div class="game-container">
-    <pre></pre>
-  </div>
-  <div class="info">
-    操作说明
-    <p>方向键控制蛇移动</p>
-    <p>移动端可以滑动来改变方向</p>
-  </div>
+    <script>
+      let opposite = {
+        left: "right",
+        right: "left",
+        up: "down",
+        down: "up",
+      };
+      class Snake {
+        constructor(x, y, direction) {
+          this.x = x;
+          this.y = y;
+          this.direction = direction;
+        }
+        samePos(other) {
+          return this.x == other.x && this.y == other.y;
+        }
+      }
+      class Apple {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+        samePos(other) {
+          return this.x == other.x && this.y == other.y;
+        }
+      }
+      class Game {
+        constructor(width = 20, height = 20) {
+          this.width = width;
+          this.height = height;
+          this.snake = [];
+          this.apples = [];
+          this.intervalID = 0;
+          this.speed = 1;
+          this.status = "pre";
+        }
+        init() {
+          this.snake = [];
+          this.apples = [];
+          this.speed = 2;
+          this.snake.push(new Snake(3, 3, "right"));
+          this.snake.push(new Snake(2, 3, "right"));
+          this.apples.push(this.generateApple());
+        }
+        generateApple() {
+          let x = Math.floor(Math.random() * this.width);
+          let y = Math.floor(Math.random() * this.height);
+          let apple = new Apple(x, y);
+          for (let s of this.snake) {
+            if (s.samePos(apple)) {
+              return this.generateApple();
+            }
+          }
+          return apple;
+        }
+        next() {
+          let grow = 0;
+          let head = this.snake[0];
+          let newHead = new Snake(head.x, head.y, head.direction);
+          switch (head.direction) {
+            case "left":
+              newHead.x--;
+              break;
+            case "right":
+              newHead.x++;
+              break;
+            case "up":
+              newHead.y--;
+              break;
+            case "down":
+              newHead.y++;
+              break;
+          }
+          if (newHead.x < 0 || newHead.x >= this.width || newHead.y < 0 || newHead.y >= this.height) {
+            this.gameOver();
+            return;
+          }
+          for (let apple of this.apples) {
+            if (newHead.samePos(apple)) {
+              grow = 1;
+              this.apples.splice(this.apples.indexOf(apple), 1);
+              this.apples.push(this.generateApple());
+              this.speed++;
+              clearInterval(game.intervalID);
+              game.run();
+            }
+          }
+          for (let s of this.snake) {
+            if (newHead.samePos(s)) {
+              console.log(newHead, s);
+              this.gameOver();
+            }
+          }
+          if (!grow) {
+            this.snake.pop();
+          }
+          this.snake.unshift(newHead);
 
-  <script>
-    let opposite = {
-      "left": "right",
-      "right": "left",
-      "up": "down",
-      "down": "up",
-    }
-    class Snake {
-      constructor(x, y, direction) {
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
+          // this.print()
+        }
+
+        run() {
+          this.status = "play";
+          this.intervalID = setInterval(() => {
+            this.next();
+          }, 1000 / Math.log2(1 + this.speed));
+        }
+
+        gameOver() {
+          this.status = "over";
+          console.log("Game Over!");
+          clearInterval(this.intervalID);
+        }
+
+        toString() {
+          let resultArr = new Array(this.height).fill(0).map((row) => new Array(this.width).fill(" "));
+          for (let s of this.snake) {
+            resultArr[s.y][s.x] = "■";
+            // resultArr[s.y][s.x] = "█";
+          }
+          for (let a of this.apples) {
+            resultArr[a.y][a.x] = "o";
+          }
+          if (this.status == "over") {
+            let endSign = "GAME OVER!";
+            let endSign2 = "Press Enter";
+            let startRow = Math.floor(this.height / 2) - 1;
+            let startCol = Math.floor((this.width - 10) / 2);
+            for (let i = 0; i < endSign.length; i++) {
+              resultArr[startRow][startCol + i] = endSign[i];
+            }
+            for (let i = 0; i <= endSign.length; i++) {
+              resultArr[startRow + 2][startCol - 1 + i] = endSign2[i];
+            }
+          }
+          let result =
+            "┌" +
+            "─".repeat(this.width) +
+            "┐\n" +
+            "│" +
+            `score: ${this.snake.length - 2}`.padStart(this.width, " ") +
+            "│\n" +
+            "├" +
+            "─".repeat(this.width) +
+            "┤\n" +
+            resultArr.map((row) => "│" + row.join("") + "│").join("\n") +
+            "\n└" +
+            "─".repeat(this.width) +
+            "┘\n";
+          return result;
+        }
+        print() {
+          console.log(this.toString());
+        }
       }
-      samePos(other) {
-        return this.x == other.x && this.y == other.y;
-      }
-    }
-    class Apple {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-      }
-      samePos(other) {
-        return this.x == other.x && this.y == other.y;
-      }
-    }
-    class Game {
-      constructor(width = 20, height = 20) {
-        this.width = width
-        this.height = height
-        this.snake = [];
-        this.apples = [];
-        this.intervalID = 0;
-        this.speed = 1;
-        this.status = "pre"
-      }
-      init() {
-        this.snake = [];
-        this.apples = [];
-        this.speed = 2;
-        this.snake.push(new Snake(3, 3, "right"))
-        this.snake.push(new Snake(2, 3, "right"))
-        this.apples.push(this.generateApple());
-      }
-      generateApple() {
-        let x = Math.floor(Math.random() * this.width)
-        let y = Math.floor(Math.random() * this.height)
-        let apple = new Apple(x, y);
-        for (let s of this.snake) {
-          if (s.samePos(apple)) {
-            return this.generateApple();
+
+      let game = new Game(20, 20);
+      game.init();
+      game.run();
+
+      let pre = document.querySelector("pre");
+      pre.setAttribute("width", game.width + 2);
+      pre.parentNode.style.minWidth = window.innerWidth + "px";
+
+      requestAnimationFrame(function update() {
+        pre.textContent = game.toString();
+        requestAnimationFrame(update);
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if (e.key.startsWith("Arrow")) {
+          if (game.status == "play") {
+            if (opposite[game.snake[0].direction] !== e.key.slice(5).toLowerCase()) {
+              game.snake[0].direction = e.key.slice(5).toLowerCase();
+              game.next();
+              clearInterval(game.intervalID);
+              game.run();
+            }
           }
         }
-        return apple;
-      }
-      next() {
-        let grow = 0;
-        let head = this.snake[0];
-        let newHead = new Snake(head.x, head.y, head.direction);
-        switch (head.direction) {
-          case "left":
-            newHead.x--;
-            break;
-          case "right":
-            newHead.x++;
-            break;
-          case "up":
-            newHead.y--;
-            break;
-          case "down":
-            newHead.y++;
-            break;
-        }
-        if (newHead.x < 0 || newHead.x >= this.width || newHead.y < 0 || newHead.y >= this.height) {
-          this.gameOver()
-          return
-        }
-        for (let apple of this.apples) {
-          if (newHead.samePos(apple)) {
-            grow = 1;
-            this.apples.splice(this.apples.indexOf(apple), 1);
-            this.apples.push(this.generateApple());
-            this.speed++;
-            clearInterval(game.intervalID);
+        if (game.status == "over") {
+          if (e.key == "Enter") {
+            game.init();
             game.run();
           }
         }
-        for (let s of this.snake) {
-          if (newHead.samePos(s)) {
-            console.log(newHead, s)
-            this.gameOver()
+      });
+
+      let lastPos = null;
+
+      window.addEventListener(
+        "touchstart",
+        function (e) {
+          e.preventDefault();
+          // console.log(e)
+          lastPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+        },
+        { passive: false }
+      );
+
+      window.addEventListener(
+        "touchend",
+        function (e) {
+          e.preventDefault();
+          // console.log(e)
+          let pos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+          let diffX = pos.x - lastPos.x;
+          let diffY = pos.y - lastPos.y;
+          let newDirection;
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            newDirection = diffX > 0 ? "right" : "left";
+          } else {
+            newDirection = diffY > 0 ? "down" : "up";
           }
-        }
-        if (!grow) {
-          this.snake.pop();
-        }
-        this.snake.unshift(newHead);
-
-        // this.print()
-      }
-
-      run() {
-        this.status = "play"
-        this.intervalID = setInterval(() => {
-          this.next()
-        }, 1000 / Math.log2(1 + this.speed));
-      }
-
-      gameOver() {
-        this.status = "over"
-        console.log("Game Over!")
-        clearInterval(this.intervalID)
-      }
-
-      toString() {
-        let resultArr = new Array(this.height).fill(0).map(row => new Array(this.width).fill(" "))
-        for (let s of this.snake) {
-          resultArr[s.y][s.x] = "■";
-          // resultArr[s.y][s.x] = "█";
-        }
-        for (let a of this.apples) {
-          resultArr[a.y][a.x] = "o";
-        }
-        if (this.status == "over") {
-          let endSign = "GAME OVER!";
-          let endSign2 = "Press Enter";
-          let startRow = Math.floor(this.height / 2) - 1
-          let startCol = Math.floor((this.width - 10) / 2)
-          for (let i = 0; i < endSign.length; i++) {
-            resultArr[startRow][startCol + i] = endSign[i]
-          }
-          for (let i = 0; i <= endSign.length; i++) {
-            resultArr[startRow + 2][startCol - 1 + i] = endSign2[i]
-          }
-
-        }
-        let result = "┌" + "─".repeat(this.width) + "┐\n"
-          + "│" + (`score: ${this.snake.length - 2}`).padStart(this.width, " ") + "│\n"
-          + "├" + "─".repeat(this.width) + "┤\n"
-          + resultArr.map(row => "│" + row.join("") + "│").join("\n")
-          + "\n└" + "─".repeat(this.width) + "┘\n";
-        return result;
-      }
-      print() {
-        console.log(this.toString())
-      }
-    }
-
-    let game = new Game(20, 20);
-    game.init();
-    game.run();
-
-    let pre = document.querySelector("pre");
-    pre.setAttribute("width", game.width + 2);
-    pre.parentNode.style.minWidth = window.innerWidth + "px"
-
-    requestAnimationFrame(function update() {
-      pre.textContent = game.toString()
-      requestAnimationFrame(update)
-    })
-
-    window.addEventListener("keydown", function (e) {
-      if (e.key.startsWith("Arrow")) {
-        if (game.status == "play") {
-          if (opposite[game.snake[0].direction] !== e.key.slice(5).toLowerCase()) {
-            game.snake[0].direction = e.key.slice(5).toLowerCase();
+          if (opposite[newDirection] !== game.snake[0].direction) {
+            console.log(newDirection);
+            game.snake[0].direction = newDirection;
             game.next();
             clearInterval(game.intervalID);
             game.run();
           }
-        }
-      }
-      if (game.status == "over") {
-        if (e.key == "Enter") {
-          game.init();
-          game.run();
-        }
-      }
-    })
-
-    let lastPos = null;
-
-    window.addEventListener("touchstart", function(e) {
-      e.preventDefault();
-      // console.log(e)
-      lastPos = {x:e.changedTouches[0].clientX, y:e.changedTouches[0].clientY}
-      
-    }, {passive:false})
-
-    window.addEventListener("touchend", function (e) {
-      e.preventDefault();
-      // console.log(e)
-      let pos = {x:e.changedTouches[0].clientX, y:e.changedTouches[0].clientY}
-      let diffX = pos.x - lastPos.x
-      let diffY = pos.y - lastPos.y
-      let newDirection;
-      if (Math.abs(diffX) > Math.abs(diffY)) {
-        newDirection = diffX > 0? "right" : "left"
-      } else {
-        newDirection = diffY > 0? "down" : "up"
-      }
-      if (opposite[newDirection] !== game.snake[0].direction) {
-        console.log(newDirection)
-        game.snake[0].direction = newDirection
-        game.next();
-        clearInterval(game.intervalID);
-        game.run();
-      }
-      // lastPos = pos;
-    }, {passive:false})
-
-  </script>
-</body>
-
+          // lastPos = pos;
+        },
+        { passive: false }
+      );
+    </script>
+  </body>
 </html>
