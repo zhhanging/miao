@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tetris</title>
+    <style>
+      pre#info {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 2em;
+      }
+      pre#game-board {
+        font-family: "Courier New", Courier, monospace;
+        line-height: 22px;
+        font-size: 2em;
+        letter-spacing: 3px;
+        border: 1px solid;
+        display: inline-block;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <pre id="game-board"></pre>
+      <pre id="info"></pre>
+    </div>
+
+    <script>
+      let infoDisplay = document.querySelector("#info");
+      let display = document.querySelector("#game-board");
+
+      class Tetriminos {
+        // A Tetriminos is made of 4 blocks and have 7 different shapes:
+        // I J L O S T Z
+
+        // Kick wall tests
+        static TESTS = {
+          "0to1": [
+            [0, 0],
+            [-1, 0],
+            [-1, 1],
+            [0, -2],
+            [-1, -2],
+          ],
+          "1to0": [
+            [0, 0],
+            [1, 0],
+            [1, -1],
+            [0, 2],
+            [1, 2],
+          ],
+          "1to2": [
+            [0, 0],
+            [1, 0],
+            [1, -1],
+            [0, 2],
+            [1, 2],
+          ],
+          "2to1": [
+            [0, 0],
+            [-1, 0],
+            [-1, 1],
+            [0, -2],
+            [-1, -2],
+          ],
+          "2to3": [
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, -2],
+            [1, -2],
+          ],
+          "3to2": [
+            [0, 0],
+            [-1, 0],
+            [-1, -1],
+            [0, 2],
+            [-1, 2],
+          ],
+          "3to0": [
+            [0, 0],
+            [-1, 0],
+            [-1, -1],
+            [0, 2],
+            [-1, 2],
+          ],
+          "0to3": [
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, -2],
+            [1, -2],
+          ],
+        };
+        static TESTSI = {
+          "0to1": [
+            [0, 0],
+            [-2, 0],
+            [1, 0],
+            [-2, -1],
+            [1, 2],
+          ],
+          "1to0": [
+            [0, 0],
+            [2, 0],
+            [-1, 0],
+            [2, 1],
+            [-1, -2],
+          ],
+          "1to2": [
+            [0, 0],
+            [-1, 0],
+            [2, 0],
+            [-1, 2],
+            [2, -1],
+          ],
+          "2to1": [
+            [0, 0],
+            [1, 0],
+            [-2, 0],
+            [1, -2],
+            [-2, 1],
+          ],
+          "2to3": [
+            [0, 0],
+            [2, 0],
+            [-1, 0],
+            [2, 1],
+            [-1, -2],
+          ],
+          "3to2": [
+            [0, 0],
+            [-2, 0],
+            [1, 0],
+            [-2, -1],
+            [1, 2],
+          ],
+          "3to0": [
+            [0, 0],
+            [1, 0],
+            [-2, 0],
+            [1, -2],
+            [-2, 1],
+          ],
+          "0to3": [
+            [0, 0],
+            [-1, 0],
+            [2, 0],
+            [-1, 2],
+            [2, -1],
+          ],
+        };
+
+        constructor(shape) {
+          this.shape = shape;
+          // position
+          this.x = 3;
+          this.y = 0;
+
+          this.rotationState = 0;
+          // 0 = spawn state
+          // 1 = state resulting from a clockwise rotation ("right") from spawn
+          // 2 = state resulting from 2 successive rotations in either direction from spawn.
+          // 3 = state resulting from a counter-clockwise ("left") rotation from spawn
+
+          // a single block is like [row, col], representing the coordinates of the block
+          // this.blocks is made of 4 blocks
+          switch (this.shape) {
+            case "I":
+              this.blocks = [
+                [0, 0, 0, 0],
+                [1, 1, 1, 1],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+              ];
+              break;
+            case "J":
+              this.blocks = [
+                [1, 0, 0],
+                [1, 1, 1],
+                [0, 0, 0],
+              ];
+              break;
+            case "L":
+              this.blocks = [
+                [0, 0, 1],
+                [1, 1, 1],
+                [0, 0, 0],
+              ];
+              break;
+            case "O":
+              this.blocks = [
+                [1, 1],
+                [1, 1],
+              ];
+              break;
+            case "S":
+              this.blocks = [
+                [0, 1, 1],
+                [1, 1, 0],
+                [0, 0, 0],
+              ];
+              break;
+            case "T":
+              this.blocks = [
+                [0, 1, 0],
+                [1, 1, 1],
+                [0, 0, 0],
+              ];
+              break;
+            case "Z":
+              this.blocks = [
+                [1, 1, 0],
+                [0, 1, 1],
+                [0, 0, 0],
+              ];
+              break;
+          }
+        }
+
+        // rotation
+        rotation(direction, board) {
+          this.superRotation(direction, board);
+        }
+
+        // basic totation
+        basicRotation(direction) {
+          // rotate right
+          if (direction == "right") {
+            let n = this.blocks.length;
+            for (let i = 0; i < Math.floor(n / 2); i++) {
+              for (let j = i; j < n - 1 - i; j++) {
+                let temp = this.blocks[i][j];
+                this.blocks[i][j] = this.blocks[n - 1 - j][i];
+                this.blocks[n - 1 - j][i] = this.blocks[n - 1 - i][n - 1 - j];
+                this.blocks[n - 1 - i][n - 1 - j] = this.blocks[j][n - 1 - i];
+                this.blocks[j][n - 1 - i] = temp;
+              }
+            }
+            // change the rotation state
+            this.rotationState = (this.rotationState + 1) % 4;
+          } else if (direction == "left") {
+            let n = this.blocks.length;
+            for (let i = 0; i < Math.floor(n / 2); i++) {
+              for (let j = i; j < n - 1 - i; j++) {
+                let temp = this.blocks[i][j];
+                this.blocks[i][j] = this.blocks[j][n - 1 - i];
+                this.blocks[j][n - 1 - i] = this.blocks[n - 1 - i][n - 1 - j];
+                this.blocks[n - 1 - i][n - 1 - j] = this.blocks[n - 1 - j][i];
+                this.blocks[n - 1 - j][i] = temp;
+              }
+            }
+            // change the rotation state
+            this.rotationState = (this.rotationState + 4 - 1) % 4;
+          }
+        }
+
+        // Super Rotation System
+        // Can perform wall kick, makes the game much more fun
+        superRotation(direction, board) {
+          // TODO: make this happen
+          let startX = this.x;
+          let startY = this.y;
+          let confirm = false;
+
+          let tests;
+
+          let destinationState;
+          if (direction == "right") {
+            destinationState = (this.rotationState + 1) % 4;
+          }
+          if (direction == "left") {
+            destinationState = (this.rotationState + 4 - 1) % 4;
+          }
+          let rotationDesc = `${this.rotationState}to${destinationState}`;
+          if (this.shape == "J" || this.shape == "L" || this.shape == "T" || this.shape == "S" || this.shape == "Z") {
+            tests = Tetriminos.TESTS;
+          } else if (this.shape == "I") {
+            tests = Tetriminos.TESTSI;
+          } else if (this.shape == "O") {
+            return;
+          }
+          console.log(111);
+          this.basicRotation(direction);
+          for (let test of tests[rotationDesc]) {
+            this.x = startX + test[0];
+            this.y = startY + test[1];
+            if (!this.collision(board)) {
+              confirm = true;
+              break;
+            }
+          }
+          if (!confirm) {
+            this.x = startX;
+            this.y = startY;
+            this.basicRotation(direction == "left" ? "right" : "left");
+          }
+        }
+
+        // move 1 block toward a direction
+        move(direction) {
+          if (direction === "left") {
+            this.x--;
+          } else if (direction == "right") {
+            this.x++;
+          } else if (direction == "down") {
+            this.y++;
+          }
+        }
+
+        // drop down to the bottom
+        drop(board) {
+          while (!this.meet(board)) {
+            this.move("down");
+          }
+          this.lock(board);
+        }
+
+        // if the bottom meets a Game's board at a certain direction
+        meet(board, direction = "down") {
+          if (direction === "down") {
+            for (let row = 0; row < this.blocks.length; row++) {
+              for (let col = 0; col < this.blocks[0].length; col++) {
+                if (this.blocks[row][col] === 1) {
+                  if (this.y + row === board.height - 1 || board.board[this.y + 1 + row][this.x + col] !== 0) {
+                    return true;
+                  }
+                }
+              }
+            }
+          } else if (direction == "left") {
+            for (let row = 0; row < this.blocks.length; row++) {
+              for (let col = 0; col < this.blocks[0].length; col++) {
+                if (this.blocks[row][col] === 1) {
+                  if (this.x + col === 0 || board.board[this.y + row][this.x + col - 1] === 1) {
+                    return true;
+                  }
+                }
+              }
+            }
+          } else if (direction == "right") {
+            for (let row = 0; row < this.blocks.length; row++) {
+              for (let col = 0; col < this.blocks[0].length; col++) {
+                if (this.blocks[row][col] === 1) {
+                  if (this.x + col === board.width - 1 || board.board[this.y + row][this.x + col + 1] === 1) {
+                    return true;
+                  }
+                }
+              }
+            }
+          } else if (direction == "any") {
+            return this.meet(board, "down") || this.meet(board, "left") || this.meet(board, "right");
+          }
+          return false;
+        }
+
+        // if the tetriminos have collision with the board
+        // this will be used to test if the super rotations fit
+        // return true if the position of this tetriminos conflicts with the board
+        collision(board) {
+          for (let row = 0; row < this.blocks.length; row++) {
+            for (let col = 0; col < this.blocks[0].length; col++) {
+              if (this.blocks[row][col] === 1) {
+                if (
+                  this.x + col < 0 ||
+                  this.x + col >= board.width ||
+                  this.y + row >= board.height ||
+                  board.board[this.y + row][this.x + col] !== 0
+                ) {
+                  return true;
+                }
+              }
+            }
+          }
+          return false;
+        }
+
+        // moving all blocks into the board and lock them;
+        lock(board) {
+          for (let row = 0; row < this.blocks.length; row++) {
+            for (let col = 0; col < this.blocks[0].length; col++) {
+              if (this.blocks[row][col] === 1) {
+                board.board[this.y + row][this.x + col] = "■";
+              }
+            }
+          }
+          board.score += 10;
+        }
+      }
+
+      // Main Game Class
+      class Game {
+        constructor(width = 10, height = 22) {
+          this.width = width;
+          this.height = height;
+
+          this.moving = null;
+          this.board = Array(this.height)
+            .fill(0)
+            .map((row) => new Array(this.width).fill(0));
+          this.score = 0;
+          this.level = 1;
+          this.flashing = [];
+          this.updateTime = 800;
+          this.intervalID = 0;
+          this.over = false;
+        }
+
+        init() {
+          this.generateMinos();
+        }
+
+        generateMinos() {
+          this.moving = new Tetriminos("IJLOSTZ"[Math.floor(Math.random() * 7)]);
+          for (let i = 0; i < Math.random() * 5; i++) {
+            this.moving.basicRotation("right");
+          }
+
+          if (this.moving.collision(this)) {
+            this.gameOver();
+          }
+        }
+
+        update() {
+          if (this.moving.meet(this, "down")) {
+            this.moving.lock(this);
+            this.generateMinos();
+          } else {
+            this.moving.move("down");
+          }
+          // detect if there are rows need to be deleted
+          for (let row = 0; row < this.height; row++) {
+            if (this.board[row].indexOf(0) === -1) {
+              this.flashing.push(row);
+            }
+          }
+          if (this.flashing.length) {
+            this.clear(this.flashing);
+          }
+
+          if (this.score - 1000 == 0) {
+          }
+
+          this.print();
+        }
+
+        // clear rows
+        clear() {
+          let clearTime = this.updateTime / 3;
+          for (let lineNo of this.flashing) {
+            this.board[lineNo] = this.board[lineNo].map((block) => "□");
+          }
+          setTimeout(() => {
+            for (let lineNo of this.flashing) {
+              this.board.splice(lineNo, 1);
+              this.board.unshift(new Array(this.width).fill(0));
+            }
+            this.flashing = [];
+          }, clearTime);
+
+          if (this.flashing.length == 1) {
+            this.score += 100;
+          } else if (this.flashing.length == 2) {
+            this.score += 200;
+          } else if (this.flashing.length == 3) {
+            this.score += 400;
+          } else if (this.flashing.length == 4) {
+            this.score += 800;
+          }
+        }
+
+        readInput(e) {
+          if (e.key == "ArrowLeft") {
+            if (!this.moving.meet(this, "left")) {
+              this.moving.move("left");
+              this.print();
+            }
+          }
+          if (e.key == "ArrowRight") {
+            if (!this.moving.meet(this, "right")) {
+              this.moving.move("right");
+              this.print();
+            }
+          }
+          if (e.key == "ArrowDown") {
+            this.moving.move("down");
+            this.print();
+          }
+          if (e.key == " ") {
+            this.moving.drop(this);
+            this.generateMinos();
+            this.print();
+          }
+          if (e.key == "Z") {
+            this.moving.rotation("left", this);
+            console.log("rotate left");
+            this.print();
+          }
+          if (e.key == "X") {
+            this.moving.rotation("right", this);
+            console.log("rotate right");
+            this.print();
+          }
+        }
+        // start the game
+        run() {
+          this.intervalID = setInterval(() => {
+            this.update();
+          }, this.updateTime);
+
+          window.addEventListener("keydown", (e) => this.readInput(e));
+        }
+
+        gameOver() {
+          clearInterval(this.intervalID);
+          window.removeEventListener("keydown", (e) => this.readInput(e));
+          // console.log(`Game Over! Score: ${this.score}`);
+          this.over = true;
+        }
+
+        toString() {
+          // make a deep copy of this.board
+          let result = JSON.parse(JSON.stringify(this.board));
+
+          for (let row = 0; row < this.moving.blocks.length; row++) {
+            for (let col = 0; col < this.moving.blocks[0].length; col++) {
+              if (this.moving.blocks[row][col] === 1) {
+                result[this.moving.y + row][this.moving.x + col] = "□";
+              }
+            }
+          }
+          result = result.map((row) => row.join("").replaceAll("0", " ") + "\n").join("");
+          return result.substr((this.width + 1) * 2);
+        }
+        print() {
+          // console.log(this.toString());
+          display.textContent = this.toString();
+          infoDisplay.textContent = `Level: ${this.level}\nScore: ${this.score}\n`;
+          if (this.over) {
+            infoDisplay.textContent += "GAME OVER!";
+          }
+        }
+      }
+
+      let g = new Game();
+      g.init();
+      g.run();
+    </script>
+  </body>
+</html>
