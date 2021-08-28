@@ -7,16 +7,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snake</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    .game-container {
+      display: flex;
+      justify-content: center;
+    }
     pre {
       font-family: 'Courier New', Courier, monospace;
       line-height: 0.6;
       font-size: 2em;
+      margin: 0;
+      flex: 0 0 auto;
+    }
+    .info {
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
-  <pre></pre>
+  <div class="game-container">
+    <pre></pre>
+  </div>
+  <div class="info">
+    操作说明
+    <p>方向键控制蛇移动</p>
+    <p>移动端可以滑动来改变方向</p>
+  </div>
 
   <script>
     let opposite = {
@@ -116,7 +136,7 @@
         }
         this.snake.unshift(newHead);
 
-        this.print()
+        // this.print()
       }
 
       run() {
@@ -171,13 +191,15 @@
     game.run();
 
     let pre = document.querySelector("pre");
+    pre.setAttribute("width", game.width + 2);
+    pre.parentNode.style.minWidth = window.innerWidth + "px"
 
     requestAnimationFrame(function update() {
       pre.textContent = game.toString()
       requestAnimationFrame(update)
     })
 
-    document.addEventListener("keydown", function (e) {
+    window.addEventListener("keydown", function (e) {
       if (e.key.startsWith("Arrow")) {
         if (game.status == "play") {
           if (opposite[game.snake[0].direction] !== e.key.slice(5).toLowerCase()) {
@@ -195,6 +217,37 @@
         }
       }
     })
+
+    let lastPos = null;
+
+    window.addEventListener("touchstart", function(e) {
+      e.preventDefault();
+      // console.log(e)
+      lastPos = {x:e.changedTouches[0].clientX, y:e.changedTouches[0].clientY}
+      
+    }, {passive:false})
+
+    window.addEventListener("touchend", function (e) {
+      e.preventDefault();
+      // console.log(e)
+      let pos = {x:e.changedTouches[0].clientX, y:e.changedTouches[0].clientY}
+      let diffX = pos.x - lastPos.x
+      let diffY = pos.y - lastPos.y
+      let newDirection;
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        newDirection = diffX > 0? "right" : "left"
+      } else {
+        newDirection = diffY > 0? "down" : "up"
+      }
+      if (opposite[newDirection] !== game.snake[0].direction) {
+        console.log(newDirection)
+        game.snake[0].direction = newDirection
+        game.next();
+        clearInterval(game.intervalID);
+        game.run();
+      }
+      // lastPos = pos;
+    }, {passive:false})
 
   </script>
 </body>
