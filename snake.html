@@ -18,7 +18,7 @@
       pre {
         font-family: "Courier New", Courier, monospace;
         line-height: 0.6;
-        font-size: 2em;
+        /* font-size: 2em; */
         margin: 0;
         flex: 0 0 auto;
       }
@@ -136,7 +136,7 @@
           }
           this.snake.unshift(newHead);
 
-          // this.print()
+          this.print();
         }
 
         run() {
@@ -150,6 +150,7 @@
           this.status = "over";
           console.log("Game Over!");
           clearInterval(this.intervalID);
+          this.print();
         }
 
         toString() {
@@ -190,7 +191,8 @@
           return result;
         }
         print() {
-          console.log(this.toString());
+          // console.log(this.toString());
+          pre.textContent = game.toString();
         }
       }
 
@@ -199,13 +201,11 @@
       game.run();
 
       let pre = document.querySelector("pre");
-      pre.setAttribute("width", game.width + 2);
-      pre.parentNode.style.minWidth = window.innerWidth + "px";
-
-      requestAnimationFrame(function update() {
-        pre.textContent = game.toString();
-        requestAnimationFrame(update);
-      });
+      pre.textContent = game.toString();
+      // pre.setAttribute("width", game.width + 2);
+      // pre.parentNode.style.minWidth = window.innerWidth + "px";
+      let zoomFactor = Math.min(window.innerWidth / pre.getBoundingClientRect().width, 2);
+      pre.style.zoom = zoomFactor;
 
       window.addEventListener("keydown", function (e) {
         if (e.key.startsWith("Arrow")) {
