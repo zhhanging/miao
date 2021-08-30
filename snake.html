@@ -204,7 +204,7 @@
       pre.textContent = game.toString();
       // pre.setAttribute("width", game.width + 2);
       // pre.parentNode.style.minWidth = window.innerWidth + "px";
-      let zoomFactor = Math.min(window.innerWidth / pre.getBoundingClientRect().width, 2);
+      let zoomFactor = Math.min(window.innerWidth / pre.offsetWidth, 2);
       pre.style.zoom = zoomFactor;
 
       window.addEventListener("keydown", function (e) {

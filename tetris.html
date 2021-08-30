@@ -6,33 +6,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tetris</title>
     <style>
-      pre#info {
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      div.main-container {
+      }
+      .container {
+        display: flex;
+        /* min-width: 400px; */
+      }
+      div.side {
+        width: 100px;
+      }
+      div#info {
         display: inline-block;
         vertical-align: top;
-        font-size: 2em;
       }
-      pre#game-board {
+      div.gameboard-container {
+        flex: 1;
+        text-align: center;
+      }
+      pre#gameboard {
         font-family: "Courier New", Courier, monospace;
         line-height: 22px;
         font-size: 2em;
         letter-spacing: 3px;
         border: 1px solid;
         display: inline-block;
-        margin: 0;
+        margin: 5px;
+      }
+
+      div.controls {
+        margin-top: 10px;
+      }
+
+      div.controls button {
+        display: none;
+      }
+
+      div.controls .controls-labels {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      div.controls .controls-Dpad {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+      }
+      div.controls .controls-Dpad div {
+        width: 150px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      div.controls .controls-drop {
+        display: flex;
+        align-items: center;
+      }
+
+      div.controls label {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        box-sizing: border-box;
+        border: 1px solid #000;
+        border-radius: 5px;
+      }
+      div.controls label#label-drop {
+        width: 80px;
+        height: 80px;
+      }
+      div.controls label:active {
+        background-color: gray;
+      }
+
+      div.how-to {
+        margin: 10px;
+        position: fixed;
+        bottom: 0;
       }
     </style>
   </head>
   <body>
-    <div>方向键：移动, 空格：直接下落, Z/X：旋转</div>
-    <div>
-      <pre id="game-board"></pre>
-      <pre id="info"></pre>
+    <div class="main-container">
+      <div class="container">
+        <div class="side"></div>
+        <div class="gameboard-container">
+          <pre id="gameboard"></pre>
+        </div>
+        <div class="side" id="info"></div>
+      </div>
+      <div class="controls">
+        <div class="buttons">
+          <button id="change"></button>
+          <button id="left"></button>
+          <button id="right"></button>
+          <button id="down"></button>
+          <button id="drop"></button>
+        </div>
+        <div class="controls-labels">
+          <div class="controls-Dpad">
+            <label id="label-change" for="change"></label>
+            <div>
+              <label id="label-left" for="left"></label>
+              <label id="label-right" for="right"></label>
+            </div>
+            <label id="label-down" for="down"></label>
+          </div>
+          <div class="controls-drop">
+            <label id="label-drop" for="drop"></label>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script>
-      let infoDisplay = document.querySelector("#info");
-      let display = document.querySelector("#game-board");
+    <div class="how-to">方向键：移动, 空格：直接下落, Z/X：旋转</div>
 
+    <script>
       class Tetriminos {
         // A Tetriminos is made of 4 blocks and have 7 different shapes:
         // I J L O S T Z
@@ -478,22 +574,13 @@
 
         readInput(e) {
           if (e.code == "ArrowLeft") {
-            if (!this.moving.meet(this, "left")) {
-              this.moving.move("left");
-              this.print();
-            }
+            this.move("left");
           }
           if (e.code == "ArrowRight") {
-            if (!this.moving.meet(this, "right")) {
-              this.moving.move("right");
-              this.print();
-            }
+            this.move("right");
           }
           if (e.code == "ArrowDown") {
-            if (!this.moving.meet(this, "down")) {
-              this.moving.move("down");
-              this.print();
-            }
+            this.move("down");
           }
           if (e.code == "Space") {
             this.moving.drop(this);
@@ -504,11 +591,20 @@
             this.moving.rotation("left", this);
             this.print();
           }
-          if (e.code == "KeyX") {
+          if (e.code == "KeyX" || e.code == "ArrowUp") {
             this.moving.rotation("right", this);
             this.print();
           }
         }
+
+        // move this.moving 1 block to a direction
+        move(direction) {
+          if (!this.moving.meet(this, direction)) {
+            this.moving.move(direction);
+            this.print();
+          }
+        }
+
         // start the game
         run() {
           this.intervalID = setInterval(() => {
@@ -551,16 +647,46 @@
         print() {
           // console.log(this.toString());
           display.textContent = this.toString();
-          infoDisplay.textContent = `Level: ${this.level}\nScore: ${this.score}\n`;
+          infoDisplay.textContent = `Level: ${this.level}\n Score: ${this.score}\n`;
           if (this.over) {
             infoDisplay.textContent += "GAME OVER!";
           }
         }
       }
 
+      let infoDisplay = document.querySelector("#info");
+      let display = document.querySelector("#gameboard");
+
       let g = new Game();
       g.init();
+      g.print();
       g.run();
+
+      let changeButton = document.querySelector("#change");
+      let leftButton = document.querySelector("#left");
+      let rightButton = document.querySelector("#right");
+      let downButton = document.querySelector("#down");
+      let dropButton = document.querySelector("#drop");
+
+      changeButton.addEventListener("click", () => {
+        g.moving.rotation("right", g);
+        g.print();
+      });
+      leftButton.addEventListener("click", () => {
+        g.move("left");
+      });
+      rightButton.addEventListener("click", () => {
+        g.move("right");
+      });
+      downButton.addEventListener("click", () => {
+        g.move("down");
+      });
+      dropButton.addEventListener("click", () => {
+        g.moving.drop(g);
+        g.generateMinos();
+        g.print();
+      });
+
     </script>
   </body>
 </html>
