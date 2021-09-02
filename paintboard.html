@@ -425,7 +425,7 @@
         let pos = getReletivePos(svg);
         let lastD = path.getAttribute("d");
 
-        path.setAttribute("d", lastD.replace(/(?<=C )-?\d+ -?\d+/, `${pos.x} ${pos.y}`));
+        path.setAttribute("d", lastD.replace(/C -?\d+ -?\d+/, `C ${pos.x} ${pos.y}`));
         // path.setAttribute("d", lastD.replace(/(?<=C*, )\d+ \d+/, `${pos.x} ${pos.y}`))
 
         progress = 3;
@@ -440,7 +440,7 @@
         let lastD = path.getAttribute("d");
 
         // path.setAttribute("d", lastD.replace(/(?<=C )\d+ \d+/, `${pos.x} ${pos.y}`));
-        path.setAttribute("d", lastD.replace(/(?<=C*, )-?\d+ -?\d+/, `${pos.x} ${pos.y}`));
+        path.setAttribute("d", lastD.replace(/, -?\d+ -?\d+/, `, ${pos.x} ${pos.y}`));
 
         progress = 1;
       }
