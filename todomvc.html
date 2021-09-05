@@ -288,8 +288,6 @@
     </section>
 
     <script>
-      let globalID = 1;
-
       let todoInput = document.querySelector(".new-todo");
       let todoList = document.querySelector(".todo-list");
       let todoCount = document.querySelector(".todo-count");
@@ -306,8 +304,10 @@
 
       // create and return an empty todo object
       function createTODO(title) {
+        let todos = getTODOs();
+        let id = todos.length ? todos[todos.length - 1].id : 0;
         let todo = {
-          id: globalID++,
+          id: id + 1,
           title: title,
           completed: false,
         };
@@ -471,18 +471,36 @@
       });
 
       toggleAll.addEventListener("change", (e) => {
-        let todos = getTODOs();
-        if (toggleAll.checked) {
-          for (let todo of todos) {
-            todo.completed = true;
+        let currentFilter = getCurrentFilter();
+        if (currentFilter == "All") {
+          if (toggleAll.checked) {
+            for (let li of todoList.children) {
+              if (!li.classList.contains("completed")) {
+                li.firstChild.firstChild.click();
+              }
+            }
+          } else {
+            for (let li of todoList.children) {
+              if (li.classList.contains("completed")) {
+                li.firstChild.firstChild.click();
+              }
+            }
           }
+          updateButtons();
         } else {
-          for (let todo of todos) {
-            todo.completed = false;
+          let todos = getTODOs();
+          if (toggleAll.checked) {
+            for (let todo of todos) {
+              todo.completed = true;
+            }
+          } else {
+            for (let todo of todos) {
+              todo.completed = false;
+            }
           }
+          saveTODO(todos);
+          updateTODO();
         }
-        saveTODO(todos);
-        updateTODO();
       });
 
       todoList.addEventListener("dblclick", (e) => {
