@@ -13,6 +13,22 @@
         height: 100%;
       }
 
+      button {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        font-size: 100%;
+        vertical-align: baseline;
+        font-family: inherit;
+        font-weight: inherit;
+        color: inherit;
+        -webkit-appearance: none;
+        appearance: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
       .main-container {
         display: flex;
         flex-flow: column;
@@ -40,7 +56,7 @@
 
       aside {
         height: 100%;
-        width: 200px;
+        width: 220px;
         flex-shrink: 0;
       }
 
@@ -53,15 +69,16 @@
         justify-content: space-between;
       }
       aside .buttons button {
-        width: 100px;
-        font-size: 1.2em;
+        /* width: 100px; */
+        width: 100%;
+        font-size: 24px;
         cursor: pointer;
         border: 1px solid rgb(238, 238, 238);
         background-color: #fff;
         transition: all 300ms ease;
       }
       aside .buttons button:hover {
-        background-color: rgb(238, 238, 238);
+        background-color: rgb(187, 187, 187);
       }
 
       aside ul {
@@ -74,19 +91,39 @@
 
       aside ul li {
         box-sizing: border-box;
-        padding: 10px;
+        padding: 5px;
+        padding-left: 10px;
         cursor: pointer;
         position: relative;
         z-index: 1;
         border-bottom: 1px solid rgb(238, 238, 238);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-
+      aside ul li button.delete {
+        font-size: 24px;
+        height: 24px;
+        width: 24px;
+        line-height: 24px;
+        cursor: pointer;
+      }
+      aside ul li button.delete::after {
+        content: "×";
+        display: none;
+        transition: color 0.3s;
+      }
+      aside ul li button.delete:hover {
+        color: red;
+      }
       aside ul li.active {
         /* color: red; */
         box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 24px -12px;
         z-index: 2;
       }
-
+      aside ul li:hover button.delete::after {
+        display: inline-block;
+      }
       aside ul li:hover::before {
         background: rgb(235, 235, 235);
       }
@@ -143,15 +180,16 @@
       }
 
       main .content {
-        padding: 0 10px;
+        padding: 10px;
         flex: 1;
       }
 
       main .content textarea {
         box-sizing: border-box;
+        font-size: 22px;
+        line-height: 1.5;
         height: 100%;
         width: 100%;
-        font-size: 1.2em;
         border: none;
         background-color: inherit;
       }
@@ -172,7 +210,7 @@
         <aside>
           <div class="buttons">
             <button id="new-button">+</button>
-            <button id="del-button">Delete</button>
+            <!-- <button id="del-button">Delete</button> -->
           </div>
           <ul id="notelist"></ul>
         </aside>
@@ -190,7 +228,7 @@
     <script>
       let noteList = document.querySelector("#notelist");
       let newButton = document.querySelector("#new-button");
-      let delButton = document.querySelector("#del-button");
+      // let delButton = document.querySelector("#del-button");
       let curTitle = document.querySelector("#cur-title");
       let curNote = document.querySelector("#cur-note");
       let noteID = 0;
@@ -219,21 +257,40 @@
             noteList.append(li);
 
             li.classList.add("notelist-item");
+            let view = document.createElement("div");
+            view.classList.add("view");
             let title = document.createElement("h4");
-            title.textContent = note.title || "无标题";
-            li.append(title);
+            let titleText = note.title.length < 20 ? note.title : note.title.slice(0, 20) + " ...";
+            title.textContent = titleText || "无标题";
+            view.append(title);
             let time = document.createElement("p");
-            time.textContent = new Date(note.updateTime).toDateString();
-            li.append(time);
+            time.textContent = new Date(note.updateTime).toLocaleString();
+            view.append(time);
+            let deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete");
+            // deleteButton.textContent = "×";
+            li.append(view);
+            li.append(deleteButton);
 
             li.addEventListener("click", function (e) {
-              workingNote = note;
-              curTitle.value = workingNote.title;
-              curNote.value = workingNote.content;
-              for (let child of noteList.children) {
-                child.classList.remove("active");
+              if (e.target.tagName !== "BUTTON") {
+                workingNote = note;
+                curTitle.value = workingNote.title;
+                curNote.value = workingNote.content;
+                for (let child of noteList.children) {
+                  child.classList.remove("active");
+                }
+                li.classList.add("active");
               }
-              li.classList.add("active");
+            });
+
+            deleteButton.addEventListener("click", (e) => {
+              deleteNote(note);
+              noteList.children[0].classList.add("active");
+              notes = getAllNotes();
+              workingNote = notes[0];
+              curTitle.value = workingNote ? workingNote.title : "";
+              curNote.value = workingNote ? workingNote.content : "";
             });
           }
           noteList.children[0].classList.add("active");
@@ -285,15 +342,17 @@
         workingNote = note;
         curNote.value = workingNote.content;
         curTitle.value = workingNote.title;
+        curTitle.focus();
         saveNote(note);
         updateNoteList();
+        curTitle.focus();
       });
 
-      delButton.addEventListener("click", function () {
-        let notes = getAllNotes();
-        let toBeDeleted = notes.find((item) => item.id == workingNote.id);
-        deleteNote(toBeDeleted);
-      });
+      // delButton.addEventListener("click", function () {
+      //   let notes = getAllNotes();
+      //   let toBeDeleted = notes.find((item) => item.id == workingNote.id);
+      //   deleteNote(toBeDeleted);
+      // });
 
       let inputTitleTimeoutId = 0;
       let inputContentTimeoutId = 0;
@@ -304,6 +363,11 @@
           workingNote.updateTime = new Date();
           saveNote(workingNote);
         }, 800);
+      });
+      curTitle.addEventListener("keyup", (e) => {
+        if (e.key == "Enter") {
+          curNote.focus();
+        }
       });
       curNote.addEventListener("input", function () {
         clearTimeout(inputContentTimeoutId);
