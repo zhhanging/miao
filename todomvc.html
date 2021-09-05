@@ -225,7 +225,7 @@
       }
       .clear-completed {
         float: right;
-        position: relative;  /* why？ */
+        position: relative; /* why？ */
         cursor: pointer;
         transition: color 0.2s;
       }
@@ -243,6 +243,20 @@
       }
       .filters li {
         display: inline;
+      }
+      .filters li a {
+        color: inherit;
+        margin: 3px;
+        padding: 3px 7px;
+        text-decoration: none;
+        border: 1px solid transparent;
+        border-radius: 3px;
+      }
+      .filters li a:hover {
+        border-color: rgba(175, 47, 47, 0.1);
+      }
+      .filters li a.selected {
+        border-color: rgba(175, 47, 47, 0.2);
       }
     </style>
   </head>
@@ -280,8 +294,8 @@
       let toggleAll = document.querySelector(".toggle-all");
       let filters = document.querySelector(".filters");
       let clearCompletedButton = document.querySelector(".clear-completed");
-      let main = document.querySelector(".main")
-      let footer = document.querySelector(".footer")
+      let main = document.querySelector(".main");
+      let footer = document.querySelector(".footer");
 
       function getTODOs() {
         let todos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -314,7 +328,7 @@
         } else {
           clearCompletedButton.style.display = "none";
         }
-        
+
         if (isAllCompleted()) {
           toggleAll.checked = true;
         } else {
@@ -322,11 +336,11 @@
         }
 
         if (todos.length == 0) {
-          main.style.display = "none"
-          footer.style.display = "none"
+          main.style.display = "none";
+          footer.style.display = "none";
         } else {
-          main.style.display = ""
-          footer.style.display = ""
+          main.style.display = "";
+          footer.style.display = "";
         }
       }
 
