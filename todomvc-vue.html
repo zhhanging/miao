@@ -288,14 +288,14 @@
         <ul class="todo-list">
           <li
             class="todo"
-            v-for="(todo, index) of applyFilter(todos)"
+            v-for="todo of applyFilter(todos)"
             :key="todo.id"
             :class="{ completed: todo.done, editing: editing == todo }"
           >
             <div class="view">
               <input type="checkbox" class="toggle" v-model="todo.done" />
               <label @dblclick="enterEditing(todo)">{{ todo.title }}</label>
-              <button class="destroy" @click="removeTodo(index)">×</button>
+              <button class="destroy" @click="removeTodo(todo.id)">×</button>
             </div>
             <input
               type="text"
@@ -367,10 +367,12 @@
             this.editing = todo;
           },
           finishEditing(todo) {
+            if (!todo.title.length) {
+              this.removeTodo(todo.id);
+            }
             this.editing = null;
           },
           calcelEditing(todo) {
-            // ???
             todo.title = this.editingValue;
             this.editing = null;
           },
@@ -381,7 +383,8 @@
               this.todos.forEach((todo) => (todo.done = true));
             }
           },
-          removeTodo(index) {
+          removeTodo(id) {
+            let index = this.todos.findIndex((todo) => todo.id == id);
             this.todos.splice(index, 1);
           },
           clearCompleted() {
