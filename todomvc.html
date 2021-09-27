@@ -457,8 +457,24 @@
 
           editInput.addEventListener("change", (e) => {
             todo.title = editInput.value;
+            if (editInput.value == "") {
+              todos.splice(todos.indexOf(todo), 1);
+              todoList.removeChild(li);
+              saveTODO(todos);
+            }
             saveTODO(todos);
             updateTODO();
+          });
+
+          editInput.addEventListener("blur", (e) => {
+            li.classList.remove("editing");
+          });
+
+          editInput.addEventListener("keyup", (e) => {
+            if (e.code == "Escape") {
+              editInput.value = todo.title;
+              li.classList.remove("editing");
+            }
           });
         }
         updateButtons();
@@ -508,12 +524,12 @@
         e.target.parentNode.nextSibling.focus();
       });
 
-      document.addEventListener("click", (e) => {
-        let editingInput = document.querySelector(".editing");
-        if (editingInput && !editingInput.contains(e.target)) {
-          editingInput.classList.remove("editing");
-        }
-      });
+      // document.addEventListener("click", (e) => {
+      //   let editingInput = document.querySelector(".editing");
+      //   if (editingInput && !editingInput.contains(e.target)) {
+      //     editingInput.classList.remove("editing");
+      //   }
+      // });
 
       filters.addEventListener("click", (e) => {
         if (e.target.tagName == "A" && filters.contains(e.target)) {
