@@ -264,27 +264,21 @@
     </style>
   </head>
   <body>
-    <section class="todo-app">
+    <section class="todo-app" v-cloak>
       <header class="header">
         <h1>TODOS</h1>
         <input
+          v-focus
           class="new-todo"
           type="text"
-          autofocus
           placeholder="What needs to be done?"
           v-model="newTodo"
           @keydown.enter="createTodo()"
         />
       </header>
       <section class="main">
-        <input
-          id="toggle-all"
-          type="checkbox"
-          class="toggle-all"
-          :checked="todos.length && todos.every(todo => todo.done)"
-          @click="toggleAllTodos()"
-        />
-        <label for="toggle-all"></label>
+        <input id="toggle-all" type="checkbox" class="toggle-all" :checked="isAllDone" @click="toggleAllTodos()" />
+        <label for="toggle-all" v-if="todos.length"></label>
         <ul class="todo-list">
           <li
             class="todo"
@@ -301,7 +295,7 @@
               type="text"
               class="edit"
               v-model="todo.title"
-              v-focus
+              v-focus="editing == todo"
               @blur="finishEditing(todo)"
               @keyup.enter="finishEditing(todo)"
               @keyup.esc="calcelEditing(todo)"
@@ -312,7 +306,7 @@
       <footer class="footer" v-if="todos.length">
         <span class="todo-count">
           <strong></strong>
-          {{ todos.filter(todo => !todo.done).length }} items left
+          {{ notDoneCount }} items left
         </span>
         <ul class="filters">
           <li><a :class="{ selected: filter == 'all' }" @click="filter='all'">All</a></li>
@@ -325,15 +319,14 @@
       </footer>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- <script src="vue.js"></script> -->
     <script>
       let vm = new Vue({
         el: ".todo-app",
         data: {
           newTodo: "",
           filter: JSON.parse(localStorage.getItem("data-filter")) || "all",
-          lastID: JSON.parse(localStorage.getItem("data-lastID")) || 0,
           todos: JSON.parse(localStorage.getItem("data-todos")) || [],
           editing: null,
           editingValue: "",
@@ -348,15 +341,27 @@
           filter: function () {
             localStorage.setItem("data-filter", JSON.stringify(this.filter));
           },
-          lastID: function () {
-            localStorage.setItem("data-lastID", JSON.stringify(this.lastID));
+        },
+        computed: {
+          newID() {
+            if (this.todos.length) {
+              return this.todos[this.todos.length - 1].id + 1;
+            } else {
+              return 1;
+            }
+          },
+          isAllDone() {
+            return this.todos.length && this.todos.every((todo) => todo.done);
+          },
+          notDoneCount() {
+            return this.todos.filter((todo) => !todo.done).length;
           },
         },
         methods: {
           createTodo() {
             if (this.newTodo.trim().length)
               this.todos.push({
-                id: this.lastID++,
+                id: this.newID,
                 title: this.newTodo.trim(),
                 done: false,
               });
@@ -403,8 +408,13 @@
         },
         directives: {
           focus: {
-            update: function (el) {
+            inserted: function (el) {
               el.focus();
+            },
+            update: function (el, binding) {
+              if (binding.value) {
+                el.focus();
+              }
             },
           },
         },
